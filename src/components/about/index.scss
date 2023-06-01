@@ -1,0 +1,38 @@
+.about {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  * {
+    animation: fadeIn 0.5s;
+  }
+
+  &_map {
+    margin: 120px 0 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1200px;
+    height: 420px;
+    overflow: hidden;
+
+    div:first-child {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .about_map {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .about_map {
+    height: 320px;
+  }
+}

@@ -1,0 +1,70 @@
+.login {
+  margin-top: 60px;
+  width: 1200px;
+
+  * {
+    animation: fadeIn 0.5s;
+  }
+
+  .cart_card {
+    width: 40%;
+  }
+
+  .registration_btn {
+    margin-top: 32px;
+    width: 40%;
+  }
+
+  .registration_btn.secondary_btn {
+    background: linear-gradient(271.38deg, #0681E4 -8.46%, rgba(39, 135, 245, 0.91) 75.71%);
+  }
+
+  .registration_btn.light_btn {
+    background: linear-gradient(271.38deg, #0681E4 -8.46%, rgba(39, 135, 245, 0.72) 75.71%);
+  }
+
+  &_forget {
+    margin-top: 16px;
+
+    span {
+      cursor: pointer;
+      color: #095ED4;
+    }
+  }
+
+  &_title {
+    margin: 20px 0 60px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1200px) {
+  .login {
+    width: 100%;
+    padding: 0 20px;
+
+    &_content {
+      .cart_card {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login {
+    .registration_btn {
+      width: 100%;
+    }
+  }
+}

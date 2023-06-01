@@ -1,0 +1,102 @@
+.dream-admin_header.close-menu {
+  height: 100px !important;
+
+  .dream-admin_header_menu {
+    display: none;
+  }
+}
+
+@keyframes loyal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.dream-admin {
+  position: relative;
+
+  &_back {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #303030;
+    font-weight: 900;
+    font-size: 18px;
+    transition: 0.3s;
+    z-index: 100;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+}
+
+.dream-admin_header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 1200px;
+  align-self: center;
+  justify-self: center;
+  margin: 0 auto;
+  height: 180px;
+  font-weight: 500;
+  transition: 0.3s;
+
+  &_menu {
+    animation: loyal 0.3s;
+    width: 180px;
+    height: 180px;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &_item.items {
+      position: absolute;
+      right: 12px;
+      top: 20px;
+    }
+
+    &_item.clients {
+      position: absolute;
+      right: 30px;
+      top: 50px;
+    }
+
+    &_item.metrics {
+      position: absolute;
+      left: 70px;
+      bottom: 54px;
+    }
+
+    &_item.exit {
+      position: absolute;
+      left: 0;
+      bottom: 28px;
+    }
+  }
+
+  &_menu img {
+    width: 24px !important;
+  }
+
+  &_btn {
+    z-index: 10;
+    position: absolute;
+    top: 20px;
+    width: 64px;
+    height: 64px;
+  }
+
+  div {
+    cursor: pointer;
+    opacity: 1;
+    color: #0A5BD3;
+  }
+}

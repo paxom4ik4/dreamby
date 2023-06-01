@@ -1,0 +1,45 @@
+.billing {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+
+  * {
+    animation: fadeIn 0.5s;
+  }
+
+  &_wrapper {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &_title {
+    margin: 20px 0 60px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  &_text_item {
+    margin: 12px 0;
+
+    span {
+      font-weight: 500;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .billing {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 20px;
+
+    &_wrapper {
+      width: 100%;
+    }
+  }
+}

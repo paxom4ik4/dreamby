@@ -1,0 +1,30 @@
+.add-new-item_info_specs.services-specs {
+  width: 100% !important;
+  margin-top: 4px;
+
+  .add-new-item_info_specs_title {
+    margin-bottom: 16px;
+  }
+
+  textarea {
+    padding: 12px;
+  }
+}
+
+.add-new-item_saveService {
+  margin-top: 16px;
+  background: #0A5BD3;
+  color: #FAFCFD;
+  border-radius: 12px;
+  padding: 12px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}

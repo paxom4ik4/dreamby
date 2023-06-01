@@ -1,0 +1,20 @@
+.reg-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 14px;
+  margin: 16px 0;
+  padding: 12px 20px;
+  background: #F1F0F0;
+  border-radius: 12px;
+  color: #434343;
+
+  div {
+    width: 20%;
+    font-size: 12px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,157 @@
+.admin-home {
+  width: 1200px;
+  box-sizing: border-box !important;
+
+  &_note {
+    display: flex;
+    flex-direction: column;
+
+    textarea {
+      font-size: 12px !important;
+      border: 1px solid #9C9C9C;
+      border-radius: 12px;
+      padding: 12px 12px 24px;
+    }
+  }
+
+  &_wrapper {
+    background: #FAFCFD;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_header {
+    width: 1200px;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+      cursor: pointer;
+      width: 64px;
+      transition: 0.3s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &_notes {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    width: 70%;
+    padding: 25px 40px;
+
+    input {
+      border: none;
+      outline: none;
+    }
+  }
+
+  &_note_title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &_left {
+      display: flex;
+      flex-direction: column;
+      width: 48%;
+      justify-content: flex-start;
+    }
+
+    &_right {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 48%;
+    }
+  }
+
+  &_lastOrders {
+    background: #FFFFFF;
+    padding: 25px 40px;
+    border-radius: 20px;
+    margin: 25px 0;
+
+    .card_content {
+      width: 100%;
+    }
+  }
+
+  &_currency {
+    background: #FFFFFF;
+    padding: 25px 40px;
+    border-radius: 20px;
+    margin: 25px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      cursor: pointer;
+    }
+
+    &_save {
+      border: 1px solid rgba(10, 91, 211, 0.5);
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+  }
+
+  &_lastRegistration {
+    background: #FFFFFF;
+    padding: 25px 40px;
+    border-radius: 20px;
+    margin: 25px 0;
+  }
+
+  &_lastItems {
+    background: #FFFFFF;
+    padding: 25px 40px;
+    border-radius: 20px;
+    margin: 25px 0;
+  }
+
+  &_title {
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 1200px) {
+  .admin-home {
+    width: 100%;
+    box-sizing: border-box !important;
+
+    &_header {
+      width: 100%;
+      align-self: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .dream-admin_header {
+    width: 100% !important;
+  }
+}
+

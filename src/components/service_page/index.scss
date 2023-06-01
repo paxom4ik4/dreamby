@@ -1,0 +1,144 @@
+.service-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  * {
+    animation: fadeIn 0.5s;
+  }
+
+  &_device-order {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    select {
+      padding: 0 12px;
+      width: 300px;
+      height: 36px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      background: #0A5BD3;
+      color: #FAFCFD;
+      width: 240px;
+      height: 30px;
+      border-radius: 12px;
+      margin-top: 20px;
+      justify-self: flex-end;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &_title {
+    margin: 40px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  &_content {
+    margin-top: 80px;
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_preview {
+    display: flex;
+    flex-direction: row;
+
+    &_image {
+      width: 30%;
+      object-fit: contain;
+      max-height: 400px;
+    }
+
+    img {
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+    }
+
+    &_description {
+      margin-left: 48px;
+      width: 70%;
+      font-size: 24px;
+      font-weight: 500;
+
+      div {
+        margin-top: 12px;
+        font-weight: 400;
+      }
+
+      span {
+        margin-bottom: 12px;
+      }
+    }
+  }
+
+  &_subtitle {
+    margin: 60px 0 12px;
+  }
+
+  &_menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    &_item {
+      font-size: 14px;
+      margin: 0 8px;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  .service-page_content {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .service-page_preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+
+    div:first-child {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    div:first-child img {
+      width: 320px;
+      max-width: 320px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .service-page {
+    overflow-x: hidden;
+  }
+
+  .service-page_preview_description {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 24px;
+  }
+}

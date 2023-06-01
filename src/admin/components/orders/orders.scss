@@ -1,0 +1,67 @@
+.orders {
+  position: relative;
+  margin: 24px 0;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+
+  .card_order {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+
+    div {
+      margin: 12px 0;
+    }
+  }
+
+
+  &_nav {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    top: -168px;
+    right: 0;
+    justify-content: space-between;
+
+    &_item {
+      font-size: 18px;
+      font-weight: 700;
+      margin-left: 24px;
+      transition: 0.3s;
+      color: #005395;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+      }
+    }
+  }
+
+  &_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  &_content {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &_content .card {
+    height: fit-content;
+    min-height: 420px;
+    margin-right: 10px;
+    width: 32.5% !important;
+
+    img {
+      margin-left: 0;
+      border-radius: 8px;
+    }
+  }
+}

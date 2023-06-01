@@ -1,0 +1,92 @@
+.registration {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+
+  .cart_card {
+    width: 480px;
+  }
+
+  &_btn {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 280px;
+    height: 40px;
+    color: #FFFFFF;
+    background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%);
+    border-radius: 12px;
+    transition: .3s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  &_title {
+    margin: 40px 0;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  &_group {
+    color: #666666;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+
+    span {
+      font-size: 12px;
+      margin-top: -12px;
+    }
+
+    label {
+      margin: 16px 0;
+    }
+
+    input {
+      outline: none;
+      padding: 16px 20px;
+      border: 1px solid rgba(102, 102, 102, 0.59);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .registration {
+    width: 100%;
+    padding: 0 20px;
+
+    .cart_card {
+      width: 70%;
+    }
+  }
+
+  .registration_group {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .registration {
+    .cart_card {
+      width: 100%;
+    }
+  }
+
+  .registration_group {
+    width: 100%;
+  }
+}

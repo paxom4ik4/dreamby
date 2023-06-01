@@ -1,0 +1,105 @@
+.good-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 14px;
+  background: #F1F0F0;
+  border-radius: 12px;
+  margin: 16px 0;
+
+  &_image {
+    object-fit: contain;
+
+    img {
+      object-fit: contain;
+    }
+    width: 64px;
+  }
+
+  &_left {
+    display: flex;
+    align-items: center;
+  }
+
+  &_title {
+    text-align: left;
+    margin-left: 18px;
+  }
+
+  .close-btn {
+    height: 16px !important;
+    margin-top: 6px !important;
+    margin-right: 12px;
+  }
+
+  &_btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_btns > img {
+    width: 28px;
+    margin-left: 10px;
+    transition: 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  &_btn {
+    transition: 0.3s;
+    display: flex;
+    flex-direction: row;
+
+    &_item {
+      transition: 0.3s;
+      margin: 0 4px;
+      border-radius: 8px;
+      color: #0F2467;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 32px;
+    height: 28px;
+    transition: 0.3s;
+    margin: 0 4px;
+    border-radius: 8px;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+
+  img:first-child {
+    height: 64px;
+  }
+
+  &_config {
+    cursor: pointer;
+  }
+
+  &_config img {
+    height: 28px !important;
+  }
+}

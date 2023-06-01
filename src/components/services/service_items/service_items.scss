@@ -1,0 +1,21 @@
+.service_items {
+  transition: .5s;
+  width: 100%;
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(25%, 2fr));
+  grid-auto-flow: dense;
+
+  &_empty {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 1200px) {
+  .service_items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

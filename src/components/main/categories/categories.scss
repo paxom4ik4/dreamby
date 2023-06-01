@@ -1,0 +1,38 @@
+.categories {
+  margin-top: 80px;
+  width: 1200px;
+  display: grid;
+  grid-gap: 9px;
+  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+  grid-auto-rows: auto;
+  grid-auto-flow: dense;
+}
+
+@media (max-width: 1024px) {
+  .categories {
+    width: 100%;
+    padding: 0 20px;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .categories {
+    width: 100%;
+    padding: 0 20px;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  }
+
+  .category_card_title {
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .categories {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+}

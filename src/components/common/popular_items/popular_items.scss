@@ -1,0 +1,77 @@
+@import "../../../global/variables";
+
+@keyframes animationEasy {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.popular-items {
+  margin-top: 120px;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &_title {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  &_menu {
+    color: $text-secondary;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &_item {
+      cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      padding: 0 12px;
+    }
+  }
+
+  &_content {
+    animation: animationEasy 0.3s ease-in-out;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .popular-items {
+    margin: 40px 0 0;
+    width: 100%;
+
+    &_content {
+      justify-content: center;
+      margin: 20px 20px;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .popular-items {
+    &_title {
+      margin: 12px 0;
+    }
+
+    &_menu {
+      flex-direction: column;
+
+      &_item {
+        margin: 2px 0;
+      }
+    }
+  }
+}

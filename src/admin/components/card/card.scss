@@ -1,0 +1,85 @@
+.card {
+  position: relative;
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: #F1F0F0;
+  padding: 24px 24px 50px;
+  border-radius: 12px;
+  height: fit-content;
+
+  &_content {
+    position: relative;
+    height: fit-content;
+    min-height: 280px;
+    width: 100%;
+  }
+
+  &_cost {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  &_confirmed {
+    position: absolute;
+    bottom: 8px;
+    left: 24px;
+    color: #4cd964;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &_order {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 12px 0;
+
+    img {
+      margin-left: 12px;
+      width: 90px;
+    }
+  }
+
+  &_accept {
+    right: 0;
+    bottom: 0;
+    background: #FAFCFD;
+    border-top-left-radius: 70%;
+    border-bottom-right-radius: 12%;
+    padding: 8px 4px 4px 8px;
+    height: 26px;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  &_reject {
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    background: #FAFCFD;
+    border-bottom-left-radius: 70%;
+    border-top-right-radius: 12%;
+    padding: 4px;
+    width: 32px;
+    position: absolute;
+  }
+
+  &_title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &_text {
+    font-size: 14px;
+    margin: 4px 0;
+    font-weight: 400;
+  }
+}

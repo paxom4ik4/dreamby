@@ -1,0 +1,38 @@
+.main-slider {
+  position: relative;
+  margin-top: 120px;
+  width: 100%;
+}
+
+.swiper-scrollbar {
+  position: absolute !important;
+  bottom: 0 !important;
+  height: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  width: 40% !important;
+}
+
+.swiper-scrollbar-drag {
+  background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%) !important;
+  border-radius: 8px;
+}
+
+@media (max-width: 500px) {
+  .main-slider {
+    position: relative;
+    margin-top: 90px;
+    margin-bottom: -40px;
+    width: 100%;
+    padding: 0 4px;
+  }
+
+  .swiper-scrollbar {
+    position: absolute !important;
+    bottom: 0 !important;
+    height: 16px !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    width: 90% !important;
+  }
+}

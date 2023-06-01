@@ -1,0 +1,44 @@
+.cart {
+  width: 1200px;
+
+  * {
+    animation: fadeIn 0.5s;
+  }
+
+  &_title {
+    margin: 40px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  &_empty-cart {
+    &_title {
+      font-weight: 500;
+    }
+
+    &_content {
+      min-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 108px;
+    }
+  }
+
+  &_content {}
+
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1200px) {
+  .cart {
+    margin: 0 20px;
+    width: 100%;
+  }
+}

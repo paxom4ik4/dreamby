@@ -19,6 +19,7 @@ const AVAILABLE_SERVICE_TEXT = 'Доступна';
 const UNAVAILABLE_SERVICE_TEXT = 'Недоступна';
 
 export const ItemCard = ({
+    product,
   clickLink,
   setSelectedCategory = () => {},
   hidePayment = false,
@@ -79,7 +80,7 @@ export const ItemCard = ({
         {compareMode && <div className={'delete-from-compare'} onClick={deleteFromCompare}>Убрать из сравнения</div>}
         { !compareMode && <div className={`${DEFAULT_CLASSNAME}_favoriteWrapper`}>
           {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_favorite`} onClick={() => {setFavoriteItems(productId)}} style={{ color: isFavorite && "red" }}>{favoriteIcon}</span>}
-          {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(productId)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}
+          {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(product)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}
         </div>
         }
         <img className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={'item-image'} />
@@ -90,6 +91,8 @@ export const ItemCard = ({
             </div>
             {!isServiceItem && !compareMode &&
             <div className={`${DEFAULT_CLASSNAME}_cart`} onClick={() => {
+              console.log('???');
+
               setCartItems({
                 id: productIdForCart,
                 image,

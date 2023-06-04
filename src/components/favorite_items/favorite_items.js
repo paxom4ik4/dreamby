@@ -30,7 +30,7 @@ export const FavoriteItems = ({ setFavoriteItems, setFavoriteServices, favoriteI
 
   const showItems = (!!itemsToShow.length || !!servicesToShow.length) && [...itemsToShow, ...servicesToShow];
 
-  return (
+    return (
     <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
 
       <Helmet>

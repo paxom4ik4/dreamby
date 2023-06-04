@@ -15,6 +15,7 @@ export const ServiceItems = ({ setSelectedCategory, compareItems, addItemToCompa
   return (
     <div className={DEFAULT_CLASSNAME}>
       {itemsToShow?.length ? itemsToShow.map(item => <ItemCard
+        product={item}
         setSelectedCategory={setSelectedCategory}
         hidePayment={item.hidePayment}
         key={item.id.toString()}

@@ -57,6 +57,7 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
 
           return (
               <ItemCard
+                productIdForCart={item?.id}
                 clickLink={`${categoryName}/${subcategory}/${item.id}`}
                 itemCategory={item?.category?.categoryName}
                 itemSubcategory={item?.subcategory.link_name}

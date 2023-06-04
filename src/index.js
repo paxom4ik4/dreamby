@@ -93,7 +93,7 @@ const App = () => {
     setLoginData(loginData);
     setFavoriteItems(!!localFavoriteItems ? localFavoriteItems : []);
     setFavoriteServices(!!localFavoriteServices ? localFavoriteServices : []);
-    setCartItems(!!cartItems ? cartItems : []);
+    setCartItems(!!cartItems ? Array.isArray(cartItems) ? cartItems : [] : []);
   }, [])
 
   const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
@@ -152,7 +152,6 @@ const App = () => {
     if (!!cartItems.find(itm => itm.id === item.id)) {
       alreadyNotify();
     } else {
-      cartNotify()
       setCartItems(prev => ([...prev, {
         ...item,
         itemAmount: 1,
@@ -275,7 +274,7 @@ const App = () => {
               </Route>
             </Route>
             <Route path={"/catalog/:category/:subcategory/:id"} element={
-              <Suspense fallback={<Loader />}><ItemPage allSubcategories={subcategories} setSelectedSubcategory={setSelectedSubcategory} compareItems={compareItems} setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} setSelectedSubcategories={setSelectedSubcategories} setSelectedDeviceName={setSelectedDeviceName} setLoginData={setLoginData} setFavoriteItems={setFavoriteItemHandler} favoriteItems={favoriteItems} loginData={loginData} addItemToCompare={addItemToCompare} addToCart={setCartItemsHandler} /> </Suspense>
+              <Suspense fallback={<Loader />}><ItemPage setCartItems={setCartItems} allSubcategories={subcategories} setSelectedSubcategory={setSelectedSubcategory} compareItems={compareItems} setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} setSelectedSubcategories={setSelectedSubcategories} setSelectedDeviceName={setSelectedDeviceName} setLoginData={setLoginData} setFavoriteItems={setFavoriteItemHandler} favoriteItems={favoriteItems} loginData={loginData} addItemToCompare={addItemToCompare} addToCart={setCartItemsHandler} /> </Suspense>
             } />
             <Route path={"/registration"} element={<Registration registerNotify={registerNotify} registrationMode={true} />} />
             <Route path={"/favorite"} element={<FavoriteItems setFavoriteItems={setFavoriteItemHandler} setFavoriteServices={setFavoriteServiceHandler} setCartItems={setCartItemsHandler} favoriteItems={favoriteItems} favoriteServices={favoriteServices} />} />

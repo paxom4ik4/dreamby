@@ -4,6 +4,7 @@ import './index.scss';
 import { ItemCard } from "../common/item_card/item_card";
 import {useNavigate} from "react-router-dom";
 import {Helmet} from "react-helmet";
+import {objReplacer} from "../catalog/catalog";
 
 const DEFAULT_CLASSNAME = 'compare';
 
@@ -21,13 +22,11 @@ export const Compare = ({ deleteFromCompare, compareItems }) => {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          "prod_ids": [...compareItems]
+          "prod_ids": compareItems.map(item => item?.id)
         })
       }).then(res => res.json()).then(data => setCompareData(data));
     }
   }, [compareItems]);
-
-  console.log(compareData);
 
   const ids = compareData?.find(item => item.key === "id");
   const names = compareData?.find(item => item.key === "name");
@@ -75,9 +74,12 @@ export const Compare = ({ deleteFromCompare, compareItems }) => {
 
                 <div className={`${DEFAULT_CLASSNAME}_goods_content`}>
                   {compareItems.map((item, index) => {
+                      const categoryName = objReplacer[item?.category?.categoryName];
+                      const subcategory = item?.subcategory?.link_name;
+
                       return (
                         <ItemCard
-                          clickLink={"default"}
+                          clickLink={`${categoryName}/${subcategory}/${item.id}`}
                           productId={ids?.value[index]}
                           image={images?.value[index]}
                           title={names?.value[index]}

@@ -26,7 +26,7 @@ const conditions = {
   'activated': 'Активированный'
 }
 
-export const ItemPage = ({ allSubcategories, compareItems, setSelectedCategory, setSelectedSubcategory, setSelectedSubcategories, setSelectedDeviceName, setLoginData, setFavoriteItems, favoriteItems, loginData, addItemToCompare, addToCart = () => {}}) => {
+export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSelectedCategory, setSelectedSubcategory, setSelectedSubcategories, setSelectedDeviceName, setLoginData, setFavoriteItems, favoriteItems, loginData, addItemToCompare, addToCart = () => {}}) => {
   const navigate = useNavigate();
   const { id: productId, subcategory, category } = useParams();
 
@@ -208,7 +208,7 @@ export const ItemPage = ({ allSubcategories, compareItems, setSelectedCategory, 
           <button className={`${DEFAULT_CLASSNAME}_like ${favoriteItems.includes(itemData?.product?.id) && 'like-active'}`} onClick={() => setFavoriteItems(itemData?.product.id)}>
             {likeIcon}
           </button>
-          <button className={`${DEFAULT_CLASSNAME}_compare ${compareItems.includes(itemData?.product?.id) && 'compare-active'}`} onClick={() => addItemToCompare(itemData?.product?.id)}>
+          <button className={`${DEFAULT_CLASSNAME}_compare ${compareItems.includes(itemData?.product?.id) && 'compare-active'}`} onClick={() => addItemToCompare(itemData?.id)}>
             {compareIcon}
           </button>
         </div>
@@ -293,7 +293,7 @@ export const ItemPage = ({ allSubcategories, compareItems, setSelectedCategory, 
         </div>
 
         {(!!technicalSpecs?.length || !!contentData?.length || !!servicesNewData?.length) && <ItemInfo itemData={itemData} setLoginData={setLoginData} id={itemData.product.id} loginData={loginData} technicalSpecs={technicalSpecs} contentData={contentData} />}
-        <PopularItems setSelectedCategory={setSelectedCategory} popularProductItems={itemData?.product?.popular} setSelectedSubcategories={setSelectedSubcategories} setFavoriteItems={setFavoriteItems} favoriteItems={favoriteItems} isRecommended={true} />
+        <PopularItems setCartItems={setCartItems} setSelectedCategory={setSelectedCategory} popularProductItems={itemData?.product?.popular} setSelectedSubcategories={setSelectedSubcategories} setFavoriteItems={setFavoriteItems} favoriteItems={favoriteItems} isRecommended={true} />
       </div>
     </div>
   )

@@ -40,6 +40,18 @@ export const About = ({setSelectedCategory, setSelectedSubcategories, favoriteIt
       <Gallery />
       <Contact />
       <AboutMap />
+        <div className={'about_additional_text'}>
+            <p>
+                ООО «ДиС концепт» <br />
+                220116, г. Минск, пр-т Дзержинского, д.69, корп. 2, пом. 49, комната 123 <br />
+                УНП 193383048 <br />
+                р/с BY96 MTBK 3012 0001 0933 0009 8738 в ЗАО «МТБанк» 220035, г. Минск, РКЦ 15, ул. Тимирязева, 67, BIC MTBKBY22 <br />
+                e-mail: disconcept@mail.ru <br />
+                Тел. +37529 155 30 20 <br />
+                Управляющий:  Червяков  В.В., действует на основании приказа № 1 от 12.02.2020г. <br />
+                220020, г. Минск, пр-т Победителей, 84, магазин «Dream Store» <br />
+            </p>
+        </div>
       <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
     </div>
   )

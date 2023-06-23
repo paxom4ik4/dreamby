@@ -19,6 +19,9 @@ export const EditSubcategory = () => {
   const [subcategoryDescription, setSubcategoryDescription] = useState("");
   const [subcategoryKeyWords, setSubcategoryKeyWords] = useState("");
 
+  const [subcategoryMetaText, setSubcategoryMetaText] = useState("");
+  const [subcategoryMetaTitle, setSubcategoryMetaTitle] = useState("");
+
   const [subcategoryImage, setSubcategoryImage] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
 
@@ -39,6 +42,8 @@ export const EditSubcategory = () => {
         setSubcategoryImage(data.img_path);
         setSubcategoryDescription(data.meta_description);
         setSubcategoryKeyWords(data.meta_keyword);
+        setSubcategoryMetaText(data.meta_text);
+        setSubcategoryMetaTitle(data.meta_title);
       });
   }, []);
 
@@ -55,6 +60,8 @@ export const EditSubcategory = () => {
     }
     data.append("meta_description", subcategoryDescription);
     data.append("meta_keyword", subcategoryKeyWords);
+    data.append("meta_text", subcategoryMetaText);
+    data.append("meta_title", subcategoryMetaTitle);
 
     fetch(`${process.env["REACT_APP_API_URL"]}subcategory/${id}`, {
       method: "PATCH",
@@ -87,6 +94,9 @@ export const EditSubcategory = () => {
 
             <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryDescription} onChange={(e) => setSubcategoryDescription(e.currentTarget.value)} type={"text"} placeholder={"Введите описание для SEO..."} />
             <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryKeyWords} onChange={(e) => setSubcategoryKeyWords(e.currentTarget.value)} type={"text"} placeholder={"Введите ключевые слова SEO..."} />
+
+            <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryMetaText} onChange={(e) => setSubcategoryMetaText(e.currentTarget.value)} type={"text"} placeholder={"Введите мета описание для подкатегории"} />
+            <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryMetaTitle} onChange={(e) => setSubcategoryMetaTitle(e.currentTarget.value)} type={"text"} placeholder={"Введите мета заголовок для подкатегории"} />
 
             <div onClick={() => saveSubcategory()} className={`${DEFAULT_CLASSNAME}_saveService`}>{"Сохранить подкатегорию"}</div>
           </div>

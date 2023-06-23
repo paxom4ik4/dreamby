@@ -44,7 +44,7 @@ const objReplacer2 = {
   "flash-drives": "Носители информации",
 }
 
-export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubcategory, catalogFilterOpened, setCatalogFilterOpened, compareItems, setSelectedSubcategories, selectedSubcategories, addItemToCompare, selectedCategory, favoriteItems, setSelectedCategory, categories, favoriteNotify, setFavoriteItems, setCartItems }) => {
+export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubcategory, catalogFilterOpened, setCatalogFilterOpened, compareItems, selectedSubcategories, addItemToCompare, selectedCategory, favoriteItems, setSelectedCategory, categories, favoriteNotify, setFavoriteItems, setCartItems }) => {
   const navigate = useNavigate();
 
   const [catalogTitle, setCatalogTitle] = useState("Каталог");
@@ -258,6 +258,12 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
 
     }, [selectedCategory]);
 
+    const metaText = allSubcategories.find(item => item.id === selectedSubcategory)?.meta_text || "";
+    const metaTitle = allSubcategories.find(item => item.id === selectedSubcategory)?.meta_title || "";
+
+    const metaTextCategory = categories.find(item => item.id === selectedCategory)?.meta_text || "";
+    const metaTitleCategory = categories.find(item => item.id === selectedCategory)?.meta_title || "";
+
     useEffect(() => {
         if (!selectedSubcategory && !selectedCategory) {
             setCatalogTitle("Каталог");
@@ -397,6 +403,10 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
                       </div>
                   </div>
               </div>
+              {(!!metaText.length || !!metaTextCategory.length) && <div className={'catalog-additional-info'}>
+                    <h2>{selectedSubcategory ? metaTitle : metaTextCategory}</h2>
+                    <p>{selectedSubcategory ? metaText : metaTextCategory}</p>
+                </div>}
             </>
         }
       </div>

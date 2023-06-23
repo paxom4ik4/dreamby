@@ -302,8 +302,9 @@
 
 @media (max-width: 1200px) {
   .catalog_content_filterWrapper {
-    width: 100% !important;
+    width: 95% !important;
     margin-left: 64px;
+    box-sizing: border-box;
   }
 
   .services-filter {

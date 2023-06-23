@@ -13,6 +13,9 @@ export const AddSubcategory = () => {
   const [subcategoryLinkName, setSubcategoryLinkName] = useState("");
   const [subcategoryDescription, setSubcategoryDescription] = useState("");
   const [subcategoryKeyWords, setSubcategoryKeyWords] = useState("");
+  const [subcategoryMetaText, setSubcategoryMetaText] = useState("");
+  const [subcategoryMetaTitle, setSubcategoryMetaTitle] = useState("");
+
   const [category, setCategory] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
 
@@ -37,6 +40,9 @@ export const AddSubcategory = () => {
     }
     data.append("meta_description", subcategoryDescription);
     data.append("meta_keyword", subcategoryKeyWords);
+    data.append("meta_text", subcategoryMetaText);
+    data.append("meta_title", subcategoryMetaTitle);
+
 
     fetch(`${process.env["REACT_APP_API_URL"]}subcategory`, {
       method: "POST",
@@ -70,6 +76,9 @@ export const AddSubcategory = () => {
 
             <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryDescription} onChange={(e) => setSubcategoryDescription(e.currentTarget.value)} type={"text"} placeholder={"Введите описание для SEO..."} />
             <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryKeyWords} onChange={(e) => setSubcategoryKeyWords(e.currentTarget.value)} type={"text"} placeholder={"Введите ключевые слова SEO..."} />
+
+            <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryMetaText} onChange={(e) => setSubcategoryMetaText(e.currentTarget.value)} type={"text"} placeholder={"Введите мета описание для подкатегории"} />
+            <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryMetaTitle} onChange={(e) => setSubcategoryMetaTitle(e.currentTarget.value)} type={"text"} placeholder={"Введите мета заголовок для подкатегории"} />
 
             <div onClick={() => saveSubcategory()} className={`${DEFAULT_CLASSNAME}_saveService`}>{"Сохранить подкатегорию"}</div>
           </div>

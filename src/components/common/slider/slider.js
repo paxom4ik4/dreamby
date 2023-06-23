@@ -27,7 +27,6 @@ export const Slider = ({ slides, slidesPerView, aboutPage = false }) => {
         hide: false,
         draggable: true,
       }}
-      loop={!aboutPage}
       slidesPerView={slidesPerView ?? 1}
       spaceBetween={40}
       speed={500}

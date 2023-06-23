@@ -1,3 +1,7 @@
+.catalog-additional-info {
+  margin-top: 32px;
+}
+
 .pagination-btn {
   width: 52px;
   transition: 0.3s;
@@ -407,6 +411,11 @@ h1 {
 
 
 @media (max-width: 1200px) {
+  .catalog-additional-info {
+    padding: 0 24px;
+    text-align: justify;
+  }
+
   .catalog {
     width: 100%;
 

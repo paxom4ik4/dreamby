@@ -17,11 +17,9 @@ export const MainSlider = () => {
       });
   }, [])
 
-    console.log(slides)
-
   return (
     <div className={DEFAULT_CLASSNAME}>
-      <Slider slides={slides} />
+      <Slider slides={slides} slidesPerView={1} />
     </div>
   )
 }

@@ -262,7 +262,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
     const metaTitle = allSubcategories.find(item => item.id === selectedSubcategory)?.meta_title || "";
 
     const metaTextCategory = categories.find(item => item.id === selectedCategory)?.meta_text || "";
-    const metaTitleCategory = categories.find(item => item.id === selectedCategory)?.meta_title || "";
+    const metaTitleCategory = categories.find(item => item.id === selectedCategory)?.meta_h1 || "";
 
     useEffect(() => {
         if (!selectedSubcategory && !selectedCategory) {
@@ -349,6 +349,11 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
               <img src={item.img_path} alt={'subcategory-kartinka'} />
             </div>)}
           </div>
+
+            {(!!metaTextCategory.length) && <div className={'catalog-additional-info'}>
+                <h2>{metaTitleCategory}</h2>
+                <p>{metaTextCategory}</p>
+            </div>}
         </div>}
 
         {selectedCategory && selectedSubcategory &&

@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import './index.scss';
 import { ItemInfo } from "./item_info/item_info";
 import { PopularItems } from "../common/popular_items/popular_items";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -28,6 +28,14 @@ const conditions = {
 
 export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSelectedCategory, setSelectedSubcategory, setSelectedSubcategories, setSelectedDeviceName, setLoginData, setFavoriteItems, favoriteItems, loginData, addItemToCompare, addToCart = () => {}}) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.endsWith('/null')) {
+      navigate(location.pathname.replace('/null', ''));
+    }
+  }, [location]);
+
   const { id: productId, subcategory, category } = useParams();
 
   const [itemData, setItemData] = useState(null);
@@ -181,11 +189,9 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
   return (
     <div className={DEFAULT_CLASSNAME}>
       <Helmet>
-        <title>{itemData?.product?.meta_description || "DreamStore"}</title>
-        <meta name="description" content={itemData?.product?.meta_keyword || "Dreamstore" } />
+        <title>{itemData?.product?.meta_description || `${itemData?.product?.name} купить в Минске - Dreamstore.by`}</title>
+        <meta name="description" content={itemData?.product?.meta_keyword || `${itemData?.product?.name} купить в Минске по выгодной цене ✔️ Быстрая доставка ✔️ ${itemData?.product?.name} купить в рассрочку или в кредит в интернет-магазине dreamstore.by` } />
       </Helmet>
-
-      {itemData?.product?.name && <h1 style={{ display: "none" }}>{itemData?.product?.name}</h1>}
 
       <div className={`${DEFAULT_CLASSNAME}_fullSizeImage ${fullSize && "opened"}`} onClick={(event) => {
         setFullSize(false)

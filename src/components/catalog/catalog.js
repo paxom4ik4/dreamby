@@ -11,7 +11,7 @@ import backArrow from './backArrow.svg';
 import left from './left.svg';
 import right from './right.svg';
 import {cardSize, CategoryCard} from "../common/category_card/category_card";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {Helmet} from "react-helmet";
 
 const DEFAULT_CLASSNAME = 'catalog';
@@ -46,6 +46,15 @@ const objReplacer2 = {
 
 export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubcategory, catalogFilterOpened, setCatalogFilterOpened, compareItems, selectedSubcategories, addItemToCompare, selectedCategory, favoriteItems, setSelectedCategory, categories, favoriteNotify, setFavoriteItems, setCartItems }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
+
+  useEffect(() => {
+      if (location.pathname.endsWith('/null')) {
+          navigate(location.pathname.replace('/null', ''));
+      }
+  }, [location]);
 
   const [catalogTitle, setCatalogTitle] = useState("Каталог");
   const [catalogDescription, setCatalogDescription] = useState("Каталог товаров");
@@ -107,7 +116,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
     }
 
     if (allSubcategories.length && subcategory) {
-      setSelectedSubcategory(allSubcategories.find(item => item.link_name === subcategory).id);
+      setSelectedSubcategory(allSubcategories?.find(item => item.link_name === subcategory)?.id);
     }
 
     if (categories.length && category) {
@@ -291,6 +300,8 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
     </Helmet>
 
       <div className={DEFAULT_CLASSNAME}>
+          <h1 className={`${DEFAULT_CLASSNAME}_page_title`}>{"Каталог"}</h1>
+
         {!selectedCategory && <div className={`${DEFAULT_CLASSNAME}_select`}>
           <div className={`${DEFAULT_CLASSNAME}_select_title`}>{"Выберите категорию товаров"}</div>
           <div className={`${DEFAULT_CLASSNAME}_select_categories`}>

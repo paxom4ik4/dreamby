@@ -34,6 +34,10 @@ h1 {
   flex-direction: column;
   width: 1200px;
 
+  &_page_title {
+    text-align: center;
+  }
+
   &_selectSubcategory {
     display: flex;
     flex-direction: column;
@@ -271,6 +275,8 @@ h1 {
   }
 
   &_select {
+    margin-top: 20px;
+
     &_title {
       text-align: center;
       font-size: 18px;
@@ -334,6 +340,7 @@ h1 {
     width: 100%;
     font-size: 24px;
     font-weight: 700;
+    text-align: center;
 
     &_selected {
       transition: 0.3s;

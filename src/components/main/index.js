@@ -20,6 +20,9 @@ export const Main = ({ setSelectedSubcategories, setSelectedCategoryName, setFav
       </Helmet>
 
       <MainSlider />
+
+      <h1 align={"center"}>{"Интернет-магазин Dreamstore.by"}</h1>
+
       <Categories setSelectedCategoryName={setSelectedCategoryName} setSelectedCategory={setSelectedCategory} categories={categories} setCategories={setCategories} />
       <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
       <Services favoriteItems={favoriteServices} setFavoriteItems={setFavoriteServices} />

@@ -83,7 +83,7 @@ export const ItemCard = ({
           {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(product)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}
         </div>
         }
-        <img className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={'item-image'} />
+        <img className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={title} title={`Купить ${title}`} />
         <div className={`${DEFAULT_CLASSNAME}_content`} style={{ boxShadow: compareMode && '0px 0px 29px 11px rgba(52, 100, 223, 0.23)' }}>
           <div className={`${DEFAULT_CLASSNAME}_content_status`}>
             <div className={`${DEFAULT_CLASSNAME}_availability`}>
@@ -91,8 +91,6 @@ export const ItemCard = ({
             </div>
             {!isServiceItem && !compareMode &&
             <div className={`${DEFAULT_CLASSNAME}_cart`} onClick={() => {
-              console.log('???');
-
               setCartItems({
                 id: productIdForCart,
                 image,

@@ -70,6 +70,7 @@ export const Compare = ({ deleteFromCompare, compareItems }) => {
                 <Helmet>
                   <title>DreamStore - Сравнение</title>
                   <meta name="description" content="Страница сравнения товаров" />
+                  <link rel="canonical" href="https://dreamstore.by/compare"/>
                 </Helmet>
 
                 <div className={`${DEFAULT_CLASSNAME}_goods_content`}>

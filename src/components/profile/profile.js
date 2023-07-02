@@ -25,8 +25,9 @@ export const Profile = () => {
     <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
 
       <Helmet>
-        <title>DreamStore - Профиль}</title>
+        <title>DreamStore - Профиль</title>
         <meta name="description" content="Страница Профиля" />
+          <link rel="canonical" href="https://dreamstore.by/profile"/>
       </Helmet>
 
       <div className={DEFAULT_CLASSNAME}>

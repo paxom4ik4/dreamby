@@ -36,6 +36,7 @@ export const FavoriteItems = ({ setFavoriteItems, setFavoriteServices, favoriteI
       <Helmet>
         <title>DreamStore - Избранное</title>
         <meta name="description" content="Страница избранных товаров" />
+        <link rel="canonical" href="https://dreamstore.by/favorite"/>
       </Helmet>
 
       <div className={DEFAULT_CLASSNAME}>

@@ -48,8 +48,6 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location);
-
   useEffect(() => {
       if (location.pathname.endsWith('/null')) {
           navigate(location.pathname.replace('/null', ''));
@@ -63,7 +61,9 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
   const [catalogItems, setCatalogItems] = useState([])
 
   const [maxPage, setMaxPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
+
+  const { page: currentPage } = useParams();
 
   const { category, subcategory } = useParams();
 
@@ -130,8 +130,10 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
   }, [currentPage, allSubcategories, selectedCategory, category, subcategory, catalogItems, categories]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedSubcategories]);
+      if (selectedSubcategory && location.pathname.split('/').length === 4) {
+          navigate(`${location.pathname}/${1}`);
+      }
+  }, [selectedSubcategory]);
 
   useEffect(() => {
       if (!selectedCategory || !selectedSubcategory) {
@@ -291,12 +293,15 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
         }
     }, [selectedSubcategory, selectedCategory, allSubcategories, subcategory, category]);
 
+    console.log(currentPage);
+
   return (
     <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
 
     <Helmet>
         <title>{catalogDescription}</title>
         <meta name="description" content={catalogKeywords} />
+        <link rel="canonical" href="https://dreamstore.by/catalog"/>
     </Helmet>
 
       <div className={DEFAULT_CLASSNAME}>
@@ -367,6 +372,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
             </div>}
         </div>}
 
+
         {selectedCategory && selectedSubcategory &&
             <>
               <div className={`${DEFAULT_CLASSNAME}_title`}>
@@ -409,13 +415,14 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
                       <div className={`${DEFAULT_CLASSNAME}_pagination`}>
                           {pages && <div className={`${DEFAULT_CLASSNAME}_pagination_block`}>
                             {Array.from(Array(maxPage)).map((item, index) => <div onClick={() => {
-                              setCurrentPage(index + 1);
+                              navigate(location.pathname.replace(`/${currentPage}`, `/${index + 1}`))
+
                               setPages(false);
                             }}>{index + 1}</div>)}
                           </div>}
-                          <img style={{ display: pages && "none" }}  onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)} src={left} alt={'left'} />
+                          <img style={{ display: pages && "none" }}  onClick={() => navigate(location.pathname.replace(`/${currentPage}`, `/${(+currentPage === 1) ? 1 : +currentPage - 1}`))} src={left} alt={'left'} />
                           <div style={{ display: pages && "none" }}  className={`${DEFAULT_CLASSNAME}_btn pagination-btn`} onClick={() => setPages(true)}>{currentPage} <img src={left}/></div>
-                          <img style={{ display: pages && "none" }}  onClick={() => setCurrentPage(currentPage === maxPage ? maxPage : currentPage + 1)} src={right} alt={'right'} />
+                          <img style={{ display: pages && "none" }}  onClick={() => navigate(location.pathname.replace(`/${currentPage}`, `/${(+currentPage === maxPage) ? maxPage : +currentPage + 1}`))} src={right} alt={'right'} />
                       </div>
                   </div>
               </div>

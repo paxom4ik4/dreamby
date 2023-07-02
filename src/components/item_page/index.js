@@ -189,8 +189,9 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
   return (
     <div className={DEFAULT_CLASSNAME}>
       <Helmet>
-        <title>{itemData?.product?.meta_description || `${itemData?.product?.name} купить в Минске - Dreamstore.by`}</title>
-        <meta name="description" content={itemData?.product?.meta_keyword || `${itemData?.product?.name} купить в Минске по выгодной цене ✔️ Быстрая доставка ✔️ ${itemData?.product?.name} купить в рассрочку или в кредит в интернет-магазине dreamstore.by` } />
+        <title>{itemData?.product?.meta_title || `${itemData?.product?.name} купить в Минске - Dreamstore.by`}</title>
+        <meta name="description" content={itemData?.product?.meta_description || `${itemData?.product?.name} купить в Минске по выгодной цене ✔️ Быстрая доставка ✔️ ${itemData?.product?.name} купить в рассрочку или в кредит в интернет-магазине dreamstore.by` } />
+        <link rel="canonical" href="https://dreamstore.by" />
       </Helmet>
 
       <div className={`${DEFAULT_CLASSNAME}_fullSizeImage ${fullSize && "opened"}`} onClick={(event) => {

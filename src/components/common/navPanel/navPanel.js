@@ -82,7 +82,7 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
           }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />{categoryInfo.categoryName}</div>}
 
           {currentPath[1] === "Каталог" && subcategory && <div style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
-              navigate(`/catalog/${objReplacer[categoryInfo?.categoryName]}/${subcategory.link_name}`);
+              navigate(`/catalog/${objReplacer[categoryInfo?.categoryName]}/${subcategory.link_name}/1`);
               setSelectedSubcategory(subcategory.id);
           }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />{subcategory?.name}</div>}
 

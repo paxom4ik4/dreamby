@@ -12,6 +12,7 @@ export const Billing = () => {
       <Helmet>
         <title>DreamStore - Оплата</title>
         <meta name="description" content="Страница Оплаты" />
+        <link rel="canonical" href="https://dreamstore.by/billing"/>
       </Helmet>
 
       <div className={DEFAULT_CLASSNAME}>

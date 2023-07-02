@@ -17,6 +17,7 @@ export const Cart = ({ setCartItems, orderSuccess, rerenderCart, cartItems, mode
       <Helmet>
         <title>DreamStore - Корзина</title>
         <meta name="description" content="Корзина" />
+          <link rel="canonical" href="https://dreamstore.by/cart"/>
       </Helmet>
 
       <div className={DEFAULT_CLASSNAME}>

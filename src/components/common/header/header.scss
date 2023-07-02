@@ -328,6 +328,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
       margin: 0 20px;
 
       &_logo {
+        margin-left: -12px;
         width: fit-content;
         span {
           display: none;
@@ -374,6 +375,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
     &_wrapper {
       margin: 0 !important;
       max-width: 100vw !important;
+
+      &_logo {
+        margin-left: 0;
+      }
 
       &_control-panel {
         width: 70%;

@@ -34,6 +34,7 @@ export const About = ({setSelectedCategory, setSelectedSubcategories, favoriteIt
       <Helmet>
         <title>DreamStore - О нас</title>
         <meta name="description" content="О нас" />
+        <link rel="canonical" href="https://dreamstore.by/about"/>
       </Helmet>
 
       <h1 align="center">{"О Нас"}</h1>

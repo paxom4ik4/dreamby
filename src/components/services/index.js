@@ -266,6 +266,7 @@ export const Services = ({ setSelectedCategory, catalogFilterOpened, setSelected
       <Helmet>
         <title>DreamStore - Услуги</title>
         <meta name="description" content="Страница Услуг" />
+          <link rel="canonical" href="https://dreamstore.by/services"/>
       </Helmet>
 
       <CommonServices />

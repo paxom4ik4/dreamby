@@ -57,6 +57,7 @@ export const Login = ({ fromReview, loginNotify, loginFailed, setLoginData }) =>
           <Helmet>
             <title>DreamStore - Авторизация</title>
             <meta name="description" content="Страница Авторизации" />
+              <link rel="canonical" href="https://dreamstore.by/login"/>
           </Helmet>
 
             <div className={DEFAULT_CLASSNAME}>

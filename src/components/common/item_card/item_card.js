@@ -53,8 +53,6 @@ export const ItemCard = ({
 
   const { category } = useParams();
 
-  const { page } = useParams();
-
   const openProductHandler = (event) => {
     setSelectedCategory(category);
 
@@ -68,7 +66,7 @@ export const ItemCard = ({
     }
 
     if (!isServiceItem && event.target.className !== "add-to-cart" && event.target.className !== "tem_card_cart" && event.target.className !== 'item_card_compare' && event.target.closest('div').className !== 'item_card_favoriteWrapper') {
-      !isServiceItem && productId && navigate(`${window.location.pathname.replace(`/${page}`, '/product')}/${productId}`)
+      !isServiceItem && productId && navigate(`${window.location.pathname}/${productId}`)
     }
 
     if (isServiceItem && event.target.className !== 'add-to-cart' && event.target.closest('div').className !== 'item_card_favorite') {

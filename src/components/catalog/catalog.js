@@ -61,9 +61,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
   const [catalogItems, setCatalogItems] = useState([])
 
   const [maxPage, setMaxPage] = useState(1);
-  // const [currentPage, setCurrentPage] = useState(1);
-
-  const { page: currentPage } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { category, subcategory } = useParams();
 
@@ -129,11 +127,9 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
     })
   }, [currentPage, allSubcategories, selectedCategory, category, subcategory, catalogItems, categories]);
 
-  useEffect(() => {
-      if (selectedSubcategory && location.pathname.split('/').length === 4) {
-          navigate(`${location.pathname}/${1}`);
-      }
-  }, [selectedSubcategory]);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedSubcategories]);
 
   useEffect(() => {
       if (!selectedCategory || !selectedSubcategory) {
@@ -414,15 +410,14 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
                       />}
                       <div className={`${DEFAULT_CLASSNAME}_pagination`}>
                           {pages && <div className={`${DEFAULT_CLASSNAME}_pagination_block`}>
-                            {Array.from(Array(maxPage)).map((item, index) => <div onClick={() => {
-                              navigate(location.pathname.replace(`/${currentPage}`, `/${index + 1}`))
-
-                              setPages(false);
-                            }}>{index + 1}</div>)}
+                              {Array.from(Array(maxPage)).map((item, index) => <div onClick={() => {
+                                  setCurrentPage(index + 1);
+                                  setPages(false);
+                              }}>{index + 1}</div>)}
                           </div>}
-                          <img style={{ display: pages && "none" }}  onClick={() => navigate(location.pathname.replace(`/${currentPage}`, `/${(+currentPage === 1) ? 1 : +currentPage - 1}`))} src={left} alt={'left'} />
+                          <img style={{ display: pages && "none" }}  onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)} src={left} alt={'left'} />
                           <div style={{ display: pages && "none" }}  className={`${DEFAULT_CLASSNAME}_btn pagination-btn`} onClick={() => setPages(true)}>{currentPage} <img src={left}/></div>
-                          <img style={{ display: pages && "none" }}  onClick={() => navigate(location.pathname.replace(`/${currentPage}`, `/${(+currentPage === maxPage) ? maxPage : +currentPage + 1}`))} src={right} alt={'right'} />
+                          <img style={{ display: pages && "none" }}  onClick={() => setCurrentPage(currentPage === maxPage ? maxPage : currentPage + 1)} src={right} alt={'right'} />
                       </div>
                   </div>
               </div>

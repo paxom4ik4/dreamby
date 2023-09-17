@@ -32,6 +32,8 @@ export const Login = () => {
             })
                 .then(res => res.json())
                 .then(data => {
+                    console.log(data);
+
                     sessionStorage.setItem('admin-dream-token', data.token);
                     sessionStorage.setItem('user-role', data.user.role);
 

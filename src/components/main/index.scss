@@ -2,4 +2,13 @@
   flex-direction: column;
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 525px) {
+  .main h1 {
+    font-weight: 400;
+    font-size: 16px;
+    margin: 0;
+  }
 }

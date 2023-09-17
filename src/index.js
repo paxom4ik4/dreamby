@@ -24,6 +24,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Admin} from "./admin/admin";
 import {Profile} from "./components/profile/profile";
+import {Info} from "./components/info/info";
 
 export const MAX_COMPARE_ITEMS = 4;
 
@@ -283,7 +284,9 @@ const App = () => {
             <Route path={"/login"} element={<Login loginNotify={loginNotify} loginFailed={loginFailed} setIsLoggedIn={setIsLoggedIn} setLoginData={setLoginData} />} />
             <Route path={"/billing"} element={<Billing />} />
             <Route path={"/admin/*"} element={<Admin />} />
+            <Route path={"/admin/*"} element={<Admin />} />
             <Route path={"/profile"} element={<Profile />} />
+            <Route path={"/info"} element={<Info />} />
             <Route path="*" element={<div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", height: "100vh"}}>
               <h3>404. Страница не найдена</h3>
               <Link style={{ color: "#0866D7", fontWeight: "400" }} to={"/"}>Вернуться на главную</Link>

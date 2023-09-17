@@ -109,15 +109,13 @@ const mock = [{
 }];
 
 export const TechnicalSpecs = ({ technicalSpecs, setTechnicalSpecs, isEditMode, itemSpecs, addNewSpecItem, setAddNewSpecItem, updateCharacteristics, setItemSpecs }) => {
-
-    const [editMode, setEditMode] = useState(false);
     const [editItem, setEditItem] = useState(null);
 
     const [editCategory, setEditCategory] = useState(null);
 
     return (
-        <React.Fragment>
-            {isEditMode && <div style={{ background: '#0A5BD3', color: "#fff", borderRadius: "12px", padding: '4px 12px', cursor: "pointer"}} className={`${DEFAULT_CLASSNAME}_item-info_update`} onClick={() => updateCharacteristics()}>{"Обновить характеристики"}</div>}
+        <div style={{ marginTop: '30px' }}>
+            {isEditMode && <div style={{ width: 'fit-content', background: '#0A5BD3', color: "#fff", borderRadius: "12px", padding: '4px 12px', cursor: "pointer"}} className={`${DEFAULT_CLASSNAME}_item-info_update`} onClick={() => updateCharacteristics()}>{"Обновить характеристики"}</div>}
 
             {!!itemSpecs.length && itemSpecs.map(item => {
                 return (
@@ -170,6 +168,6 @@ export const TechnicalSpecs = ({ technicalSpecs, setTechnicalSpecs, isEditMode, 
                     alt={'image'}
                 />
             </div>
-        </React.Fragment>
+        </div>
     )
 }

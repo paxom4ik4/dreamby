@@ -8,6 +8,8 @@ import {toast} from "react-toastify";
 
 const DEFAULT_CLASSNAME = 'add-new-item';
 
+const token = sessionStorage.getItem('admin-dream-token');
+
 export const AddNewService = () => {
     const [newItemTitle, setNewItemTitle] = useState("");
     const [itemDescription, setItemDescription] = useState("");
@@ -23,6 +25,9 @@ export const AddNewService = () => {
 
         fetch(`${process.env["REACT_APP_API_URL"]}service`, {
             method: "POST",
+            headers: {
+                "Authorization": token,
+            },
             body: data,
         })
             .finally(() => {

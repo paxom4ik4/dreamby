@@ -9,7 +9,7 @@ const DEFAULT_CLASSNAME = 'add-new-item';
 
 export const ItemServices = ({
      services,
-    newServices,
+     newServices,
      isEditMode,
      setDataUpdated,
      dataUpdated,
@@ -35,12 +35,12 @@ export const ItemServices = ({
 
             {!!services?.length && <div className={`${DEFAULT_CLASSNAME}_item_info_services_items`}>
                 {services.map((item) => {
-                    const serviceName = availableServices.find(service => service.id === item.id);
+                    const serviceName = availableServices?.find(service => service.id === item.id);
 
                     return (
                         <div>
-                            <div>{serviceName.name}</div>
-                            <div>{item.price}</div>
+                            <div>{serviceName?.name}</div>
+                            <div>{item?.price}</div>
                             {isEditMode && <div onClick={() => {
                                 const token = sessionStorage.getItem('admin-dream-token');
 

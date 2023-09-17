@@ -29,6 +29,22 @@
   position: relative !important;
   width: 100%;
 
+  &_product_color-item {
+    margin-right: 8px;
+    object-fit: contain;
+    width: 58px;
+    height: 58px;
+    border: 2px solid rgba(32, 94, 187, 1);
+    border-radius: 5px;
+    padding: 4px;
+    transition: 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
   * {
     animation: fadeIn 0.5s;
   }
@@ -192,12 +208,13 @@
   }
 
   &_fullSizeImage {
+    box-sizing: border-box !important;
     position: fixed;
-    max-width: 100vw !important;
+    max-width: 100% !important;
     opacity: 0;
     top: 0;
     left: 0;
-    width: 100vw !important;
+    width: 100% !important;
     height: 100vh !important;
     display: flex;
     justify-content: center;

@@ -109,18 +109,25 @@ export const CategoryCard = ({
   // const [imagePreview, setImagePreview] = useState(null);
 
   if (linkCard) return (
-    <Link to={link} className={`${DEFAULT_CLASSNAME}`} style={{...cardStyle, maxHeight: size === cardSize.high && "800px"}} onClick={clickHandler ? clickHandler : () => categoryCardHandler()}>
+    <Link itemScope itemType="https://schema.org/Product" to={link} className={`${DEFAULT_CLASSNAME}`} style={{...cardStyle, maxHeight: size === cardSize.high && "800px"}} onClick={clickHandler ? clickHandler : () => categoryCardHandler()}>
         <div className={`${DEFAULT_CLASSNAME}_content`} style={contentStyle}>
-          <div className={`${DEFAULT_CLASSNAME}_title`}>{title}</div>
-          {!hideAmount && <div className={`${DEFAULT_CLASSNAME}_amount`}>{`Товаров: ${itemsAmount}`}</div>}
+          <div className={`${DEFAULT_CLASSNAME}_title`} itemProp="name">{title}</div>
+          <meta content="BYN" itemProp="priceCurrency" />
+          {!hideAmount && <div className={`${DEFAULT_CLASSNAME}_amount`} itemProp="offers" itemScope itemType="http://schema.org/Offer">
+            <meta itemProp="offerCount" content={itemsAmount} />
+            <meta itemProp="priceCurrency" content="BYN"/>
+
+            <span style={{ display: 'none'}} itemProp="price">119.99</span>
+            {`Товаров: ${itemsAmount}`}
+          </div>}
           {!hideLink && <div className={`${DEFAULT_CLASSNAME}_link`}>
-            <a href={categoryLink || '#'}>
+            <a itemProp="url" href={categoryLink || '#'}>
               <span>{'Смотреть модели'}</span>
               {linkArrow}
             </a>
           </div>}
         </div>
-        <img
+        <img itemProp="image"
           style={{ width: size === cardSize.wide ? '50%' : "100%" }}
           className={`${DEFAULT_CLASSNAME}_image`}
           src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`}
@@ -131,17 +138,23 @@ export const CategoryCard = ({
 
   return (
     <div className={`${DEFAULT_CLASSNAME}`} style={{...cardStyle, maxHeight: size === cardSize.high && "800px"}} onClick={clickHandler ? clickHandler : () => categoryCardHandler()}>
-      <div className={`${DEFAULT_CLASSNAME}_content`} style={contentStyle}>
-        <div className={`${DEFAULT_CLASSNAME}_title`}>{title}</div>
-        {!hideAmount && <div className={`${DEFAULT_CLASSNAME}_amount`}>{`Товаров: ${itemsAmount}`}</div>}
+      <div itemScope itemType="https://schema.org/Product" className={`${DEFAULT_CLASSNAME}_content`} style={contentStyle}>
+        <div className={`${DEFAULT_CLASSNAME}_title`} itemProp="name">{title}</div>
+        {!hideAmount && <div className={`${DEFAULT_CLASSNAME}_amount`} itemProp="offers" itemScope itemType="http://schema.org/Offer">
+          <meta itemProp="offerCount" content={itemsAmount} />
+          <meta itemProp="priceCurrency" content="BYN"/>
+
+          <span style={{ display: 'none'}} itemProp="price">119.99</span>
+          {`Товаров: ${itemsAmount}`}
+        </div>}
         {!hideLink && <div className={`${DEFAULT_CLASSNAME}_link`}>
-          <a href={categoryLink || '#'}>
+          <a itemProp="url" href={categoryLink || '#'}>
             <span>{'Смотреть модели'}</span>
             {linkArrow}
           </a>
         </div>}
       </div>
-      <img
+      <img itemProp="image"
         style={{ width: size === cardSize.wide ? '50%' : "100%" }}
         className={`${DEFAULT_CLASSNAME}_image`}
         src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`}

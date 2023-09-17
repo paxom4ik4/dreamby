@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "react": "^18.1.0",
     "react-burger-menu": "^3.0.8",
@@ -17,10 +18,13 @@
     "react-gallery-carousel": "^0.2.9",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.3.0",
+    "react-schemaorg": "^2.0.0",
     "react-scripts": "5.0.1",
     "react-snap": "^1.23.0",
+    "react-structured-data": "^0.0.14",
     "react-toastify": "^9.0.5",
     "react-yandex-maps": "^4.6.0",
+    "schema-dts": "^1.1.2",
     "swiper": "^8.1.4",
     "web-vitals": "^2.1.4"
   },
@@ -67,6 +71,6 @@
     "husky": "^8.0.1",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
-    "sass": "^1.51.0"
+    "sass": "^1.66.1"
   }
 }

@@ -6,6 +6,7 @@ import {PopularItems} from "../common/popular_items/popular_items";
 import {YMaps, Map, Placemark, Clusterer} from 'react-yandex-maps';
 import {Gallery} from "./galery/gallery";
 import {Helmet} from "react-helmet";
+import {helmetJsonLdProp} from "react-schemaorg";
 
 const DEFAULT_CLASSNAME = 'about'
 
@@ -31,9 +32,16 @@ const AboutMap = () => {
 export const About = ({setSelectedCategory, setSelectedSubcategories, favoriteItems, favoriteNotify, setCartItems, setFavoriteItems}) => {
   return (
     <div className={`${DEFAULT_CLASSNAME}`}>
-      <Helmet>
-        <title>DreamStore - О нас</title>
-        <meta name="description" content="О нас" />
+      <Helmet script={[
+          helmetJsonLdProp({
+              "@context": "https://schema.org",
+              "@type": "MovingCompany",
+              name: "DreamStore.by",
+              brand: "Интернет магазин электронной техники",
+          }),
+      ]}>
+        <title>Интернет-магазин электроники и акссесуаров - DreamStore.by</title>
+        <meta name="description" content="Узнайте больше о DreamStore.by, нашей миссии и ценностях. Мы предлагаем широкий выбор электроники и аксессуаров в Минске." />
         <link rel="canonical" href="https://dreamstore.by/about"/>
       </Helmet>
 

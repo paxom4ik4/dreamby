@@ -8,7 +8,9 @@ import {toast} from "react-toastify";
 
 const DEFAULT_CLASSNAME = 'add-new-item';
 
-export const AddSubcategory = () => {
+export const AddSubcategory = (props) => {
+  const { subSubCategory } = props;
+
   const [subcategoryName, setSubcategoryName] = useState("");
   const [subcategoryLinkName, setSubcategoryLinkName] = useState("");
   const [subcategoryDescription, setSubcategoryDescription] = useState("");
@@ -20,12 +22,22 @@ export const AddSubcategory = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
 
   const [categories, setCategories] = useState([]);
+  const [categorySubcategories, setCategorySubcategories] = useState([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   useEffect(() => {
     fetch(`${process.env["REACT_APP_API_URL"]}category`)
       .then(res => res.json())
       .then(data => setCategories(data));
   }, []);
+
+  useEffect(() => {
+    fetch(`${process.env["REACT_APP_API_URL"]}category/${category}`)
+        .then(res => res.json())
+        .then(data => {
+          subSubCategory && setCategorySubcategories(data.subcats)
+        });
+  }, [category, subSubCategory]);
 
   const saveSubcategory = () => {
     const token = sessionStorage.getItem('admin-dream-token');
@@ -43,6 +55,9 @@ export const AddSubcategory = () => {
     data.append("meta_text", subcategoryMetaText);
     data.append("meta_title", subcategoryMetaTitle);
 
+    if (subSubCategory) {
+      data.append("parentId", selectedSubcategory);
+    }
 
     fetch(`${process.env["REACT_APP_API_URL"]}subcategory`, {
       method: "POST",
@@ -69,6 +84,11 @@ export const AddSubcategory = () => {
               <option>Выберите категорию</option>
               {categories.map(item => <option selected={category === item.id} value={item.id}>{item.categoryName}</option>)}
             </select>
+
+            {subSubCategory && categorySubcategories?.length && <select onChange={(e) => setSelectedSubcategory(e.currentTarget.value)}>
+              <option>Выберите подкатегорию</option>
+              {categorySubcategories.map(item => <option selected={selectedSubcategory === item.id} value={item.id}>{item.name}</option>)}
+            </select>}
 
             <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryName} onChange={(e) => setSubcategoryName(e.currentTarget.value)} type={"text"} placeholder={"Введите название подкатегории..."} />
             <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={subcategoryLinkName} onChange={(e) => setSubcategoryLinkName(e.currentTarget.value)} type={"text"} placeholder={"Введите ссылку подкатегории..."} />

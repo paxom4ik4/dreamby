@@ -3,14 +3,15 @@ import * as React from 'react';
 import './addNewItem.scss';
 
 import addImage from './assets/addImage.svg';
-import addColor from './assets/addColor.svg';
-import addMemory from './assets/addMemory.svg';
+import addPhoto from './add-photo.svg';
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {ItemDescription} from "./item_description/itemDescription";
 import {TechnicalSpecs} from "./technical_specs/technicalSpecs";
+import axios from "axios";
 import {ItemServices} from "./item_services/itemServices";
+import addIcon from "../createNewItem/add-icon.svg";
 
 const DEFAULT_CLASSNAME = 'add-new-item';
 
@@ -19,36 +20,9 @@ export const CARD_TEXT_POSITIONS = {
     "LEFT": "RIGHT",
 }
 
-const EditMainPhoto = ({ productId, setEditMainPhoto}) => {
-    const [newImage, setNewImage] = useState(null);
-
-    const saveNewMainPhoto = (productId, setEditMainPhoto) => {
-        if (!!newImage) {
-            const data = new FormData();
-            data.append("prod_photo", newImage)
-
-            fetch(`${process.env["REACT_APP_API_URL"]}product/${productId}`, {
-                method: "PATCH",
-                body: data,
-            })
-              .finally(() => {
-                  setEditMainPhoto(false);
-                  toast.info("Главное фото обновлено")
-              });
-        }
-    }
-
-    return (
-      <div className={`${DEFAULT_CLASSNAME}_main_photo`}>
-          <img src={newImage ? URL.createObjectURL(newImage) : addImage} />
-          <input type={"file"} onChange={(e) => setNewImage(e.target.files[0])} />
-          <div onClick={() => saveNewMainPhoto(productId, setEditMainPhoto)}>Сохранить</div>
-      </div>
-    )
-}
+const SECTIONS = ['Основные', 'Критерии', 'Описание', 'Характеристики', 'Услуги', 'Метаданные'];
 
 export const AddNewItem = ({ isEditMode }) => {
-    const token = sessionStorage.getItem('admin-dream-token');
     const navigate = useNavigate();
 
     const userRole = sessionStorage.getItem('user-role');
@@ -59,27 +33,41 @@ export const AddNewItem = ({ isEditMode }) => {
         }
     }, [userRole])
 
-    const [activeMenuItem, setActiveMenuItem] = useState("Описание");
+    const [activeMenuItem, setActiveMenuItem] = useState("Основные");
 
     const [currentProduct, setCurrentProduct] = useState(null);
 
+    const [gtin, setGtin] = useState("");
+
     useEffect(() => {
-        fetch(`${process.env["REACT_APP_API_URL"]}category`)
+        const token = sessionStorage.getItem('admin-dream-token');
+
+        fetch(`${process.env["REACT_APP_API_URL"]}category`, {
+            headers: {
+                "Authorization": token,
+            },
+        })
             .then(res => res.json())
             .then(data => setCategories(data));
 
-        fetch(`${process.env["REACT_APP_API_URL"]}subcategory`)
-            .then(res => res.json())
-            .then(data => setSubcategories(data));
-
-        fetch(`${process.env["REACT_APP_API_URL"]}manufacturer`)
+        fetch(`${process.env["REACT_APP_API_URL"]}manufacturer`, {
+            headers: {
+                "Authorization": token,
+            },
+        })
             .then(res => res.json())
             .then(data => setManufacturers(data));
 
         if (isEditMode) {
+            const token = sessionStorage.getItem('admin-dream-token');
+
             const pathArr = window.location.href.split('/');
             const id = pathArr[pathArr.length - 1];
-            fetch(`${process.env["REACT_APP_API_URL"]}product/${id}?f='1234'`)
+            fetch(`${process.env["REACT_APP_API_URL"]}product/${id}?f=1234`, {
+                headers: {
+                    "Authorization": token,
+                },
+            })
                 .then(res => res.json())
                 .then(data => setCurrentProduct(data));
         }
@@ -102,24 +90,28 @@ export const AddNewItem = ({ isEditMode }) => {
             const pathArr = window.location.href.split('/');
             const id = pathArr[pathArr.length - 1];
             setTimeout(() => {
-                fetch(`${process.env["REACT_APP_API_URL"]}product/${id}?f='1234'`)
+                const token = sessionStorage.getItem('admin-dream-token');
+
+                fetch(`${process.env["REACT_APP_API_URL"]}product/${id}?f=1234`, {
+                    headers: {
+                        "Authorization": token,
+                    },
+                })
                     .then(res => res.json())
                     .then(data => {
                         let currentPhotosToSet = [];
-                        const itemColorPhotos = data?.colors.find(item => item.link === data.product.link_name);
+                        const itemColorPhotos = data?.colors?.find(item => item.link === data.product.link_name);
                         if (itemColorPhotos) {
                             currentPhotosToSet = {
                                 ...itemColorPhotos,
                                 img_path: itemColorPhotos.img_path.filter(Boolean),
                             }
-                            setCurrentPhotos(currentPhotosToSet)
                         } else {
-                            data.product.colors.map(item => {
+                            data?.product?.colors?.map(item => {
                                 if (!!item.img_path) {
                                     currentPhotosToSet.push(item);
                                 }
                             })
-                            setCurrentPhotos(currentPhotosToSet);
                         }
                         setCurrentProduct(() => data)
                     })
@@ -128,15 +120,39 @@ export const AddNewItem = ({ isEditMode }) => {
         }
     }, [dataUpdated]);
 
+    const [categories, setCategories] = useState(null);
+
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    const [subCategories, setSubcategories] = useState([]);
+    const [allSubcategories, setAllSubcategories] = useState([]);
+
+    const [currentSelectedSubcategory, setCurrentSelectedSubcategory] = useState(null);
+
     useEffect(() => {
-        if (!!manufacturers.length && currentProduct) {
+        fetch(`${process.env["REACT_APP_API_URL"]}category/${selectedCategory}`)
+            .then(res => res.json())
+            .then(data => {
+                setSubcategories(data?.subcats)
+            });
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        fetch(`${process.env["REACT_APP_API_URL"]}subcategory`)
+            .then(res => res.json())
+            .then(data => setAllSubcategories(data));
+    }, []);
+
+    const [subSubCategories, setSubSubCategories] = useState([]);
+    const [currentSubSubCategory, setCurrentSubSubCategory] = useState(null);
+
+    useEffect(() => {
+        if (!!manufacturers.length && currentProduct && allSubcategories.length && !!currentProduct) {
             const manufacturerName = manufacturers?.find(item => item.id === currentProduct.product.manufacturerId)?.name;
 
             setCurrentProductId(currentProduct?.product.id);
             setNewItemTitle(currentProduct?.product.name);
-            setColors(currentProduct?.colors);
-            setEditColors(currentProduct?.product.colors);
-            setMemories(currentProduct?.product.Memory);
+            setMemories(Array.isArray(currentProduct?.product.Memory) ? currentProduct?.product.Memory: [currentProduct?.product.Memory]);
             setPrice(currentProduct?.product.price);
             setInStock(currentProduct?.product.in_stock);
             setUSDCurrency(!Boolean(currentProduct?.product.currency === "BYN"));
@@ -144,12 +160,13 @@ export const AddNewItem = ({ isEditMode }) => {
             setSelectedCategory(currentProduct?.product.categoryId);
             setServices(currentProduct?.product.services);
             setNewServices(currentProduct?.product.ServicePrice);
-            setCurrentPhoto(currentProduct?.product.img_path);
             setLinkName(currentProduct?.product.link_name);
             setHidePayment(currentProduct?.product?.hidePayment);
             setPopularItems(currentProduct?.product?.popular.map(item => item.link_name));
             setMetaDescription(currentProduct?.product?.meta_description ?? "");
             setMetaTitle(currentProduct?.product?.meta_title ?? "");
+
+            setCurrentColors(currentProduct?.product?.ProductModel);
 
             setItemSpecs(currentProduct?.characts);
 
@@ -158,44 +175,57 @@ export const AddNewItem = ({ isEditMode }) => {
             setItemDescriptions(sortedItemDescriptions)
             setDescriptionPhotos(currentProduct?.product.Information.map(item => item.img_path))
 
-            const productSubcategoryName = currentProduct?.product?.subcategory?.name;
+            const productSubcategory = currentProduct?.product?.subcategory;
 
-            const productSubcategory = subcategories?.find(item => item?.name === productSubcategoryName);
+            if (productSubcategory?.parentId) {
+                const subCategory = allSubcategories.find(item => item.id === productSubcategory.parentId)?.name;
+                setCurrentSelectedSubcategory(subCategory);
 
-            if (productSubcategory && productSubcategoryName) {
-                setCurrentSelectedSubcategory(productSubcategoryName)
-            } else if (productSubcategoryName) {
-                setCurrentSubcategory(productSubcategoryName)
+                const subsubcategory = allSubcategories.find(item => item.id === productSubcategory.id)?.name;
+
+                fetch(`${process.env["REACT_APP_API_URL"]}subcategory/${productSubcategory?.parentId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        setCurrentSubSubCategory(subsubcategory);
+                        setSubSubCategories(data?.subcats);
+                    }).then(() => {
+                })
+            } else {
+                const subCategory = allSubcategories.find(item => item.id === productSubcategory.id)?.name;
+                setCurrentSelectedSubcategory(subCategory)
             }
 
             setNewIn(currentProduct?.product?.stickers.find(item => item.name === "Новое поступление"))
             setLeaders(currentProduct?.product?.stickers.find(item => item.name === "Лидер продаж"))
             setSpecialOffer(currentProduct?.product?.stickers.find(item => item.name === "Специальное предложение"))
         }
-    }, [manufacturers, productUpdated])
+    }, [manufacturers, productUpdated, allSubcategories, currentProduct])
 
-    const [categories, setCategories] = useState(null);
-    const [subcategories, setSubcategories] = useState(null);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    useEffect(() => {
+        if (selectedCategory) {
+            fetch(`${process.env["REACT_APP_API_URL"]}subcategory/${subCategories?.find(item => item.name === currentSelectedSubcategory)?.id}`)
+                .then(res => res.json())
+                .then(data => {
+                    setSubSubCategories(data?.subcats)
+                });
+        }
+    }, [currentSelectedSubcategory]);
+
 
     const [addNewSpecItem, setAddNewSpecItem] = useState(false);
 
     const [itemSpecs, setItemSpecs] = useState([]);
-
-    const [addNewColor, setAddNewColor] = useState(false);
-    const [colors, setColors] = useState([]);
-    const [editColors, setEditColors] = useState([]);
 
     const [newColorValue, setNewColorValue] = useState("");
     const [newLink, setNewLink] = useState("");
 
     const [newItemTitle, setNewItemTitle] = useState("");
 
-    const [addNewMemory, setAddNewMemory] = useState(false);
     const [memories, setMemories] = useState([]);
 
     const [newMemoryAmount, setNewMemoryAmount] = useState("");
     const [newMemoryCost, setNewMemoryCost] = useState("");
+    const [newMemoryLink, setNewMemoryLink] = useState("");
 
     const [addNewDescriptionItem, setAddNewDescriptionItem] = useState(false);
     const [itemDescriptions, setItemDescriptions] = useState([]);
@@ -206,7 +236,6 @@ export const AddNewItem = ({ isEditMode }) => {
 
     const [in_stock, setInStock] = useState(0);
     const [USDCurrency, setUSDCurrency] = useState(false);
-    const [emptyStock, setEmptyStock] = useState(false);
 
     const [newIn, setNewIn] = useState(false);
     const [leaders, setLeaders] = useState(false);
@@ -215,23 +244,11 @@ export const AddNewItem = ({ isEditMode }) => {
     const [currentManufacturer, setCurrentManufacturer] = useState(null);
     const [newManufacturer, setNewManufacturer] = useState("");
 
-    const currentImagePreview = currentProduct?.product.img_path || null;
-
     const [services, setServices] = useState([]);
-    const [newServices, setNewServices] = useState([]);
-    const [newService, setNewService] = useState(false);
-
-    const [newServiceName, setNewServiceName] = useState("");
-    const [newServicePrice, setNewServicePrice] = useState("");
-
-    const [currentPhoto, setCurrentPhoto] = useState(null);
-    const [currentPhotos, setCurrentPhotos] = useState([]);
 
     const [newCardThere, setNewCardThere] = useState("BLUE");
     const [newCardTextPosition, setNewCardTextPosition] = useState("RIGHT");
     const [newCardPriority, setNewCardPriority] = useState(null);
-
-    const [isAddPhotoInEdit, setIsAddPhotoInEdit] = useState(false);
 
     const [editItem, setEditItem] = useState(null);
 
@@ -241,6 +258,16 @@ export const AddNewItem = ({ isEditMode }) => {
 
     const [newPopularItem, setNewPopularItem] = useState("");
     const [popularItems, setPopularItems] = useState([]);
+
+    // services state
+    const [newServices, setNewServices] = useState([]);
+    const [newService, setNewService] = useState(false);
+
+    const [newServiceName, setNewServiceName] = useState("");
+    const [newServicePrice, setNewServicePrice] = useState("");
+
+    const [currentColorPhotos, setCurrentColorPhotos] = useState([]);
+    const [currentColors, setCurrentColors] = useState([]);
 
     const saveNewDescriptionItem = (event, setItemEditDescription = () => {}) => {
         event.preventDefault();
@@ -258,6 +285,8 @@ export const AddNewItem = ({ isEditMode }) => {
         pic_pos = newCardTextPosition === "RIGHT" ? "left" : "right";
 
         if (isEditMode) {
+            const token = sessionStorage.getItem('admin-dream-token');
+
             const data = new FormData();
 
             data.append('prodId', currentProductId);
@@ -346,6 +375,8 @@ export const AddNewItem = ({ isEditMode }) => {
             });
         }
 
+        const token = sessionStorage.getItem('admin-dream-token');
+
         const headers = currentDescriptionPhotoForEdit ? {
                 "Authorization": token
             } : {
@@ -397,6 +428,7 @@ export const AddNewItem = ({ isEditMode }) => {
         const uploadedFile = e.target.files[e.target.files.length - 1];
 
         if (isEditMode) {
+            const token = sessionStorage.getItem('admin-dream-token');
             const currentColorId = currentProduct.colors.find(item => item.link === linkName).id;
 
             const data = new FormData();
@@ -420,12 +452,11 @@ export const AddNewItem = ({ isEditMode }) => {
     }
 
     const updateCharacteristics = () => {
-        const token = sessionStorage.getItem('admin-dream-token');
-
         const formData = new FormData();
         formData.append('characteristics', JSON.stringify(itemSpecs))
+        const token = sessionStorage.getItem('admin-dream-token');
 
-        fetch(`${process.env["REACT_APP_API_URL"]}product/${currentProductId}`, {
+        fetch(`${process.env["REACT_APP_API_URL"]}product/${currentProductId}?f=1234`, {
             method: "PATCH",
             headers: {
                 "Authorization": token,
@@ -438,10 +469,6 @@ export const AddNewItem = ({ isEditMode }) => {
             })
     }
 
-    const [currentSubcategory, setCurrentSubcategory] = useState("");
-    const [currentSelectedSubcategory, setCurrentSelectedSubcategory] = useState(null);
-
-
     const saveNewItem = event => {
         event.preventDefault();
 
@@ -451,23 +478,21 @@ export const AddNewItem = ({ isEditMode }) => {
 
         const formData = new FormData();
 
-        const token = sessionStorage.getItem("admin-dream-token");
-
         const stickersToPost = [];
 
         specialOffer && stickersToPost.push({name: "Специальное предложение"});
         newIn && stickersToPost.push({name: "Новое поступление"});
         leaders && stickersToPost.push({name: "Лидер продаж"});
 
-        const colorsToPost = colors.map(item => ({
-            color: item.color,
-            color_code: item.color_code,
+        const colorsToPost = currentColors.map(item => ({
+            color: item.name,
             link: item.link,
+            img_names: item.img_path.map(item => item.name),
         }))
 
         const memoryToPost = memories.map(item => ({
-            size: item.amount,
-            price: item.cost,
+            size: item.size,
+            price: item.price,
         }))
 
         if (!!descriptionToPost.length) {
@@ -478,95 +503,70 @@ export const AddNewItem = ({ isEditMode }) => {
             formData.append('information', JSON.stringify(descriptionToPost));
         }
 
-        if (!isEditMode) {
-            if (uploadedFiles.length > 1) {
-                formData.append('prod_photo', uploadedFiles[0]);
-
-                for (let i = 1, len = uploadedFiles.length; i < len; i++) {
-                    formData.append(`color_photo`, uploadedFiles[i], uploadedFiles[i].name);
-                }
-            } else {
-                formData.append("prod_photo", uploadedFiles[0]);
-            }
-        }
-
         const popularItemsToSet = popularItems.map(item => ({
             link_name: item,
-        }))
+        }));
 
-        formData.append('name', newItemTitle);
+        formData.append('name', newItemTitle); //
         formData.append('colors', JSON.stringify(colorsToPost));
-        formData.append('currency', USDCurrency ? "USD" : "BYN");
-        formData.append('in_stock', Number(in_stock));
-        formData.append('hidePayment', JSON.stringify(hidePayment));
-        formData.append('popular', JSON.stringify(popularItemsToSet));
+
+        const allPhotos = currentColors.map(item => item.img_path).flat();
+
+        if (allPhotos.length > 1) {
+            formData.append('prod_photo', allPhotos[0]);
+
+            for (let i = 1, len = allPhotos.length; i < len; i++) {
+                formData.append(`color_photo`, allPhotos[i], allPhotos[i].name);
+            }
+        } else {
+            formData.append("prod_photo", allPhotos[0]);
+        }
+
+        formData.append('currency', USDCurrency ? "USD" : "BYN"); //
+        formData.append('in_stock', Number(in_stock)); //
+        formData.append('hidePayment', JSON.stringify(hidePayment)); //
+        formData.append('popular', JSON.stringify(popularItemsToSet)); //
 
         if (!!newManufacturer?.trim().length || !!currentManufacturer?.trim().length) {
             formData.append('manufacturer', newManufacturer?.trim().length ? newManufacturer : currentManufacturer);
-        }
+        } //
 
         if (metaTitle.trim().length) {
             formData.append('meta_title', metaTitle);
         } else {
             formData.append('meta_title', newItemTitle);
-        }
+        } //
 
         if (metaDescription.trim().length) {
             formData.append('meta_description', metaDescription);
         } else {
             formData.append('meta_description', newItemTitle);
-        }
+        } //
 
-        formData.append('price', Number(price));
-        formData.append('year', 2022);
+        formData.append('price', Number(price)); //
+        formData.append('year', 2023); //
         formData.append('memory', JSON.stringify(memoryToPost));
-        formData.append('categoryId', selectedCategory);
-        formData.append('raiting', 10);
-        formData.append('characteristics', JSON.stringify(itemSpecs))
-        formData.append('services', JSON.stringify(services));
-        formData.append('stickers', JSON.stringify(stickersToPost));
+        formData.append('categoryId', selectedCategory); //
+        formData.append('raiting', 10); //
+        formData.append('characteristics', JSON.stringify(itemSpecs)) //
+        formData.append('services', JSON.stringify(services)); //
+        formData.append('stickers', JSON.stringify(stickersToPost)); //
 
         if (linkName.trim().length > 0) {
-            formData.append('link_name', linkName);
+            formData.append('link_name', linkName); //
         }
 
-        if (currentSubcategory?.trim().length > 0) {
-            formData.append('subcategory', currentSubcategory);
-        } else if (!!currentSelectedSubcategory) {
-            formData.append('subcategory', currentSelectedSubcategory)
-        }
-
-        if (isEditMode) {
-            const formEditData = new FormData();
-
-            const popularItemsToSet = popularItems.map(item => ({
-                link_name: item,
-            }))
-
-            formEditData.append('name', newItemTitle);
-            formEditData.append('currency', USDCurrency ? "USD" : "BYN");
-            formEditData.append('in_stock', Number(in_stock));
-            formEditData.append('manufacturer', newManufacturer?.trim().length ? newManufacturer : currentManufacturer);
-            formEditData.append('price', Number(price));
-            formEditData.append('memory', JSON.stringify(memoryToPost));
-            formEditData.append('categoryId', selectedCategory);
-            formEditData.append('stickers', JSON.stringify(stickersToPost));
-            formEditData.append('popular', JSON.stringify(popularItemsToSet));
-            formEditData.append('hidePayment', hidePayment);
-
-            let editRequest = new Request(`${process.env["REACT_APP_API_URL"]}product/${currentProductId}`, {
-                body: formEditData,
-                headers: {
-                    'Authorization': token,
-                },
-                method: "PATCH",
-            })
-
-            fetch(editRequest)
-                .finally(() => {
-                    toast.info("Продукт отредактирован!");
-                })
+        if (currentSubSubCategory === "Под Подкатегория" || !currentSubSubCategory) {
+            formData.append('subcategory', currentSelectedSubcategory);
         } else {
+            formData.append('subcategory', currentSubSubCategory)
+        }
+
+        const token = sessionStorage.getItem('admin-dream-token');
+
+        axios.post(`http://194.62.19.52:7001/api/product`, formData, {
+            headers: {'Authorization': 'Bearer ' + token.slice(7)}
+        }).finally(() => {
             let request = new Request(`${process.env["REACT_APP_API_URL"]}product`, {
                 body: formData,
                 headers: {
@@ -580,17 +580,17 @@ export const AddNewItem = ({ isEditMode }) => {
                     toast.info("Товар создан!")
                     navigate('/admin/products')
                 })
-        }
+        })
     }
 
     const saveEdits = () => {
         const formEditData = new FormData();
 
-        const stickersToPost = [];
-
-        specialOffer && stickersToPost.push({ name: "Специальное предложение" });
-        newIn && stickersToPost.push({ name: "Новое поступление" });
-        leaders && stickersToPost.push({ name: "Лидер продаж" });
+        // const stickersToPost = [];
+        //
+        // specialOffer && stickersToPost.push({ name: "Специальное предложение" });
+        // newIn && stickersToPost.push({ name: "Новое поступление" });
+        // leaders && stickersToPost.push({ name: "Лидер продаж" });
 
         const popularItemsToSet = popularItems.map(item => ({
             link_name: item,
@@ -598,24 +598,26 @@ export const AddNewItem = ({ isEditMode }) => {
 
         formEditData.append('name', newItemTitle);
         formEditData.append('currency', USDCurrency ? "USD" : "BYN");
-        formEditData.append('in_stock', Number(in_stock));
+        // formEditData.append('in_stock', Number(in_stock));
         formEditData.append('manufacturer', newManufacturer?.trim().length ? newManufacturer : currentManufacturer);
         formEditData.append('price', Number(price));
         formEditData.append('categoryId', selectedCategory);
-        formEditData.append('stickers', JSON.stringify(stickersToPost));
+        // formEditData.append('stickers', JSON.stringify(stickersToPost));
         formEditData.append('link_name', linkName);
-        formEditData.append('hidePayment', hidePayment);
+        // formEditData.append('hidePayment', hidePayment);
         formEditData.append('popular', JSON.stringify(popularItemsToSet));
         formEditData.append('meta_title', metaTitle.trim().length ? metaTitle : newItemTitle);
         formEditData.append('meta_description', metaDescription);
 
-        if (!!currentSubcategory && currentSubcategory?.trim().length > 0) {
-            formEditData.append('subcategory', currentSubcategory);
-        } else if (!!currentSelectedSubcategory) {
-            formEditData.append('subcategory', currentSelectedSubcategory)
+        if (currentSubSubCategory === "Под Подкатегория" || !currentSubSubCategory) {
+            formEditData.append('subcategory', currentSelectedSubcategory);
+        } else {
+            formEditData.append('subcategory', currentSubSubCategory)
         }
 
-        let editRequest = new Request(`${process.env["REACT_APP_API_URL"]}product/${currentProductId}`, {
+        const token = sessionStorage.getItem('admin-dream-token');
+
+        let editRequest = new Request(`${process.env["REACT_APP_API_URL"]}product/${currentProductId}?f=1234`, {
             body: formEditData,
             headers: {
                 'Authorization': token,
@@ -629,333 +631,284 @@ export const AddNewItem = ({ isEditMode }) => {
             })
     }
 
-    const deleteColor = clr => {
-        const idx = colors.findIndex(color => color.color === clr);
-        setColors([...colors.slice(0, idx), ...colors.slice(idx + 1)]);
-    }
+    const deleteMemory = async (amt, id) => {
+        const token = sessionStorage.getItem('admin-dream-token');
 
-    const deleteMemory = amt => {
-        const idx = memories.findIndex(memory => memory.amount === amt);
-        setMemories([...memories.slice(0, idx), ...memories.slice(idx + 1)])
-    }
-
-    const deleteLastPhoto = () => {
-        setUploadedFiles([...uploadedFiles.slice(0, uploadedFiles.length - 1)])
+        if (!!id) {
+            await fetch(`${process.env["REACT_APP_API_URL"]}memory/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': token,
+                },
+            })
+        } else {
+            const idx = memories.findIndex(memory => memory.amount === amt);
+            setMemories([...memories.slice(0, idx), ...memories.slice(idx + 1)])
+        }
     }
 
     const [technicalSpecs, setTechnicalSpecs] = useState([]);
 
-    const [editMainPhoto, setEditMainPhoto] = useState(false);
+    const generalContent = (
+        <div className={`${DEFAULT_CLASSNAME}_general`}>
+            <div className={`${DEFAULT_CLASSNAME}_general_title`}>Основные</div>
+            <div className={`${DEFAULT_CLASSNAME}_general_product_info`}>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_title`}>Информация о товаре</div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>GTIN:</label><input type={'text'} placeholder={'Введите GTIN'} value={gtin} onChange={(e) => setGtin(e.currentTarget.value)} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Название товара:</label><input value={newItemTitle} onChange={(e) => setNewItemTitle(e.currentTarget.value)} type={"text"} placeholder={"Введите название..."} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Категория товара (подкатегория - подподкатегория):</label>
+                    <select style={{ width: '37% '}} placeholder={"Категория"} onChange={(e) => setSelectedCategory(e.currentTarget.value)}>
+                        <option>{"Категория"}</option>
+                        {categories?.map(item => (
+                            <option key={item.id.toString()} selected={item.id === selectedCategory} value={item.id}>{item.categoryName}</option>
+                        ))}
+                    </select>
+                    <select style={{ width: '30% '}} onChange={(e) => e.currentTarget.value === "Подкатегория" ? setCurrentSelectedSubcategory( null) : setCurrentSelectedSubcategory(e.currentTarget.value)}>
+                        <option value={null} defaultChecked={true}>{"Подкатегория"}</option>
+                        {subCategories?.map(item => (
+                            <option key={item.name.toString()} selected={item.name === currentSelectedSubcategory} value={item.name}>{item.name}</option>
+                        ))}
+                    </select>
+                    <select style={{ width: '30% '}} onChange={(e) => e.currentTarget.value === "Под Подкатегория" ? setCurrentSubSubCategory( null) : setCurrentSubSubCategory(e.currentTarget.value)}>
+                        <option value={null} defaultChecked={true}>{"Под Подкатегория"}</option>
+                        {subSubCategories?.map(item => (
+                            <option key={item.name.toString()} selected={item.name === currentSubSubCategory} value={item.name}>{item.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Производитель:</label>
+                    <input style={{ width: '73%' }} className={`${DEFAULT_CLASSNAME}_info_specs_manufacturer`} value={newManufacturer} onChange={(e) => setNewManufacturer(e.currentTarget.value)} type={"text"} placeholder={"Введите производителя или выберите из списка"}/>
+                    <select onChange={(e) => setCurrentManufacturer(e.currentTarget.value)}>
+                        {manufacturers.map(item => {
+                            return (
+                                <option key={item.toString()} selected={item.name === currentManufacturer} value={item.name}>{item.name}</option>
+                            )
+                        })}
+                    </select>
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Стоимость:</label><input value={price} onChange={(e) => setPrice(e.currentTarget.value)} type={"text"} />
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_small`}>
+                        <label>$</label> <input checked={USDCurrency} onChange={() => setUSDCurrency(!USDCurrency)} type={'checkbox'} />
+                    </div>
+                </div>
+            </div>
+            <div className={`${DEFAULT_CLASSNAME}_general_product_info`}>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_title`}>Информация для магазина</div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Ссылка:</label><input value={linkName} type={'text'} onChange={(e) => setLinkName(e.currentTarget.value)} placeholder={"Введите ссылку-имя товара"} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Популярные товары:</label>
+                    <input type={"text"} value={newPopularItem} onChange={(e) => setNewPopularItem(e.currentTarget.value)} placeholder={"Введите ссылку-имя товара"} />
+                    <img src={addIcon} onClick={() => {
+                        setNewPopularItem("");
+                        if (popularItems.length < 4) {
+                            setPopularItems([newPopularItem, ...popularItems])
+                        } else {
+                            toast.info("Максимум 4 товара!");
+                        }
+                    }}/>
+                </div>
+                <div style={{ width: "100%" }} className={"popular_items"}>
+                    {popularItems.map(item => <div onClick={() => {
+                        const deleteItemIdx = popularItems.findIndex(popItem => popItem === item);
+                        const itemsToSet = [...popularItems.slice(0, deleteItemIdx), ...popularItems.slice(deleteItemIdx + 1)];
+
+                        setPopularItems(itemsToSet);
+                    }} key={item} className={'popular_items_item'}>{item}</div>)}
+                </div>
+            </div>
+            <input onClick={isEditMode ? saveEdits : saveNewItem} type={"button"} className={`${DEFAULT_CLASSNAME}_save-item`} value={"Сохранить товар"} />
+        </div>
+    );
+
+    const saveNewMemoryHandler = () => {
+        setMemories([...memories, {
+            size: newMemoryAmount,
+            price: newMemoryCost,
+            link: newMemoryLink,
+        }]);
+
+        setNewMemoryLink("");
+        setNewMemoryAmount("");
+        setNewMemoryCost("");
+    }
+
+    const MemoryComponent = props => {
+        const { size, link, price, index, id } = props;
+
+        const [sizeValue, setSize] = useState(size);
+        const [linkValue, setLink] = useState(link);
+        const [priceValue, setPrice] = useState(price);
+
+        const editItem = async () => {
+            const token = sessionStorage.getItem('admin-dream-token');
+
+            await fetch(`${process.env["REACT_APP_API_URL"]}memory/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": token,
+                },
+                body: JSON.stringify({
+                    price: Number(priceValue),
+                    link: linkValue,
+                    size: sizeValue,
+                })
+            })
+        };
+
+        return (
+            <div className={`${DEFAULT_CLASSNAME}_general_product_info`} style={{ marginTop: '20px'}}>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                    # {index + 1}
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '12px'}}>
+                        <div className={`edit-btn-admin`} style={{ cursor: 'pointer' }} onClick={() => editItem()}>Обновить</div>
+                        <div className={`edit-btn-admin`} style={{ background: 'red', cursor: 'pointer' }} onClick={() => isEditMode ? deleteMemory(size, id) : deleteMemory(size)}>Удалить</div>
+                    </div>
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Объём:</label>
+                    <input onChange={(e) => setSize(e.currentTarget.value)} value={sizeValue} type={"text"} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Ссылка:</label>
+                    <input onChange={(e) => setLink(e.currentTarget.value)} value={linkValue} type={"text"} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Стоимость:</label>
+                    <input onChange={(e) => setPrice(e.currentTarget.value)} value={priceValue} type={"text"} />
+                </div>
+            </div>
+        )
+    };
+
+    const criteriaContent = (
+        <div className={`${DEFAULT_CLASSNAME}_metadata`}>
+            <div className={`${DEFAULT_CLASSNAME}_general_title`}>Критерии</div>
+
+            <div className={`${DEFAULT_CLASSNAME}_colors`}>
+                <div className={`${DEFAULT_CLASSNAME}_memory_title`}>
+                    <div style={{ fontWeight: '500', fontSize: '18px' }}>Цвета</div>
+                    <div className={`${DEFAULT_CLASSNAME}_memory_add`} onClick={() => {
+                        setCurrentColors([...currentColors, {
+                            name: newColorValue,
+                            link: newLink,
+                            img_path: currentColorPhotos,
+                        }]);
+
+                        setNewLink("");
+                        setNewColorValue("");
+                        setCurrentColorPhotos([]);
+                    }}>Добавить</div>
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info`} style={{ marginBottom: '20px'}}>
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                        <label>Название:</label>
+                        <input value={newColorValue} onChange={(e) => setNewColorValue(e.currentTarget.value)} type={"text"} placeholder={"Введите Название"} />
+                    </div>
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                        <label>Ссылка:</label>
+                        <input value={newLink} onChange={(e) => setNewLink(e.currentTarget.value)} type={"text"} placeholder={"Введите Ссылку"} />
+                    </div>
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
+                        <input onChange={(e) => {
+                            setCurrentColorPhotos([...currentColorPhotos, e.target.files[0]])}
+                        } style={{ width: '100px', height: '140px', borderRadius: '12px', opacity: 0, position: 'absolute' }} type={'file'} /><img src={addPhoto} />
+
+                        {!!currentColorPhotos.length && currentColorPhotos.map(item => <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}><img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item} src={isEditMode ? item : URL.createObjectURL(item)}/>
+                            <div onClick={() => {
+                                const deleteItem = currentColorPhotos.findIndex(image => image.name === item.name);
+                                setCurrentColorPhotos([...currentColorPhotos.slice(0, deleteItem), ...currentColorPhotos.slice(deleteItem + 1)])
+                            }} style={{cursor: 'pointer', background: 'red', width: '100%', textAlign: 'center', color: '#fff', padding: '4px', borderRadius: '12px', fontSize: '12px'}}>Удалить</div>
+                        </div>)}
+                    </div>
+
+
+                    {!!currentColors?.length && currentColors.map(color => (
+                        <>
+                            <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                                <label>Название:</label>
+                                <input value={color.name} type={"text"} disabled={true} />
+                            </div>
+                            <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                                <label>Ссылка:</label>
+                                <input value={color.link} type={"text"} disabled={true} />
+                            </div>
+                            <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
+                                {!!color?.img_path?.length && color?.img_path?.map(item => {
+                                    return <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}><img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item} src={isEditMode ? item : URL.createObjectURL(item)}/></div>
+                                })}
+                            </div>
+                            <div onClick={() => {
+                                const deleteItem = currentColors.findIndex(item => item.name === color.name);
+                                setCurrentColors([...currentColors.slice(0, deleteItem), ...currentColors.slice(deleteItem + 1)])
+                            }} style={{ alignSelf: 'flex-end', cursor: 'pointer', background: 'red', textAlign: 'center', color: '#fff', padding: '4px 12px', borderRadius: '12px', fontSize: '14px'}}>Удалить</div>
+                        </>
+                    ))}
+                </div>
+            </div>
+
+            <div className={`${DEFAULT_CLASSNAME}_memory`}>
+                <div className={`${DEFAULT_CLASSNAME}_memory_title`}>
+                    <div style={{ fontWeight: '500', fontSize: '18px' }}>Память</div>
+                    <div className={`${DEFAULT_CLASSNAME}_memory_add`} onClick={() => saveNewMemoryHandler()}>Добавить</div>
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info`} style={{ marginBottom: '20px'}}>
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                        <label>Объём:</label>
+                        <input value={newMemoryAmount} onChange={(e) => setNewMemoryAmount(e.currentTarget.value)} type={"text"} placeholder={"Введите Объём"} />
+                    </div>
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                        <label>Ссылка:</label>
+                        <input value={newMemoryLink} onChange={(e) => setNewMemoryLink(e.currentTarget.value)} type={"text"} placeholder={"Введите Ссылку"} />
+                    </div>
+                    <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                        <label>Стоимость:</label>
+                        <input value={newMemoryCost} onChange={(e) => setNewMemoryCost(e.currentTarget.value)} type={"text"} placeholder={"Введите Стоимость"} />
+                    </div>
+                </div>
+                {!!memories?.length && memories.map((item, index) => (
+                    <MemoryComponent id={item?.id} index={index} size={item?.size} link={item?.link} price={item?.price} />
+                ))}
+            </div>
+        </div>
+    )
+
+    const metadataContent = (
+        <div className={`${DEFAULT_CLASSNAME}_metadata`}>
+            <div className={`${DEFAULT_CLASSNAME}_general_title`}>Метаданные</div>
+            <div className={`${DEFAULT_CLASSNAME}_metadata_item`}>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_title`}>Title</div>
+                <textarea value={metaTitle} onChange={(e) => setMetaTitle(e.currentTarget.value)} rows={6} placeholder={"Введите заголовок..."}></textarea>
+            </div>
+            <div className={`${DEFAULT_CLASSNAME}_metadata_item`}>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_title`}>Description</div>
+                <textarea rows={10} value={metaDescription} onChange={(e) => setMetaDescription(e.currentTarget.value)} placeholder={"Введите краткое описание товара..."}></textarea>
+            </div>
+        </div>
+    );
 
     return (
         <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
             <div className={DEFAULT_CLASSNAME}>
 
                 <form onSubmit={saveNewItem}>
-                    {isEditMode ? <div className={`${DEFAULT_CLASSNAME}_save-item`} onClick={() => saveEdits()}>{"Применить изменения"}</div> : <input onClick={saveNewItem} type={"button"} className={`${DEFAULT_CLASSNAME}_save-item`} value={"Сохранить товар"} />}
-                    <div className={`${DEFAULT_CLASSNAME}_info`}>
-                        <div className={`${DEFAULT_CLASSNAME}_info_image`}>
-                            {editMainPhoto && <EditMainPhoto productId={currentProductId} setEditMainPhoto={setEditMainPhoto} />}
-                            {isEditMode && <div style={{ cursor: "pointer", backgroundColor: "#0B3FC5", color: "#fff", width: "fit-content", padding: '4px 8px', borderRadius: '8px'}} onClick={() => setIsAddPhotoInEdit(!isAddPhotoInEdit)}>Загрузка фото: {isAddPhotoInEdit ? "Да" : "Нет"}</div>}
-                            {/*<div className={`${DEFAULT_CLASSNAME}_info_image_delete`} onClick={() => deleteLastPhoto()}>{"Удалить последнее фото"}</div>*/}
-                            <div className={`${DEFAULT_CLASSNAME}_main_image_edit`} onClick={() => setEditMainPhoto(true)}>{"Изменить главное фото"}</div>
-                            {(!isEditMode || (isEditMode && isAddPhotoInEdit)) && <input multiple onChange={handleFileEvent} name={"main-image"} type={"file"} />}
-                            {isEditMode && <img src={currentPhoto?.includes('http') ? currentPhoto : `http://194.62.19.52:7000/${currentPhoto}`} />}
-                            {!isEditMode && <img src={uploadedFiles.length ? URL.createObjectURL(uploadedFiles[0]) : currentImagePreview ? currentImagePreview.includes('htpp') ? currentImagePreview : `http://194.62.19.52:7000/${currentImagePreview}` : addImage} alt={''} />}
-                            {!isEditMode && <div className={`${DEFAULT_CLASSNAME}_info_uploadedImages`}>
-                                {!!uploadedFiles && uploadedFiles?.map((item, idx) => {
-                                    if (idx === 0) return
-                                    return (
-                                      <img key={idx.toString()} alt={'image'} src={URL.createObjectURL(item)}/>
-                                    )
-                                })}
-                            </div>}
-                            {isEditMode && currentPhotos && <div className={`${DEFAULT_CLASSNAME}_info_uploadedImages`}>
-                                {Array.isArray(currentPhotos) ? currentPhotos.map((item, idx) => {
-                                        return !!item && <img key={item.img_path.toString()} alt={'image'} src={item.img_path} onClick={() => {
-                                            console.log(item);
-
-                                            fetch(`${process.env["REACT_APP_API_URL"]}image/${item.id}`, {
-                                                method: "DELETE",
-                                                headers: {
-                                                    'Authorization': token,
-                                                }
-                                            }).finally(() => setDataUpdated(dataUpdated + 1))
-                                        }}/>
-                                    }) : !!currentPhotos?.img_path?.filter(Boolean).length && currentPhotos.img_path.map(item => {
-                                        return <img key={item.toString()} alt={'image'} src={item} onClick={() => {
-                                            fetch(`${process.env["REACT_APP_API_URL"]}image/?img_path=${item}`, {
-                                                method: "DELETE",
-                                                headers: {
-                                                    'Authorization': token,
-                                                }
-                                            }).finally(() => setDataUpdated(dataUpdated + 1))
-                                        }}/>
-                                    }
-                                )}
-                            </div>}
-                        </div>
-                        <div className={`${DEFAULT_CLASSNAME}_info_specs`}>
-                            <input className={`${DEFAULT_CLASSNAME}_info_specs_title`} value={newItemTitle} onChange={(e) => setNewItemTitle(e.currentTarget.value)} type={"text"} placeholder={"Введите название..."} />
-
-                            <input style={{ margin: "12px 0"}} className={`${DEFAULT_CLASSNAME}_info_specs_manufacturer`} value={linkName} onChange={(e) => setLinkName(e.currentTarget.value)} placeholder={"Введите ссылку-имя товара"} />
-
-                            <input className={`${DEFAULT_CLASSNAME}_info_specs_manufacturer`} value={newManufacturer} onChange={(e) => setNewManufacturer(e.currentTarget.value)} type={"text"} placeholder={"Введите производителя или выберите из списка"}/>
-                            <div className={`${DEFAULT_CLASSNAME}_manufacturer`}>
-                                <select onChange={(e) => setCurrentManufacturer(e.currentTarget.value)}>
-                                    {manufacturers.map(item => {
-                                        return (
-                                            <option key={item.toString()} selected={item.name === currentManufacturer} value={item.name}>{item.name}</option>
-                                        )
-                                    })}
-                                </select>
-                            </div>
-
-                            <div className={`${DEFAULT_CLASSNAME}_price`}>
-                                <div>
-                                    <label>Цена</label>
-                                    <input className={'admin-input'} placeholder={'Введите цену товара'} value={price} onChange={(e) => setPrice(e.currentTarget.value)} type={"text"} />
-                                </div>
-                                <div className={`${DEFAULT_CLASSNAME}_price_currency`}>
-                                    <input checked={USDCurrency} onChange={() => setUSDCurrency(!USDCurrency)} type={"checkbox"} />
-                                    <label>$</label>
-                                </div>
-                            </div>
-
-                            <div className={`${DEFAULT_CLASSNAME}_info_specs_item`}>
-                                <label>{"Ссылка / Цвет"}</label>
-                                <div style={{ display: "flex", flexDirection: "row"}} className={`${DEFAULT_CLASSNAME}_info_specs_item_colors`}>
-                                    {colors?.map(color => <div key={color.toString()} onClick={isEditMode ? () => {
-                                        const deleteColorId = editColors.find(col => col.color_code === color.color_code).id
-
-                                        fetch(`${process.env["REACT_APP_API_URL"]}color/${deleteColorId}`, {
-                                            method: "DELETE",
-                                            headers: {
-                                                'Authorization': token,
-                                            }
-                                        }).finally(() => {
-                                            toast.info("Цвет удален")
-                                            setTimeout(() => setDataUpdated(dataUpdated + 1), 500)
-                                        })
-                                    } : () => deleteColor(color.color)} style={{ margin: "0 4px", width: "32px", height: "32px", borderRadius: "50px", background: color.color_code}}></div>)}
-                                    <img onClick={() => setAddNewColor(true)} src={addColor} alt={''} />
-                                </div>
-                                    {addNewColor && <><input
-                                        placeholder={"Цвет: #123456"}
-                                        onChange={(e) => setNewColorValue(e.currentTarget.value)}
-                                        type={"text"} value={newColorValue}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                if (newColorValue?.trim().length) {
-
-                                                    if (isEditMode) {
-                                                        const formData = new FormData();
-
-                                                        formData.append('prodId', currentProductId);
-                                                        formData.append('color', "edit_color_name");
-                                                        formData.append('color_code', newColorValue);
-
-                                                        fetch(`${process.env["REACT_APP_API_URL"]}color`, {
-                                                            method: "POST",
-                                                            headers: {
-                                                                'Authorization': token,
-                                                                'Content-Type': "application/json",
-                                                            },
-                                                            body: JSON.stringify({
-                                                                prodId: currentProductId,
-                                                                color: "edit_color_name",
-                                                                color_code: newColorValue
-                                                            }),
-                                                        }).finally(() => {
-                                                            toast("Цвет добавлен");
-                                                            setDataUpdated(data => data + 1);
-                                                        })
-                                                    } else {
-                                                        setColors([...colors, {color: "", color_code: newColorValue, link: newLink?.trim().length ? newLink : ""}]);
-                                                    }
-
-                                                    setNewColorValue("");
-                                                    setNewLink("");
-                                                    setAddNewColor(false);
-                                                }
-                                            }
-                                        }
-                                    }/>
-                                    <input
-                                        placeholder={"Ссылка на товар"}
-                                        value={newLink}
-                                        onChange={(e) => setNewLink(e.currentTarget.value)}
-                                        type={"text"}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                e.preventDefault();
-
-                                                if (isEditMode) {
-                                                    fetch(`${process.env["REACT_APP_API_URL"]}color`, {
-                                                        method: "POST",
-                                                        headers: {
-                                                            'Authorization': token,
-                                                            'Content-Type': "application/json"
-                                                        },
-                                                        body: JSON.stringify({
-                                                            prodId: currentProductId,
-                                                            color: "edit_color_name",
-                                                            color_code: newColorValue,
-                                                            link: newLink
-                                                        }),
-                                                    }).finally(() => {
-                                                        toast("Цвет добавлен");
-                                                        setDataUpdated(data => data + 1);
-                                                    })
-                                                } else if (newColorValue?.trim().length && newLink?.trim().length) {
-                                                    setColors([...colors, {color: "", color_code: newColorValue, link: newLink?.trim().length ? newLink : ""}]);
-                                                }
-
-                                                setNewColorValue("");
-                                                setNewLink("");
-                                                setAddNewColor(false);
-                                            }
-                                        }
-                                    }/>
-                                </>}
-                            </div>
-
-                            <div className={`${DEFAULT_CLASSNAME}_info_specs_item`}>
-                                <label>{"Объем встроенной памяти"}</label>
-                                <div style={{ display: "flex", flexDirection: "row"}} className={`${DEFAULT_CLASSNAME}_info_specs_item_colors`}>
-                                    {memories?.map(memory => <div key={memory.toString()} onClick={() => {
-                                        if (isEditMode) {
-                                            fetch(`${process.env["REACT_APP_API_URL"]}memory/${memory.id}`, {
-                                                method: "DELETE",
-                                                headers: {
-                                                    "Authorization": token,
-                                                },
-                                            })
-                                        }
-
-                                        deleteMemory(memory.amount)
-                                    }} style={{ fontSize: '12px', textAlign: "center", lineHeight: "32px", color: "#FFF", margin: "0 4px", width: "56px", height: "32px", borderRadius: "50px", background: "#ccc"}}>{memory.size ? memory.size : memory.amount}</div>)}
-                                    <img onClick={() => setAddNewMemory(true)} src={addMemory} alt={''} />
-                                </div>
-                                {addNewMemory && <> <input placeholder={"Объем памяти"} value={newMemoryAmount} onChange={(e) => setNewMemoryAmount(e.currentTarget.value)} type={"text"} alt={'memory-text'} />
-                                <input onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-
-                                        if (isEditMode) {
-                                            fetch(`${process.env["REACT_APP_API_URL"]}memory`, {
-                                                method: "POST",
-                                                headers: {
-                                                    "Authorization": token,
-                                                    "Content-Type": 'application/json',
-                                                },
-                                                body: JSON.stringify({
-                                                    size: newMemoryAmount.toString(),
-                                                    price: +newMemoryCost,
-                                                    prodId: currentProductId.toString(),
-                                                }),
-                                            })
-                                                .finally(() => {
-                                                    toast('Память добавлена');
-                                                    setDataUpdated(data => data + 1);
-                                                })
-                                        } else {
-                                            setMemories([...memories, {
-                                                amount: newMemoryAmount,
-                                                cost: newMemoryCost,
-                                            }]);
-                                        }
-
-                                        setNewMemoryCost("");
-                                        setNewMemoryAmount("");
-                                        setAddNewMemory(false)
-                                    }
-                                }} placeholder={"Цена..."} value={newMemoryCost} onChange={(e) => setNewMemoryCost(e.currentTarget.value)} className={`memory_price`} type={"text"} alt={'memory-text'} /> </>}
-
-                            </div>
-
-                            <select style={{ marginTop: '32px'}} placeholder={"Категория"} onChange={(e) => setSelectedCategory(e.currentTarget.value)}>
-                                <option>{"Категория"}</option>
-                                {categories?.map(item => (
-                                    <option key={item.id.toString()} selected={item.id === selectedCategory} value={item.id}>{item.categoryName}</option>
-                                ))}
-                            </select>
-
-                            <div className={`${DEFAULT_CLASSNAME}_info_subcategory`}>
-                                <label>Введите подкатегорию товара</label>
-                                <input placeholder={"Подкатегория..."} type={'text'} onChange={(e) => setCurrentSubcategory(e.currentTarget.value)} value={currentSubcategory} />
-                                <select onChange={(e) => e.currentTarget.value === "Подкатегория" ? setCurrentSelectedSubcategory( null) : setCurrentSelectedSubcategory(e.currentTarget.value)}>
-                                    <option value={null} defaultChecked={true}>{"Подкатегория"}</option>
-                                    {subcategories?.map(item => (
-                                        <option key={item.name.toString()} selected={item.name === currentSelectedSubcategory} value={item.name}>{item.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className={`${DEFAULT_CLASSNAME}_info_specs_categories`}>
-                                <div>
-                                    <input checked={newIn} onChange={() => setNewIn(!newIn)} type={"checkbox"} />
-                                    <label>{"Новое поступление"}</label>
-                                </div>
-                                <div>
-                                    <input checked={leaders} onChange={() => setLeaders(!leaders)} type={"checkbox"} />
-                                    <label>{"Лидер продаж"}</label>
-                                </div>
-                                <div>
-                                    <input checked={specialOffer} onChange={() => setSpecialOffer(!specialOffer)} type={"checkbox"} />
-                                    <label>{"Специальное предложение"}</label>
-                                </div>
-                                <div>
-                                    <input checked={hidePayment} onChange={() => setHidePayment(!hidePayment)} type={"checkbox"} />
-                                    <label style={{ fontWeight: "500" }}>{"Скрыть метод оплаты"}</label>
-                                </div>
-                                <div>
-                                    <input checked={emptyStock} onChange={() => setEmptyStock(!emptyStock)} type={"checkbox"} />
-                                    <label>{"НЕТ В НАЛИЧИИ"}</label>
-
-                                    <input value={in_stock} onChange={(e) => setInStock(e.currentTarget.value)} type={"number"} className={'admin-input'} />
-                                    <label>{"Количество товара"}</label>
-                                </div>
-                            </div>
-
-                            <div style={{ width: "100%" }} className={"popular_items"}>
-                                <div className={"popular_items_new"}>
-                                    <input type={"text"} value={newPopularItem} onChange={(e) => setNewPopularItem(e.currentTarget.value)} placeholder={"Введите ссылку-имя товара"} />
-                                    <div onClick={() => {
-                                        setNewPopularItem("");
-                                        if (popularItems.length < 4) {
-                                            setPopularItems([newPopularItem, ...popularItems])
-                                        } else {
-                                            toast.info("Максимум 4 товара!");
-                                        }
-                                    }} className={"popular_items_new_btn"}>+</div>
-                                </div>
-                                {popularItems.map(item => <div onClick={() => {
-                                    const deleteItemIdx = popularItems.findIndex(popItem => popItem === item);
-                                    const itemsToSet = [...popularItems.slice(0, deleteItemIdx), ...popularItems.slice(deleteItemIdx + 1)];
-
-                                    setPopularItems(itemsToSet);
-                                }} key={item} className={'popular_items_item'}>{item}</div>)}
-                            </div>
-
-                            <div className={`${DEFAULT_CLASSNAME}_metaItem`}>
-                                <label>Заголовок для поисковых систем</label>
-                                <input style={{ display: ""}} type={"text"} value={metaTitle} onChange={(e) => setMetaTitle(e.currentTarget.value)} placeholder={"Мета тайтл"}/>
-                            </div>
-
-                            <div className={`${DEFAULT_CLASSNAME}_metaItem`}>
-                                <label>Описание для поисковых систем</label>
-                                <textarea rows={4} type={"text"} value={metaDescription} onChange={(e) => setMetaDescription(e.currentTarget.value)} placeholder={"Мета Описание"}/>
-                            </div>
-                        </div>
-                    </div>
                     <div className={`${DEFAULT_CLASSNAME}_item-info`}>
 
-                        <div className={`${DEFAULT_CLASSNAME}_item-info_title`}>{"Информация о товаре"}</div>
-                        <div className={`${DEFAULT_CLASSNAME}_item-info_menu`}>
-                            <div onClick={() => setActiveMenuItem("Описание")} className={`${activeMenuItem === "Описание" && "active"}`}>{"Описание"}</div>
-                            <div onClick={() => setActiveMenuItem("Технические характеристики")} className={`${activeMenuItem === "Технические характеристики" && "active"}`}>{"Технические характеристики"}</div>
-                            <div onClick={() => setActiveMenuItem("Услуги")} className={`${activeMenuItem === "Услуги" && "active"}`}>{"Услуги"}</div>
+                        <div className={`${DEFAULT_CLASSNAME}_sections`}>
+                            {SECTIONS.map(item => <div className={`${DEFAULT_CLASSNAME}_sections_item ${activeMenuItem === item && 'active-section-item'}`} onClick={() => setActiveMenuItem(item)}>{item}</div>)}
                         </div>
+
+                        {activeMenuItem === "Основные" && generalContent}
+
+                        {activeMenuItem === "Критерии" && criteriaContent}
 
                         {activeMenuItem === "Описание" && <ItemDescription
                             newCardTextPosition={newCardTextPosition}
@@ -982,11 +935,11 @@ export const AddNewItem = ({ isEditMode }) => {
                             setNewCardThere={setNewCardThere}
                             newCardThere={newCardThere}
                             setNewCardTextPosition={setNewCardTextPosition}
-                            newCardPriority={newCardPriority}
+                            newCardPriority={newCardPriority}xf
                             setNewCardPriority={setNewCardPriority}
                         />}
 
-                        {activeMenuItem === "Технические характеристики" && <TechnicalSpecs
+                        {activeMenuItem === "Характеристики" && <TechnicalSpecs
                             setItemSpecs={setItemSpecs}
                             updateCharacteristics={updateCharacteristics}
                             setAddNewSpecItem={setAddNewSpecItem}
@@ -1012,6 +965,8 @@ export const AddNewItem = ({ isEditMode }) => {
                             currentProductId={currentProductId}
                             newServicePrice={newServicePrice}
                         />}
+
+                        {activeMenuItem === "Метаданные" && metadataContent}
                     </div>
                 </form>
             </div>

@@ -14,6 +14,8 @@ import {useEffect, useState} from "react";
 const DEFAULT_CLASSNAME = 'products';
 
 export const Products = () => {
+    const token = sessionStorage.getItem('admin-dream-token');
+
     const navigate = useNavigate();
 
     const [products, setProducts] = useState([]);
@@ -44,11 +46,11 @@ export const Products = () => {
     }, [])
 
     useEffect(() => {
-        fetch(`${process.env["REACT_APP_API_URL"]}product/search`, {
-            method: "POST",
-            body: JSON.stringify({
-                "by": "date_added"
-            })
+        fetch(`${process.env["REACT_APP_API_URL"]}product`, {
+            method: "GET",
+            headers: {
+                "Authorization": token,
+            },
         })
             .then(res => res.json())
             .then(data => {
@@ -58,7 +60,7 @@ export const Products = () => {
     }, [dataUpdated])
 
     useEffect(() => {
-        let url = `${process.env["REACT_APP_API_URL"]}product/search`;
+        let url = `${process.env["REACT_APP_API_URL"]}product`;
 
         if (filteredUrl && currentPage !== 1) {
             url = `${filteredUrl}&p=${currentPage}`;
@@ -69,7 +71,10 @@ export const Products = () => {
         }
 
         fetch(url, {
-            method: "POST",
+            method: "GET",
+            headers: {
+                "Authorization": token,
+            },
             body: JSON.stringify({
                 "by": "date_added",
             })
@@ -82,7 +87,11 @@ export const Products = () => {
     }, [currentPage, filteredUrl]);
 
     useEffect(() => {
-        fetch(`${process.env["REACT_APP_API_URL"]}product/search?name=${searchName}`)
+        fetch(`${process.env["REACT_APP_API_URL"]}product?name=${searchName}`, {
+            headers: {
+                "Authorization": token,
+            },
+        })
             .then(res => res.json())
             .then(data => {
                 setSearchProducts(data.products);
@@ -90,25 +99,37 @@ export const Products = () => {
     }, [searchName]);
 
     const [categories, setCategories] = useState([]);
-
-    const token = sessionStorage.getItem('admin-dream-token');
+    const [subCategories, setSubCategories] = useState([]);
 
     useEffect(() => {
-        fetch(`${process.env["REACT_APP_API_URL"]}category`)
+        fetch(`${process.env["REACT_APP_API_URL"]}category`, {
+            headers: {
+                "Authorization": token,
+            },
+        })
             .then(res => res.json())
             .then(data => setCategories(data));
-    }, [])
+    }, []);
 
     const productsToShow = searchName.trim().length ? searchProducts : products;
 
     const [categoryToFilter, setCategoryToFilter] = useState("");
+    const [subcategoryToFilter, setSubcategoryToFilter] = useState("");
+
+    useEffect(() => {
+        if (categoryToFilter) {
+            fetch(`${process.env["REACT_APP_API_URL"]}category/${categoryToFilter}`)
+                .then(res => res.json())
+                .then(data => setSubCategories(data.subcats));
+        }
+    }, [categoryToFilter]);
 
     const [manufacturer, setManufacturer] = useState("");
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
 
     const filterProducts = () => {
-        let url = `${process.env["REACT_APP_API_URL"]}product/search`;
+        let url = `${process.env["REACT_APP_API_URL"]}product`;
 
         if (!!categoryToFilter && categoryToFilter !== "Категория") {
             url += url.includes('?') ? `&category=${categoryToFilter}` : `?category=${categoryToFilter}`;
@@ -124,23 +145,31 @@ export const Products = () => {
                 : `?maxprice=${(maxPrice / currentRate).toFixed(2)}`
         }
 
-        let body;
+        let body = {};
 
         if (!!manufacturer) {
-            body = JSON.stringify({
+            body = {
+                ...body,
                 producer: [`${manufacturer}`]
-            })
+            }
         }
 
-        if (url !== `${process.env["REACT_APP_API_URL"]}product/search`) setFilteredUrl(url);
+        if (!!subcategoryToFilter && subcategoryToFilter !== "Подкатегория") {
+            body = {
+                ...body,
+                subcategory: subcategoryToFilter,
+            }
+        }
+
+        if (url !== `${process.env["REACT_APP_API_URL"]}product`) setFilteredUrl(url);
 
         fetch(url, {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": token,
             },
-            body,
+            body: JSON.stringify(body),
         })
             .then(res => res.json())
             .then(data => {
@@ -167,7 +196,13 @@ export const Products = () => {
                     <div className={`${DEFAULT_CLASSNAME}_content_items`}>
                         <img onClick={() => navigate("/admin/add-product")} className={`${DEFAULT_CLASSNAME}_content_items_new`} src={addProduct} alt={'add-product'}/>
                         {productsToShow?.map(item => {
-                            return <GoodCard dataUpdated={dataUpdated} setDataUpdated={setDataUpdated} id={item.id} title={item.name} imgUrl={ item?.img_path?.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} />
+                            return (
+                                <>
+                                <GoodCard link={item.link} dataUpdated={dataUpdated} setDataUpdated={setDataUpdated} id={item.id} title={item.name} imgUrl={ item?.img_path?.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} />
+
+
+                                </>
+                            )
                         })}
                     </div>
                     <div className={`${DEFAULT_CLASSNAME}_content_filter`}>
@@ -187,6 +222,13 @@ export const Products = () => {
                             <option>{"Категория"}</option>
                             {categories?.map(item => (
                                 <option selected={item.id === categoryToFilter} value={item.id}>{item.categoryName}</option>
+                            ))}
+                        </select>
+
+                        <select style={{ marginTop: '32px'}} placeholder={"Под Категория"} onChange={(e) => setSubcategoryToFilter(e.currentTarget.value)}>
+                            <option>{"Подкатегория"}</option>
+                            {subCategories?.map(item => (
+                                <option selected={item.id === subcategoryToFilter} value={item.id}>{item.name}</option>
                             ))}
                         </select>
 

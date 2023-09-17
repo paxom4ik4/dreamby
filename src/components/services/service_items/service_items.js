@@ -12,6 +12,8 @@ export const ServiceItems = ({ setSelectedCategory, compareItems, addItemToCompa
     return <div className={`${DEFAULT_CLASSNAME}_empty`}>{"Нет соответствуюших товаров"}</div>
   }
 
+  console.log(itemsToShow);
+
   return (
     <div className={DEFAULT_CLASSNAME}>
       {itemsToShow?.length ? itemsToShow.map(item => <ItemCard
@@ -19,7 +21,7 @@ export const ServiceItems = ({ setSelectedCategory, compareItems, addItemToCompa
         setSelectedCategory={setSelectedCategory}
         hidePayment={item.hidePayment}
         key={item.id.toString()}
-        productId={item.link_name ? item.link_name : item.id}
+        productId={item.link ? item.link : item.prodId}
         minEquipment={item?.Memory ? item?.Memory[0]?.size : "0"}
         productIdForCart={item.id}
         serviceId={item.id}
@@ -27,8 +29,8 @@ export const ServiceItems = ({ setSelectedCategory, compareItems, addItemToCompa
         setFavoriteItems={setFavoriteItems}
         image={item.img_path || item.image}
         isAvailable={isServicePage || item?.in_stock > 0}
-        isFavorite={favoriteItems?.includes(item?.id) || favoriteItems?.includes(item?.link_name)}
-        inCompareMode={compareItems?.includes(item?.id) || compareItems?.includes(item?.link_name)}
+        isFavorite={favoriteItems?.includes(item?.id) || favoriteItems?.includes(item?.link)}
+        inCompareMode={compareItems?.includes(item?.id) || compareItems?.includes(item?.link)}
         title={item.name || item.title}
         isServiceItem={item.isServiceItem}
         roundedBorders={true}

@@ -43,6 +43,7 @@ export const Subcategories = () => {
         </div>
 
         <div className={`${DEFAULT_CLASSNAME}_new`} onClick={() => navigate('/admin/add-subcategory')}>{"Добавить новую подкатегорию"}</div>
+        <div className={`${DEFAULT_CLASSNAME}_new`} onClick={() => navigate('/admin/add-subSubcategory')}>{"Добавить новую Под подкатегорию"}</div>
 
         <div className={`${DEFAULT_CLASSNAME}_container`}>
           {subcategories.map(item => <div className={`${DEFAULT_CLASSNAME}_item`}>

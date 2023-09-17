@@ -43,13 +43,14 @@ export const Footer = () => {
               <div className={`${DEFAULT_CLASSNAME}_navigation_item`}>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item-title`}>{'Аккаунт'}</div>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/profile')}>{'Профиль'}</div>
-                <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/cart')}>{'Корзина'}</div>
+                {/*<div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/cart')}>{'Корзина'}</div>*/}
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/favorite')}>{'Избранное'}</div>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/compare')}>{'Сравнение'}</div>
               </div>
               <div className={`${DEFAULT_CLASSNAME}_navigation_item`}>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item-title`}>{'Служба поддержки '}</div>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/about')}>{'Связаться с нами'}</div>
+                <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/info')}>{'Юридическа информация'}</div>
               </div>
             </div>
           </div>

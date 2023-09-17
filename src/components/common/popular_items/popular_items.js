@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 
 import './popular_items.scss';
 import { ItemCard } from "../item_card/item_card";
-import {Helmet} from "react-helmet";
 import {objReplacer} from "../../catalog/catalog";
 
 const DEFAULT_CLASSNAME = 'popular-items';

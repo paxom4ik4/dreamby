@@ -56,9 +56,9 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
   return (
     showNavPanel &&
       <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
-        <div className={DEFAULT_CLASSNAME}>
+        <div className={DEFAULT_CLASSNAME} itemScope itemType="https://schema.org/BreadcrumbList">
           {currentPath.map((item, idx) => {
-            return <div style={{ display: "flex", alignItems: "center" }} onClick={() => {
+            return <div itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" style={{ display: "flex", alignItems: "center" }} onClick={() => {
 
               if (idx === 0 ) navigate("/");
 
@@ -70,23 +70,44 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
               }
 
             }} className={`${DEFAULT_CLASSNAME}_item`}>
+                <div style={{ display: 'none'}} itemProp="item">
+                  <div itemProp="name" >{item}</div>
+                  <meta itemProp="position" content={`${idx + 1}`}/>
+                </div>
                 {idx !== 0 && <div style={{ marginRight: "8px", marginLeft: "8px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />}
                 {item}
             </div>
           })}
 
-          {currentPath[1] === "Каталог" && categoryInfo?.id && <div style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
+          {currentPath[1] === "Каталог" && categoryInfo?.id && <div itemScope itemType="https://schema.org/ListItem" style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
             setSelectedCategory(categoryInfo.id);
             setSelectedSubcategory(null);
             navigate(`/catalog/${objReplacer[categoryInfo?.categoryName]}`);
-          }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />{categoryInfo.categoryName}</div>}
+          }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
+            <div style={{ display: 'none'}} itemProp="item">
+              <div itemProp="name" >{categoryInfo.categoryName}</div>
+              <meta itemProp="position" content={`3`}/>
+            </div>
+            {categoryInfo.categoryName}
+          </div>}
 
-          {currentPath[1] === "Каталог" && subcategory && <div style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
+          {currentPath[1] === "Каталог" && subcategory && <div itemScope itemType="https://schema.org/ListItem" style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
             navigate(`/catalog/${objReplacer[categoryInfo?.categoryName]}/${subcategory.link_name}`);
               setSelectedSubcategory(subcategory.id);
-          }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />{subcategory?.name}</div>}
+          }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
+            <div style={{ display: 'none'}} itemProp="item">
+              <div itemProp="name" >{subcategory?.name}</div>
+              <meta itemProp="position" content={`4`}/>
+            </div>
+            {subcategory?.name}
+          </div>}
 
-          {selectedDeviceName && <div style={{ display: "flex", alignItems: "center", cursor: "pointer", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} /> {selectedDeviceName}</div>}
+          {selectedDeviceName && <div itemScope itemType="https://schema.org/ListItem" style={{ display: "flex", alignItems: "center", cursor: "pointer", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
+            <div style={{ display: 'none'}} itemProp="item">
+              <div itemProp="name" >{selectedDeviceName}</div>
+              <meta itemProp="position" content={`5`}/>
+            </div>
+            {selectedDeviceName}</div>}
         </div>
       </div>
     )

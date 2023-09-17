@@ -17,9 +17,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHeart, faScaleUnbalancedFlip} from "@fortawesome/free-solid-svg-icons";
 import {objReplacer} from "../catalog/catalog";
 import {Loader} from "../../index";
+import {isNumber} from "lodash";
 
 const DEFAULT_CLASSNAME = 'item-page';
-
 
 const conditions = {
   'new': 'Новый',
@@ -44,6 +44,8 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
   const [selectedMemory, setSelectedMemory] = useState(null);
   const [selectedCondition, setSelectedCondition] = useState(null);
 
+  const [productModel, setProductModel] = useState([]);
+
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
@@ -53,19 +55,21 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
       .then(res => res.json()).then(data => {
         let currentPhotosToSet = null;
 
-        if (data.colors.filter(Boolean).length > 0) {
+        if (data?.colors?.filter(Boolean).length > 0) {
           currentPhotosToSet = data?.colors?.find(item => item.link === data.product.link_name);
         }
 
         if (!!currentPhotosToSet) {
           setImages([data?.product?.img_path, ...currentPhotosToSet.img_path.filter(Boolean)] ?? []);
         } else {
-          if (data.colors.filter(Boolean).length) {
+          if (data?.colors?.filter(Boolean).length) {
             setImages([data?.product?.img_path, ...data.colors[0].img_path.filter(Boolean)] ?? []);
           } else {
             setImages([data?.product?.img_path] ?? []);
           }
         }
+
+        setProductModel(data?.product?.ProductModel);
 
         setItemData(data);
         setSelectedDeviceName(data.product?.name);
@@ -113,10 +117,10 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
     if (!!itemData && itemData !== {}) {
       setConfig({
         colors: itemData?.colors,
-        memory: itemData?.product?.Memory.sort((a, b) => a.size - b.size) || [],
+        memory: itemData?.product?.Memory?.sort((a, b) => a.size - b.size) || [],
       })
 
-      if (itemData?.product.Memory.length) setSelectedMemory(itemData?.product?.Memory[0])
+      if (itemData?.product?.Memory?.length) setSelectedMemory(itemData?.product?.Memory[0])
     }
   }, [itemData]);
 
@@ -187,11 +191,11 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
   }
 
   return (
-    <div className={DEFAULT_CLASSNAME}>
+    <div className={DEFAULT_CLASSNAME} itemScope itemType="https://schema.org/Product">
       <Helmet>
         <title>{itemData?.product?.meta_title || `${itemData?.product?.name} купить в Минске - Dreamstore.by`}</title>
         <meta name="description" content={itemData?.product?.meta_description || `${itemData?.product?.name} купить в Минске по выгодной цене ✔️ Быстрая доставка ✔️ ${itemData?.product?.name} купить в рассрочку или в кредит в интернет-магазине dreamstore.by` } />
-        <link rel="canonical" href="https://dreamstore.by" />
+        <link rel="canonical" href={`https://dreamstore.by${location.pathname}`} />
       </Helmet>
 
       <div className={`${DEFAULT_CLASSNAME}_fullSizeImage ${fullSize && "opened"}`} onClick={(event) => {
@@ -231,7 +235,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
             >
               {images.map(item => (
                 <SwiperSlide onClick={() => setCurrentImage(item)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
-                  <img src={item.includes('http') ? item : `http://194.62.19.52:7000/${item}`} alt={'slide_image'}/>
+                  <img src={item?.includes('http') ? item : `http://194.62.19.52:7000/${item}`} alt={'slide_image'}/>
                 </SwiperSlide>)
                 )}
             </Swiper>
@@ -252,29 +256,28 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
             </Swiper>
             </>
             <div className={`${DEFAULT_CLASSNAME}_image hide_on_mobile`}>
-              <img onClick={() => setFullSize(true)} src={currentImage?.includes('http') ? currentImage : `http://194.62.19.52:7000/${currentImage}`} alt={"item-page-image"}/>
+              <img onClick={() => setFullSize(true)} itemProp="image" src={currentImage?.includes('http') ? currentImage : `http://194.62.19.52:7000/${currentImage}`} alt={"item-page-image"}/>
             </div>
-          </div> : <div className={`${DEFAULT_CLASSNAME}_image`}>
+          </div> : <div className={`${DEFAULT_CLASSNAME}_image`} itemProp="image">
             <img onClick={() => setFullSize(true)} src={currentImage?.includes('http') ? currentImage : `http://194.62.19.52:7000/${currentImage}`} alt={"item-page-image"}/>
           </div>)}
           <div className={`${DEFAULT_CLASSNAME}_configuration`}>
-            <h1 className={`${DEFAULT_CLASSNAME}_title`}>{itemData?.product?.name}</h1>
-            {!!config?.colors?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>
+            <div style={{ display: 'none'}} itemProp="aggregateRating" itemType="https://schema.org/AggregateRating" itemScope>
+              <meta itemProp="reviewCount" content="100"/>
+              <meta itemProp="ratingValue" content="5"/>
+            </div>
+
+            <h1 className={`${DEFAULT_CLASSNAME}_title`} itemProp="name">{itemData?.product?.name}</h1>
+            {!!productModel?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>
               <div className={`${DEFAULT_CLASSNAME}_configuration_group_title`}>{"Цвет: "}</div>
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
-                {config?.colors?.map(color => {
-                  return (
-                  <div onClick={() => {
-                    if (color?.link?.length) {
-                      const pathArr = window.location.pathname.split("/");
-                      pathArr[pathArr.length - 1] = color.link;
-                      navigate(pathArr.join("/"));
-                    }
-                    setSelectedColor(color)
-                }} style={{backgroundColor: color?.color_code, border: '1px solid #141414'}} className={`${DEFAULT_CLASSNAME}_configuration_item color_config ${selectedColor === color && 'config-item-block-color-active'}`}>
-                    {color?.color_code}
-                  </div>)
-                })}
+                {productModel.map(item => (
+                  <img className={`${DEFAULT_CLASSNAME}_product_color-item`} alt={'photo-wtf'} onClick={() => {
+                    const pathArr = window.location.pathname.split("/");
+                    pathArr[pathArr.length - 1] = item.link;
+                    navigate(pathArr.join("/"));
+                  }} src={item?.img_path[0]} />
+                ))}
               </div>
             </div>}
             {!!config?.memory?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>
@@ -289,8 +292,8 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
                 {config?.condition?.map(condition => <div onClick={() => setSelectedCondition(condition)} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${selectedCondition === condition && 'config-item-block-active'}`}>{conditions[condition]}</div>)}
               </div>
             </div> }
-            <div className={`${DEFAULT_CLASSNAME}_price`}>{(((selectedMemory?.price || itemData?.product?.price) === "0") ? "Уточните стоимость" : selectedMemory?.price ?  Number(selectedMemory?.price).toFixed(2) : Number(itemData?.product?.price).toFixed(2)) + " (BYN)"}</div>
-            <button disabled={itemData?.product?.in_stock <= 0 && !noItemOrder} onClick={() => addToCartHandler()} className={`${DEFAULT_CLASSNAME}_add-to-cart`}>{"Добавить в корзину"}</button>
+            <div className={`${DEFAULT_CLASSNAME}_price`} itemProp="price">{(((selectedMemory?.price === 0 || itemData?.product?.price === 0) || (selectedMemory?.price === "0" || itemData?.product?.price === "0")) ? "Уточните стоимость" : selectedMemory?.price ? Number(itemData.product.price).toFixed(2) : Number(itemData?.product?.memory.price).toFixed(2)) + " (BYN)"}</div>
+            {/*<button disabled={itemData?.product?.in_stock <= 0 && !noItemOrder} onClick={() => addToCartHandler()} className={`${DEFAULT_CLASSNAME}_add-to-cart`}>{"Добавить в корзину"}</button>*/}
 
             {itemData?.product?.in_stock <= 0 && <span style={{ display: "flex", alignItems: "center", marginTop: "12px", fontSize: "14px" }}>{"Товара нет в наличии. Доступно под заказ"}
               <input style={{ position: "initial", marginLeft: "12px" }} id={'no-order'} type={"checkbox"} className={`order-checkbox`} value={noItemOrder} onChange={() => setNoItemOrder(!noItemOrder)} />

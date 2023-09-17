@@ -7,7 +7,7 @@ import './item_card.scss';
 import available from '../../../assets/item_card/available.svg';
 import unavailable from '../../../assets/item_card/unavailable.svg';
 import cart from '../../../assets/item_card/buy.svg';
-import { useNavigate, useParams } from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {objReplacer} from "../../catalog/catalog";
 
 const DEFAULT_CLASSNAME = 'item_card';
@@ -19,7 +19,7 @@ const AVAILABLE_SERVICE_TEXT = 'Доступна';
 const UNAVAILABLE_SERVICE_TEXT = 'Недоступна';
 
 export const ItemCard = ({
-    product,
+  product,
   clickLink,
   setSelectedCategory = () => {},
   hidePayment = false,
@@ -30,6 +30,7 @@ export const ItemCard = ({
   setFavoriteItems,
   image,
   isFavorite,
+    link,
   inCompareMode,
   isAvailable = true,
   title,
@@ -40,6 +41,7 @@ export const ItemCard = ({
   setCartItems = () => {},
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const availableIcon = <img src={isAvailable ? available : unavailable} alt={'availability'} />
   const availableText = isAvailable ?
@@ -61,7 +63,7 @@ export const ItemCard = ({
         navigate('/catalog/')
       }
 
-      navigate(`/catalog/${clickLink}`);
+      (location.pathname.split('/').length < 5 && location.pathname.includes('catalog')) ? navigate(link.split('/').slice(1).join('/')) : navigate(`/catalog/${clickLink}`);
       return;
     }
 
@@ -75,39 +77,47 @@ export const ItemCard = ({
   }
 
   return (
-    <div onClick={openProductHandler} className={`${DEFAULT_CLASSNAME} ${!isAvailable && 'unavailable'}`} style={{ borderRadius: roundedBorders && "12px", background: compareMode && '#FFF'}}>
-      <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
+    <div itemScope itemType={"https://schema.org/ItemList"} onClick={openProductHandler} className={`${DEFAULT_CLASSNAME} ${!isAvailable && 'unavailable'}`} style={{ borderRadius: roundedBorders && "12px", background: compareMode && '#FFF'}}>
+      <div className={`${DEFAULT_CLASSNAME}_wrapper`} itemScope itemType={isServiceItem ? 'https://schema.org/Service' : 'https://schema.org/Product'}>
+        {isServiceItem && <meta itemProp="serviceType" content={title} />}
         {compareMode && <div className={'delete-from-compare'} onClick={deleteFromCompare}>Убрать из сравнения</div>}
         { !compareMode && <div className={`${DEFAULT_CLASSNAME}_favoriteWrapper`}>
           {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_favorite`} onClick={() => {setFavoriteItems(productId)}} style={{ color: isFavorite && "red" }}>{favoriteIcon}</span>}
           {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(product)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}
         </div>
         }
-        <img className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={title} title={`Купить ${title}`} />
+        <img itemProp="image" className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={title} title={`Купить ${title}`} />
         <div className={`${DEFAULT_CLASSNAME}_content`} style={{ boxShadow: compareMode && '0px 0px 29px 11px rgba(52, 100, 223, 0.23)' }}>
           <div className={`${DEFAULT_CLASSNAME}_content_status`}>
             <div className={`${DEFAULT_CLASSNAME}_availability`}>
               {availableContent}
             </div>
-            {!isServiceItem && !compareMode &&
-            <div className={`${DEFAULT_CLASSNAME}_cart`} onClick={() => {
-              setCartItems({
-                id: productIdForCart,
-                image,
-                title,
-                price,
-                inStock: isAvailable,
-                hidePayment: hidePayment,
-                equipment: minEquipment ?? "0",
-            })}}>
-              <button disabled={!isAvailable} className={'add-to-cart'}>{"В корзину"} <img src={cart} alt={'cart-image'} /></button>
+            {!isServiceItem && <div style={{ display: 'none'}} itemScope itemProp="aggregateRating" itemType="https://schema.org/AggregateRating">
+              <meta itemProp="reviewCount" content="100"/>
+              <meta itemProp="ratingValue" content="5"/>
             </div>}
+            {/*{!isServiceItem && !compareMode &&*/}
+            {/*<div className={`${DEFAULT_CLASSNAME}_cart`} onClick={() => {*/}
+            {/*  setCartItems({*/}
+            {/*    id: productIdForCart,*/}
+            {/*    image,*/}
+            {/*    title,*/}
+            {/*    price,*/}
+            {/*    inStock: isAvailable,*/}
+            {/*    hidePayment: hidePayment,*/}
+            {/*    equipment: minEquipment ?? "0",*/}
+            {/*})}}>*/}
+            {/*  <button disabled={!isAvailable} className={'add-to-cart'}>{"В корзину"} <img src={cart} alt={'cart-image'} /></button>*/}
+            {/*</div>}*/}
           </div>
-          <div className={`${DEFAULT_CLASSNAME}_content_title`}>
-            {title}
-          </div>
+          <span className={`${DEFAULT_CLASSNAME}_content_title`} itemProp="name">{`${title}`}</span>
+          {!isServiceItem && <div style={{ display: 'none '}} itemProp="offers" itemScope itemType="http://schema.org/Offer">
+            <link itemProp="availability" href="https://schema.org/InStock"/>
+            <meta itemProp="priceCurrency" content="BYN"/>
+            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>BYN</span>
+          </div>}
           {!isServiceItem && <div className={`${DEFAULT_CLASSNAME}_content_price`}>
-            {price === 0 ? "Уточните цену" : typeof price === "number" ? price.toFixed(2) + " BYN" : `${price}.00 BYN`}
+            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>BYN</span>
           </div>}
           {isServiceItem && <div className={`${DEFAULT_CLASSNAME}_more`}>{"Подробнее"}</div>}
         </div>

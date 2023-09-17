@@ -6,7 +6,6 @@ import {Login} from "./components/login/login";
 import {Home} from "./components/home/home";
 import {Clients} from "./components/clients/clients";
 import {Orders} from "./components/orders/orders";
-import {Categories} from "./components/categories/categories";
 import {Products} from "./components/products/products";
 import {useEffect, useState} from "react";
 import {AddNewItem} from "./components/addNewItem/addNewItem";
@@ -26,6 +25,9 @@ import {toast} from "react-toastify";
 import {Subcategories} from "./components/subcategories/subcategories";
 import {EditSubcategory, editSubcategory} from "./components/editSubcategory/editSubcategory";
 import {AddSubcategory} from "./components/addNewSubcategory/addNewSubcategory";
+import axios from "axios";
+import EditChildItem from "./components/createNewItem/createNewItem";
+
 
 const DEFAULT_CLASSNAME = 'dream-admin';
 
@@ -36,6 +38,21 @@ export const Admin = () => {
 
     useEffect(() => {
         if (userRole !== "admin") {
+            axios.interceptors.request.use(
+                async config => {
+                    if (!config.headers.Authorization) {
+                        const token = sessionStorage.getItem('admin-dream-token');
+
+                        if (token) {
+                            config.headers.Authorization = token;
+                        }
+                    }
+
+                    return config;
+                },
+                error => Promise.reject(error),
+            );
+
             navigate('/admin/auth');
         }
     }, [userRole])
@@ -70,10 +87,12 @@ export const Admin = () => {
                     <Route path={'/subcategories'} element={<Subcategories />} />
                     <Route path={'/subcategories/:id'} element={<EditSubcategory />} />
                     <Route path={'/add-subcategory'} element={<AddSubcategory />} />
+                    <Route path={'/add-subSubcategory'} element={<AddSubcategory subSubCategory />} />
                     <Route path={'/banners'} element={<Banners />} />
                     <Route path={'/admin-services'} element={<Services />} />
                     <Route path={'/add-new-service'} element={<AddNewService />} />
                     <Route path={'/add-product'} element={<AddNewItem />} />
+                    <Route path={'/edit-child-item/:id'} element={<EditChildItem />} />
                     <Route path={'/add-product/:id'} element={<AddNewItem isEditMode={true} />} />
                 </Routes>
             </div>

@@ -73,9 +73,10 @@ export const Review = ({ itemData, isAuthorized, id, setLoginData }) => {
             <div className={`${DEFAULT_CLASSNAME}_comments_content_title`}>Комментарии</div>
             {comments?.map(item => {
                 return (
-                    <div className={`${DEFAULT_CLASSNAME}_comments_content_item`}>
-                        <div>{item.authorName}</div>
-                        <div>{item.text}</div>
+                    <div className={`${DEFAULT_CLASSNAME}_comments_content_item`} itemProp="aggregateRating"
+                         itemScope itemType="https://schema.org/AggregateRating">
+                        <div itemProp="author">{item.authorName}</div>
+                        <div itemProp="reviewBody">{item.text}</div>
                     </div>
                 )
             })}

@@ -54,6 +54,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState([]);
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const navigate = useNavigate();
 
@@ -110,7 +111,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
             </nav>
           </div>
           {
-              !!searchData && searchText.length >= 1 && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
+              !!searchData && searchText.length >= 1 && searchFocused && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
 
                 {!searchData.length && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
 
@@ -118,8 +119,8 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
                   console.log(item);
 
                   const itemCategory = item?.category?.categoryName;
-                  const itemLink = item?.link_name || item?.id;
-                  const itemSubcategory = item.subcategory.link_name;
+                  const itemLink = item?.link || item?.id;
+                  const itemSubcategory = item?.subcategory?.link;
 
                   return (
                       <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={() => handleNavToItem(itemLink, itemCategory, itemSubcategory)}>
@@ -135,14 +136,14 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
           }
           <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel`}>
             <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}>
-              <input value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>
+              <input onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>
               <img className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search_icon`} src={search_icon}
                    alt={'search-icon'}/>
             </div>
-            <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_cart`} onClick={() => navigate('/cart')}>
-              <img src={cartIcon} alt={'cart-icon'} />
-              {cartItemsLength > 0 && <div className={`${DEFAULT_CLASSNAME}_cart-in`}>{cartItemsLength}</div>}
-            </div>
+            {/*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_cart`} onClick={() => navigate('/cart')}>*/}
+            {/*  <img src={cartIcon} alt={'cart-icon'} />*/}
+            {/*  {cartItemsLength > 0 && <div className={`${DEFAULT_CLASSNAME}_cart-in`}>{cartItemsLength}</div>}*/}
+            {/*</div>*/}
             <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_profile`} onClick={() => setIsMenuOpen(true)}>
               <img src={cabinet} alt={'profile-icon'} />
               {isLoggedIn && <div className={`${DEFAULT_CLASSNAME}_logged-in`} />}

@@ -76,8 +76,6 @@ const NewDescriptionItem = ({
         }
     }
 
-    console.log(newCardThere);
-
     return (
         <div className={`${DEFAULT_CLASSNAME}_item-info_card_wrapper`}>
             <div className={`${DEFAULT_CLASSNAME}_item-info_card`} style={{ background: newCardThere === "WHITE" ? "#fff" : "linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%)", border: newCardThere === "WHITE" && "1px solid #eeeeee"}}>
@@ -189,7 +187,7 @@ export const ItemDescription = ({
     }
 
     return (
-        <div className={`${DEFAULT_CLASSNAME}_item_info_cards`}>
+        <div className={`${DEFAULT_CLASSNAME}_item_info_cards`} style={{ marginTop: '30px'}}>
             {itemDescriptions.map((item, index) => <DescriptionItem
                 priority={item?.priority}
                 setItemEditDescriptionHandler={setItemEditDescriptionHandler}

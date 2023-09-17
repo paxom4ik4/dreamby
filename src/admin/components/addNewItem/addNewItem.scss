@@ -3,6 +3,27 @@
   border: 1px solid #53CDEF !important;
 }
 
+.edit-btn-admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0A4ECC;
+  color: #FAFCFD;
+  padding: 0 12px;
+  border-radius: 12px;
+  height: 24px;
+  transition: 0.3s;
+}
+
+.popular_items_item {
+  border: 1px solid #0A4ECC;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px;
+  margin: 8px 0;
+}
+
 .popular_items {
   input {
     width: 90%;
@@ -191,6 +212,150 @@
   flex-direction: column;
   margin-bottom: 80px;
 
+  &_metadata {
+    margin-top: 16px;
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+
+    &_item {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      textarea {
+        border: 1px solid rgba(44, 117, 255, 1);
+        border-radius: 4px;
+        padding: 12px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  &_memory_title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    div:last-child {
+      color: rgba(44, 117, 255, 1);
+      transition: 0.3s;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &_general {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &_product {
+      &_info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        &_item {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          gap: 12px;
+
+          &_image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+            height: 140px;
+            object-fit: contain;
+            padding: 4px;
+            border: 2px solid rgba(44, 117, 255, 1);
+            border-radius: 12px;
+
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          &_small {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            input {
+              height: 24px;
+              width: 24px;
+            }
+          }
+
+          label {
+            width: 20%;
+          }
+
+          select {
+            border: 1px solid rgba(44, 117, 255, 1);
+            border-radius: 4px;
+            height: 30px;
+            width: 30%;
+            padding: 4px 8px;
+          }
+
+          input {
+            border: 1px solid rgba(44, 117, 255, 1);
+            border-radius: 4px;
+            height: 30px;
+            width: 100%;
+            padding: 4px 8px;
+          }
+        }
+
+        &_title {
+          color: rgba(71, 71, 71, 1);
+          font-size: 20px;
+          font-weight: 600;
+        }
+      }
+    }
+
+    &_title {
+      color: rgba(44, 117, 255, 1);
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_sections {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    &_item {
+      cursor: pointer;
+      transition: 0.25s;
+      border-bottom: 1px solid #fff;
+    }
+  }
+
   &_metaItem {
     display: flex;
     flex-direction: column;
@@ -235,7 +400,7 @@
 
   &_item_info_services {
     width: 1200px;
-    margin: 120px auto;
+    margin: 40px auto 120px;
 
     &_items {
       display: flex;
@@ -344,13 +509,16 @@
   }
 
   &_save-item {
-    z-index: 10;
-    position: fixed;
-    left: calc(1200px - 12px);
-    top: 40px;
+    margin-left: auto;
+    margin-top: 20px;
     background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%);
     color: #FAFCFD;
-    padding: 8px 12px;
+    outline: none;
+    border: none;
+    width: 200px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 16px;
     border-radius: 12px;
     box-sizing: border-box;
     transition: 0.3s;

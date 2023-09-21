@@ -152,7 +152,7 @@ export const AddNewItem = ({ isEditMode }) => {
 
             setCurrentProductId(currentProduct?.product.id);
             setNewItemTitle(currentProduct?.product.name);
-            setMemories(Array.isArray(currentProduct?.product.Memory) ? currentProduct?.product.Memory: [currentProduct?.product.Memory]);
+            setMemories(Array.isArray(currentProduct?.product.Memory) ? currentProduct?.product.Memory : [currentProduct?.product.Memory]);
             setPrice(currentProduct?.product.price);
             setInStock(currentProduct?.product.in_stock);
             setUSDCurrency(!Boolean(currentProduct?.product.currency === "BYN"));
@@ -166,7 +166,7 @@ export const AddNewItem = ({ isEditMode }) => {
             setMetaDescription(currentProduct?.product?.meta_description ?? "");
             setMetaTitle(currentProduct?.product?.meta_title ?? "");
 
-            setCurrentColors(currentProduct?.product?.ProductModel);
+            setCurrentProductColors(currentProduct?.product?.colors);
 
             setItemSpecs(currentProduct?.characts);
 
@@ -268,6 +268,7 @@ export const AddNewItem = ({ isEditMode }) => {
 
     const [currentColorPhotos, setCurrentColorPhotos] = useState([]);
     const [currentColors, setCurrentColors] = useState([]);
+    const [currentProductColors, setCurrentProductColors] = useState([]);
 
     const saveNewDescriptionItem = (event, setItemEditDescription = () => {}) => {
         event.preventDefault();
@@ -485,7 +486,7 @@ export const AddNewItem = ({ isEditMode }) => {
         leaders && stickersToPost.push({name: "Лидер продаж"});
 
         const colorsToPost = currentColors.map(item => ({
-            color: item.name,
+            color: item.color,
             link: item.link,
             img_names: item.img_path.map(item => item.name),
         }))
@@ -493,6 +494,7 @@ export const AddNewItem = ({ isEditMode }) => {
         const memoryToPost = memories.map(item => ({
             size: item.size,
             price: item.price,
+            link: item.link,
         }))
 
         if (!!descriptionToPost.length) {
@@ -512,14 +514,8 @@ export const AddNewItem = ({ isEditMode }) => {
 
         const allPhotos = currentColors.map(item => item.img_path).flat();
 
-        if (allPhotos.length > 1) {
-            formData.append('prod_photo', allPhotos[0]);
-
-            for (let i = 1, len = allPhotos.length; i < len; i++) {
-                formData.append(`color_photo`, allPhotos[i], allPhotos[i].name);
-            }
-        } else {
-            formData.append("prod_photo", allPhotos[0]);
+        for (let i = 0, len = allPhotos.length; i < len; i++) {
+            formData.append(`color_photo`, allPhotos[i], allPhotos[i].name);
         }
 
         formData.append('currency', USDCurrency ? "USD" : "BYN"); //
@@ -529,19 +525,19 @@ export const AddNewItem = ({ isEditMode }) => {
 
         if (!!newManufacturer?.trim().length || !!currentManufacturer?.trim().length) {
             formData.append('manufacturer', newManufacturer?.trim().length ? newManufacturer : currentManufacturer);
-        } //
+        }
 
         if (metaTitle.trim().length) {
             formData.append('meta_title', metaTitle);
         } else {
             formData.append('meta_title', newItemTitle);
-        } //
+        }
 
         if (metaDescription.trim().length) {
             formData.append('meta_description', metaDescription);
         } else {
             formData.append('meta_description', newItemTitle);
-        } //
+        }
 
         formData.append('price', Number(price)); //
         formData.append('year', 2023); //
@@ -598,13 +594,11 @@ export const AddNewItem = ({ isEditMode }) => {
 
         formEditData.append('name', newItemTitle);
         formEditData.append('currency', USDCurrency ? "USD" : "BYN");
-        // formEditData.append('in_stock', Number(in_stock));
         formEditData.append('manufacturer', newManufacturer?.trim().length ? newManufacturer : currentManufacturer);
         formEditData.append('price', Number(price));
         formEditData.append('categoryId', selectedCategory);
         // formEditData.append('stickers', JSON.stringify(stickersToPost));
         formEditData.append('link_name', linkName);
-        // formEditData.append('hidePayment', hidePayment);
         formEditData.append('popular', JSON.stringify(popularItemsToSet));
         formEditData.append('meta_title', metaTitle.trim().length ? metaTitle : newItemTitle);
         formEditData.append('meta_description', metaDescription);
@@ -729,7 +723,22 @@ export const AddNewItem = ({ isEditMode }) => {
         </div>
     );
 
-    const saveNewMemoryHandler = () => {
+    const saveNewMemoryHandler = async () => {
+        const pathArr = window.location.href.split('/');
+        const id = pathArr[pathArr.length - 1];
+
+        if (isEditMode) {
+            await fetch(`${process.env["REACT_APP_API_URL"]}memory/`, {
+                method: "POST",
+                body: JSON.stringify({
+                    prodId: id,
+                    size: newMemoryAmount,
+                    price: newMemoryCost,
+                    link: newMemoryLink,
+                })
+            })
+        };
+
         setMemories([...memories, {
             size: newMemoryAmount,
             price: newMemoryCost,
@@ -755,6 +764,7 @@ export const AddNewItem = ({ isEditMode }) => {
                 method: "PATCH",
                 headers: {
                     "Authorization": token,
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     price: Number(priceValue),
@@ -789,6 +799,91 @@ export const AddNewItem = ({ isEditMode }) => {
         )
     };
 
+    const ColorComponent = props => {
+        const { Image, link, color, id } = props;
+
+        const [linkValue, setLinkValue] = useState(link);
+        const [colorValue, setColorValue] = useState(color);
+
+        const editItem = async () => {
+            const token = sessionStorage.getItem('admin-dream-token');
+
+            await fetch(`${process.env["REACT_APP_API_URL"]}color/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    color: colorValue,
+                    link: linkValue,
+                })
+            }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1));
+        }
+
+        return (
+            <>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Название:</label>
+                    <input value={colorValue} onChange={(e) => setColorValue(e.currentTarget.value)} type={"text"} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label>Ссылка:</label>
+                    <input value={linkValue} onChange={(e) => setLinkValue(e.currentTarget.value)} type={"text"} />
+                </div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
+                    <input onChange={async (e) => {
+                        const token = sessionStorage.getItem('admin-dream-token');
+
+                        const photoData = new FormData();
+
+                        photoData.append('file', e.target.files[0]);
+                        photoData.append('colorId', id);
+
+                        await fetch(`${process.env["REACT_APP_API_URL"]}image`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': token,
+                            },
+                            body: photoData,
+                        }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1));
+                    }} style={{ width: '100px', height: '140px', borderRadius: '12px', opacity: 0, position: 'absolute' }} type={'file'} /><img src={addPhoto} />
+
+                    {!!Image?.length && Image?.map(item => {
+                        return <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}>
+                            <img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item.id} src={item.img_path}/>
+                            <div onClick={async () => {
+                                const token = sessionStorage.getItem('admin-dream-token');
+
+                                await fetch(`${process.env["REACT_APP_API_URL"]}image/${item.id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': token,
+                                        'Content-Type': 'application/json',
+                                    }
+                                }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1))
+                            }} style={{cursor: 'pointer', background: 'red', width: '100%', textAlign: 'center', color: '#fff', padding: '4px', borderRadius: '12px', fontSize: '12px'}}>Удалить</div>
+                        </div>
+                    })}
+                </div>
+                <div className={`color-component-btns`}>
+                    <div className={`edit-btn-admin`} style={{ cursor: 'pointer' }} onClick={() => editItem()}>Обновить</div>
+                    <div onClick={async () => {
+                        const token = sessionStorage.getItem('admin-dream-token');
+
+                        await fetch(`${process.env["REACT_APP_API_URL"]}color/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': token,
+                                'Content-Type': 'application/json',
+                            }
+                        }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1));
+                    }} style={{ alignSelf: 'flex-end', cursor: 'pointer', background: 'red', textAlign: 'center', color: '#fff', padding: '4px 12px', borderRadius: '12px', fontSize: '14px'}}>Удалить</div>
+                </div>
+            </>
+        )
+    }
+
     const criteriaContent = (
         <div className={`${DEFAULT_CLASSNAME}_metadata`}>
             <div className={`${DEFAULT_CLASSNAME}_general_title`}>Критерии</div>
@@ -796,12 +891,34 @@ export const AddNewItem = ({ isEditMode }) => {
             <div className={`${DEFAULT_CLASSNAME}_colors`}>
                 <div className={`${DEFAULT_CLASSNAME}_memory_title`}>
                     <div style={{ fontWeight: '500', fontSize: '18px' }}>Цвета</div>
-                    <div className={`${DEFAULT_CLASSNAME}_memory_add`} onClick={() => {
-                        setCurrentColors([...currentColors, {
-                            name: newColorValue,
-                            link: newLink,
-                            img_path: currentColorPhotos,
-                        }]);
+                    <div className={`${DEFAULT_CLASSNAME}_memory_add`} onClick={async () => {
+                        if (isEditMode) {
+                            const token = sessionStorage.getItem('admin-dream-token');
+
+                            const photoData = new FormData();
+
+                            for (let i = 0, len = currentColorPhotos.length; i < len; i++) {
+                                photoData.append(`files`, currentColorPhotos[i], currentColorPhotos[i].name);
+                            }
+
+                            photoData.append('color', newColorValue);
+                            photoData.append('link', newLink);
+                            photoData.append('prodId', currentProductId);
+
+                            await fetch(`${process.env["REACT_APP_API_URL"]}color`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': token,
+                                },
+                                body: photoData,
+                            }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1));
+                        } else {
+                            setCurrentColors([...currentColors, {
+                                color: newColorValue,
+                                link: newLink,
+                                img_path: currentColorPhotos,
+                            }]);
+                        }
 
                         setNewLink("");
                         setNewColorValue("");
@@ -818,11 +935,11 @@ export const AddNewItem = ({ isEditMode }) => {
                         <input value={newLink} onChange={(e) => setNewLink(e.currentTarget.value)} type={"text"} placeholder={"Введите Ссылку"} />
                     </div>
                     <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
-                        <input onChange={(e) => {
-                            setCurrentColorPhotos([...currentColorPhotos, e.target.files[0]])}
+                        <input multiple={true} onChange={(e) => {
+                            setCurrentColorPhotos([...currentColorPhotos, ...e.target.files])}
                         } style={{ width: '100px', height: '140px', borderRadius: '12px', opacity: 0, position: 'absolute' }} type={'file'} /><img src={addPhoto} />
 
-                        {!!currentColorPhotos.length && currentColorPhotos.map(item => <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}><img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item} src={isEditMode ? item : URL.createObjectURL(item)}/>
+                        {!!currentColorPhotos.length && currentColorPhotos.map(item => <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}><img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item} src={URL.createObjectURL(item)}/>
                             <div onClick={() => {
                                 const deleteItem = currentColorPhotos.findIndex(image => image.name === item.name);
                                 setCurrentColorPhotos([...currentColorPhotos.slice(0, deleteItem), ...currentColorPhotos.slice(deleteItem + 1)])
@@ -835,7 +952,7 @@ export const AddNewItem = ({ isEditMode }) => {
                         <>
                             <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
                                 <label>Название:</label>
-                                <input value={color.name} type={"text"} disabled={true} />
+                                <input value={color.color} type={"text"} disabled={true} />
                             </div>
                             <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
                                 <label>Ссылка:</label>
@@ -843,7 +960,12 @@ export const AddNewItem = ({ isEditMode }) => {
                             </div>
                             <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
                                 {!!color?.img_path?.length && color?.img_path?.map(item => {
-                                    return <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}><img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item} src={isEditMode ? item : URL.createObjectURL(item)}/></div>
+                                    return <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}>
+                                        <img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item} src={isEditMode ? item : URL.createObjectURL(item)}/>
+                                        <div onClick={() => {
+                                            const deleteItem = currentColorPhotos.findIndex(image => image.name === item.name);
+                                            setCurrentColorPhotos([...currentColorPhotos.slice(0, deleteItem), ...currentColorPhotos.slice(deleteItem + 1)])
+                                        }} style={{cursor: 'pointer', background: 'red', width: '100%', textAlign: 'center', color: '#fff', padding: '4px', borderRadius: '12px', fontSize: '12px'}}>Удалить</div></div>
                                 })}
                             </div>
                             <div onClick={() => {
@@ -851,6 +973,10 @@ export const AddNewItem = ({ isEditMode }) => {
                                 setCurrentColors([...currentColors.slice(0, deleteItem), ...currentColors.slice(deleteItem + 1)])
                             }} style={{ alignSelf: 'flex-end', cursor: 'pointer', background: 'red', textAlign: 'center', color: '#fff', padding: '4px 12px', borderRadius: '12px', fontSize: '14px'}}>Удалить</div>
                         </>
+                    ))}
+
+                    {!!currentProductColors?.length && currentProductColors.map(color => (
+                        <ColorComponent Image={color.Image} link={color.link} color={color.color} id={color.id} />
                     ))}
                 </div>
             </div>
@@ -875,7 +1001,7 @@ export const AddNewItem = ({ isEditMode }) => {
                     </div>
                 </div>
                 {!!memories?.length && memories.map((item, index) => (
-                    <MemoryComponent id={item?.id} index={index} size={item?.size} link={item?.link} price={item?.price} />
+                    <MemoryComponent id={item?.id} index={index} size={item?.size} link={item?.link || item?.size} price={item?.price} />
                 ))}
             </div>
         </div>

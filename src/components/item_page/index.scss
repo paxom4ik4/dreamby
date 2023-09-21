@@ -24,6 +24,10 @@
   transition: 0.3s !important;
 }
 
+.active-image-selected {
+  box-shadow: 0 0 3px 2px #0681E4 !important;
+}
+
 .item-page {
   overflow-x: hidden;
   position: relative !important;
@@ -33,10 +37,10 @@
     margin-right: 8px;
     object-fit: contain;
     width: 58px;
-    height: 58px;
+    height: 80px;
     border: 2px solid rgba(32, 94, 187, 1);
     border-radius: 5px;
-    padding: 4px;
+    padding: 5px;
     transition: 0.3s;
 
     &:hover {

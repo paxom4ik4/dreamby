@@ -16,7 +16,7 @@ import {Link, useNavigate} from "react-router-dom";
 
 const DEFAULT_CLASSNAME = 'good-card';
 
-export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, imgUrl = goodCardExample, title = "Телефон Iphone 13 Pro Max" }) => {
+export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, imgUrl, title = "Телефон Iphone 13 Pro Max" }) => {
     const navigate = useNavigate();
 
     const token = sessionStorage.getItem('admin-dream-token');
@@ -70,7 +70,7 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
             <>
             <div className={DEFAULT_CLASSNAME}>
                 <div className={`${DEFAULT_CLASSNAME}_left`}>
-                    <img className={`${DEFAULT_CLASSNAME}_image`} src={imgUrl?.includes('http') ? imgUrl : `http://194.62.19.52:7000/${imgUrl}`} alt={'good-card-image'} />
+                    {imgUrl && <img className={`${DEFAULT_CLASSNAME}_image`} src={imgUrl?.includes('http') ? imgUrl : `http://194.62.19.52:7000/${imgUrl}`} alt={'good-card-image'} />}
                     <div className={`${DEFAULT_CLASSNAME}_title`}>{title}</div>
                 </div>
                 <div className={`${DEFAULT_CLASSNAME}_btns`}>
@@ -81,8 +81,6 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
                                      className={`${DEFAULT_CLASSNAME}_btn_item red`}/>
 
                                 <img src={edit} onClick={() => editItem(id)} className={`${DEFAULT_CLASSNAME}_btn_item white`}/>
-
-                                {/*<Link to={`/catalog/${id}`} target={"_blank"}><img src={preview} className={`${DEFAULT_CLASSNAME}_btn_item blue`}/></Link>*/}
 
                                 <img src={right} onClick={() => setEditMode(!editMode)}
                                      className={`${DEFAULT_CLASSNAME}_btn_item close-btn`}/>
@@ -95,7 +93,7 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
             {selectedProduct.map(product => (
                 <div className={DEFAULT_CLASSNAME}>
                     <div className={`${DEFAULT_CLASSNAME}_left`}>
-                        <img className={`${DEFAULT_CLASSNAME}_image`} src={imgUrl?.includes('http') ? imgUrl : `http://194.62.19.52:7000/${imgUrl}`} alt={'good-card-image'} />
+                        <img className={`${DEFAULT_CLASSNAME}_image`} src={product?.img_path} alt={'good-card-image'} />
                         <div className={`${DEFAULT_CLASSNAME}_title`}>{product.name}</div>
                     </div>
                     <div className={`${DEFAULT_CLASSNAME}_btns`}>
@@ -117,7 +115,7 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
     return (
         <div className={DEFAULT_CLASSNAME}>
             <div className={`${DEFAULT_CLASSNAME}_left`}>
-                <img className={`${DEFAULT_CLASSNAME}_image`} src={imgUrl?.includes('http') ? imgUrl : `http://194.62.19.52:7000/${imgUrl}`} alt={'good-card-image'} />
+                {imgUrl && <img className={`${DEFAULT_CLASSNAME}_image`} src={imgUrl?.includes('http') ? imgUrl : `http://194.62.19.52:7000/${imgUrl}`} alt={'good-card-image'} />}
                 <div className={`${DEFAULT_CLASSNAME}_title`}>{title}</div>
             </div>
             <div className={`${DEFAULT_CLASSNAME}_btns`}>

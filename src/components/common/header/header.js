@@ -116,11 +116,9 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
                 {!searchData.length && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
 
                 {searchData?.map(item => {
-                  console.log(item);
-
                   const itemCategory = item?.category?.categoryName;
                   const itemLink = item?.link || item?.id;
-                  const itemSubcategory = item?.subcategory?.link;
+                  const itemSubcategory = item?.subcategory?.link_name;
 
                   return (
                       <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={() => handleNavToItem(itemLink, itemCategory, itemSubcategory)}>

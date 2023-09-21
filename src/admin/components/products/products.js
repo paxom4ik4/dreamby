@@ -128,7 +128,7 @@ export const Products = () => {
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
 
-    const filterProducts = () => {
+    const filterProducts = async () => {
         let url = `${process.env["REACT_APP_API_URL"]}product`;
 
         if (!!categoryToFilter && categoryToFilter !== "Категория") {
@@ -163,8 +163,8 @@ export const Products = () => {
 
         if (url !== `${process.env["REACT_APP_API_URL"]}product`) setFilteredUrl(url);
 
-        fetch(url, {
-            method: "GET",
+        await fetch(url, {
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": token,
@@ -198,9 +198,7 @@ export const Products = () => {
                         {productsToShow?.map(item => {
                             return (
                                 <>
-                                <GoodCard link={item.link} dataUpdated={dataUpdated} setDataUpdated={setDataUpdated} id={item.id} title={item.name} imgUrl={ item?.img_path?.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} />
-
-
+                                <GoodCard link={item.link} dataUpdated={dataUpdated} setDataUpdated={setDataUpdated} id={item.id} title={item.name} />
                                 </>
                             )
                         })}

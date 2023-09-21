@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import './createNewItem.scss';
 import axios from "axios";
+import {toast} from "react-toastify";
 
 const DEFAULT_CLASSNAME = 'create-new-item';
 
@@ -20,6 +21,8 @@ const EditChildItem = () => {
     const [hidePayment, setHidePayment] = useState(false);
     const [hideProduct, setHideProduct] = useState(false);
 
+    const [dataUpdated, setDataUpdated] = useState(1);
+
     useEffect(() => {
         const pathArr = window.location.href.split('/');
         const id = pathArr[pathArr.length - 1];
@@ -32,7 +35,7 @@ const EditChildItem = () => {
         })
             .then(res => res.json())
             .then(data => setProductData(data));
-    }, []);
+    }, [dataUpdated]);
 
     useEffect(() => {
         if (productData) {
@@ -55,6 +58,10 @@ const EditChildItem = () => {
             isVisible: !hideProduct,
             hidePayment: hidePayment,
         }), { headers: { 'Authorization': 'Bearer '+token.slice(7), 'Content-Type': 'application/json' } });
+
+
+        setDataUpdated(dataUpdated + 1);
+        toast.info("Модель отредактирована");
     }
 
     const generalContent = (

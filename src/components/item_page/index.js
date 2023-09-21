@@ -53,28 +53,14 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
 
     fetch(`${process.env["REACT_APP_API_URL"]}product/${productId}`)
       .then(res => res.json()).then(data => {
-        let currentPhotosToSet = null;
 
-        if (data?.colors?.filter(Boolean).length > 0) {
-          currentPhotosToSet = data?.colors?.find(item => item.link === data.product.link_name);
-        }
+        setImages(data?.product?.color?.Image);
 
-        if (!!currentPhotosToSet) {
-          setImages([data?.product?.img_path, ...currentPhotosToSet.img_path.filter(Boolean)] ?? []);
-        } else {
-          if (data?.colors?.filter(Boolean).length) {
-            setImages([data?.product?.img_path, ...data.colors[0].img_path.filter(Boolean)] ?? []);
-          } else {
-            setImages([data?.product?.img_path] ?? []);
-          }
-        }
-
-        setProductModel(data?.product?.ProductModel);
-
+        setProductModel(data?.product?.ProductModel?.models);
         setItemData(data);
         setSelectedDeviceName(data.product?.name);
         setSelectedCategory(data?.product?.categoryId)
-        setCurrentImage(data.product?.img_path);
+        setCurrentImage(data?.product?.color?.Image[0]?.img_path);
     })
   }, [navigate]);
 
@@ -116,11 +102,9 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
   useEffect(() => {
     if (!!itemData && itemData !== {}) {
       setConfig({
-        colors: itemData?.colors,
-        memory: itemData?.product?.Memory?.sort((a, b) => a.size - b.size) || [],
+        colors: itemData?.product?.ProductModel?.colors.filter(Boolean),
+        memory: itemData?.product?.ProductModel?.memory.filter(Boolean),
       })
-
-      if (itemData?.product?.Memory?.length) setSelectedMemory(itemData?.product?.Memory[0])
     }
   }, [itemData]);
 
@@ -204,13 +188,13 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
         <div onClick={(event) => {
           event.stopPropagation()
           const currentImageIndex = images.indexOf(currentImage);
-          setCurrentImage(currentImageIndex === 0 ? images[images.length - 1] : images[currentImageIndex - 1]);
+          setCurrentImage(currentImageIndex === 0 ? images[images.length - 1].img_path : images[currentImageIndex - 1].img_path);
         }} className={`${DEFAULT_CLASSNAME}_image prev_photo`}>{"<"}</div>
         <img src={currentImage?.includes('http') ? currentImage : `http://194.62.19.52:7000/${currentImage}`}/>
         <div onClick={(event) => {
           event.stopPropagation()
           const currentImageIndex = images.indexOf(currentImage);
-          setCurrentImage(currentImageIndex === (images.length - 1) ? images[0] : images[currentImageIndex + 1]);
+          setCurrentImage(currentImageIndex === (images.length - 1) ? images[0].img_path : images[currentImageIndex + 1].img_path);
         }} className={`${DEFAULT_CLASSNAME}_image next_photo`}>{">"}</div>
       </div>
       <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
@@ -234,8 +218,8 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
                 className="mySwiper"
             >
               {images.map(item => (
-                <SwiperSlide onClick={() => setCurrentImage(item)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
-                  <img src={item?.includes('http') ? item : `http://194.62.19.52:7000/${item}`} alt={'slide_image'}/>
+                <SwiperSlide onClick={() => setCurrentImage(item.img_path)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
+                  <img src={item.img_path?.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} alt={'slide_image'}/>
                 </SwiperSlide>)
                 )}
             </Swiper>
@@ -249,8 +233,8 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
             >
               {images.length ? images.map(item => {
                 return (
-                    !!item && <SwiperSlide onClick={() => setCurrentImage(item)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
-                      <img src={item.includes('http') ? item : `http://194.62.19.52:7000/${item}`} alt={'slide_image'}/>
+                    !!item && <SwiperSlide onClick={() => setCurrentImage(item.img_path)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
+                      <img src={item.img_path.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} alt={'slide_image'}/>
                     </SwiperSlide>
                 )}) : null}
             </Swiper>
@@ -268,14 +252,24 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
             </div>
 
             <h1 className={`${DEFAULT_CLASSNAME}_title`} itemProp="name">{itemData?.product?.name}</h1>
-            {!!productModel?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>
+            {!!config?.colors?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>
               <div className={`${DEFAULT_CLASSNAME}_configuration_group_title`}>{"Цвет: "}</div>
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
-                {productModel.map(item => (
-                  <img className={`${DEFAULT_CLASSNAME}_product_color-item`} alt={'photo-wtf'} onClick={() => {
-                    const pathArr = window.location.pathname.split("/");
-                    pathArr[pathArr.length - 1] = item.link;
-                    navigate(pathArr.join("/"));
+                {config.colors.map(item => (
+                  <img className={`${DEFAULT_CLASSNAME}_product_color-item ${itemData.product.color.link === item.link && 'active-image-selected'}`} alt={'photo-wtf'} onClick={() => {
+                    const link = window.location.href.split('/');
+                    const productLink = link[link.length - 1];
+
+                    const product = productLink.split('-');
+                    product[product.length - 2] = item.link;
+
+                    const linkProductFinal = product.join('-');
+
+                    link[link.length - 1] = linkProductFinal;
+
+                    const linkToFinal = link.join('/');
+
+                    window.location.replace(linkToFinal);
                   }} src={item?.img_path[0]} />
                 ))}
               </div>
@@ -283,7 +277,21 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
             {!!config?.memory?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>
               <div className={`${DEFAULT_CLASSNAME}_configuration_group_title`}>{"Объем встроенной памяти: "}</div>
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
-                {config?.memory?.map(memory => <div onClick={() => setSelectedMemory(memory)} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${memory === selectedMemory && 'config-item-block-active'}`}>{memory.size}</div>)}
+                {config?.memory?.map(memory => <div onClick={() => {
+                  const link = window.location.href.split('/');
+                  const productLink = link[link.length - 1];
+
+                  const product = productLink.split('-');
+                  product[product.length - 1] = memory.size;
+
+                  const linkProductFinal = product.join('-');
+
+                  link[link.length - 1] = linkProductFinal;
+
+                  const linkToFinal = link.join('/');
+
+                  window.location.replace(linkToFinal);
+                }} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${itemData.product.memory.size === memory.size && 'config-item-block-active'}`}>{memory.size}</div>)}
               </div>
             </div> }
             {!!config?.condition?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>

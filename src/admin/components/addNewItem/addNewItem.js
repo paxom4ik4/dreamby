@@ -560,7 +560,7 @@ export const AddNewItem = ({ isEditMode }) => {
 
         const token = sessionStorage.getItem('admin-dream-token');
 
-        axios.post(`http://194.62.19.52:7001/api/product`, formData, {
+        axios.post(`https://dreamstore.by/api/product`, formData, {
             headers: {'Authorization': 'Bearer ' + token.slice(7)}
         }).finally(() => {
             let request = new Request(`${process.env["REACT_APP_API_URL"]}product`, {
@@ -633,8 +633,9 @@ export const AddNewItem = ({ isEditMode }) => {
                 method: "DELETE",
                 headers: {
                     'Authorization': token,
+                    'Content-Type': 'application/json'
                 },
-            })
+            }).then(() => setDataUpdated(dataUpdated + 1));
         } else {
             const idx = memories.findIndex(memory => memory.amount === amt);
             setMemories([...memories.slice(0, idx), ...memories.slice(idx + 1)])
@@ -727,9 +728,12 @@ export const AddNewItem = ({ isEditMode }) => {
         const pathArr = window.location.href.split('/');
         const id = pathArr[pathArr.length - 1];
 
+        const token = sessionStorage.getItem('admin-dream-token');
+
         if (isEditMode) {
             await fetch(`${process.env["REACT_APP_API_URL"]}memory/`, {
                 method: "POST",
+                headers: { 'Authorization': token, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     prodId: id,
                     size: newMemoryAmount,
@@ -762,10 +766,7 @@ export const AddNewItem = ({ isEditMode }) => {
 
             await fetch(`${process.env["REACT_APP_API_URL"]}memory/${id}`, {
                 method: "PATCH",
-                headers: {
-                    "Authorization": token,
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Authorization': token, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     price: Number(priceValue),
                     link: linkValue,

@@ -18,7 +18,8 @@ const UNAVAILABLE_TEXT = 'Под заказ';
 const AVAILABLE_SERVICE_TEXT = 'Доступна';
 const UNAVAILABLE_SERVICE_TEXT = 'Недоступна';
 
-export const ItemCard = ({
+export const ItemCard = React.memo(({
+    hideControls = false,
   product,
   clickLink,
   setSelectedCategory = () => {},
@@ -30,7 +31,7 @@ export const ItemCard = ({
   setFavoriteItems,
   image,
   isFavorite,
-    link,
+  link,
   inCompareMode,
   isAvailable = true,
   title,
@@ -68,7 +69,13 @@ export const ItemCard = ({
     }
 
     if (!isServiceItem && event.target.className !== "add-to-cart" && event.target.className !== "tem_card_cart" && event.target.className !== 'item_card_compare' && event.target.closest('div').className !== 'item_card_favoriteWrapper') {
-      !isServiceItem && productId && navigate(`${window.location.pathname}/${productId}`)
+      if (!isServiceItem && link) {
+        if (link.includes('catalog')) {
+          window.location = `${window.location.origin}/${link}`;
+        } else {
+          navigate(`${window.location.pathname}/${link}`)
+        }
+      }
     }
 
     if (isServiceItem && event.target.className !== 'add-to-cart' && event.target.closest('div').className !== 'item_card_favorite') {
@@ -80,9 +87,9 @@ export const ItemCard = ({
     <div itemScope itemType={"https://schema.org/ItemList"} onClick={openProductHandler} className={`${DEFAULT_CLASSNAME} ${!isAvailable && 'unavailable'}`} style={{ borderRadius: roundedBorders && "12px", background: compareMode && '#FFF'}}>
       <div className={`${DEFAULT_CLASSNAME}_wrapper`} itemScope itemType={isServiceItem ? 'https://schema.org/Service' : 'https://schema.org/Product'}>
         {isServiceItem && <meta itemProp="serviceType" content={title} />}
-        {compareMode && <div className={'delete-from-compare'} onClick={deleteFromCompare}>Убрать из сравнения</div>}
+        {(compareMode) && <div className={'delete-from-compare'} onClick={deleteFromCompare}>Убрать из сравнения</div>}
         { !compareMode && <div className={`${DEFAULT_CLASSNAME}_favoriteWrapper`}>
-          {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_favorite`} onClick={() => {setFavoriteItems(productId)}} style={{ color: isFavorite && "red" }}>{favoriteIcon}</span>}
+          {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_favorite`} onClick={() => {setFavoriteItems(product)}} style={{ color: isFavorite && "red" }}>{favoriteIcon}</span>}
           {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(product)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}
         </div>
         }
@@ -124,4 +131,4 @@ export const ItemCard = ({
       </div>
     </div>
   )
-}
+})

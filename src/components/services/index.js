@@ -36,8 +36,6 @@ export const ServicesFilter = ({ setCatalogFilterOpened, catalogFilterOpened, se
 
   const [categoryFilters, setCategoryFilters] = useState(null);
 
-  console.log(selectedSubcategory);
-
   useEffect(() => {
       fetch(`${process.env["REACT_APP_API_URL"]}product/filters?category=${selectedSubSubcategory?.id || selectedSubcategory || selectedCategory}`)
           .then(res => res.json())
@@ -242,7 +240,7 @@ export const ServicesFilter = ({ setCatalogFilterOpened, catalogFilterOpened, se
   )
 }
 
-export const Services = ({ setSelectedCategory, catalogFilterOpened, setSelectedSubcategories, favoriteItems, favoriteCatalogItems, setFavoriteItems, setFavoriteServices, setCartItems }) => {
+export const Services = ({ setSelectedCategory, catalogFilterOpened, setSelectedSubcategories, favoriteItems, favoriteCatalogItems, setFavoriteItems, setCartItems }) => {
   const [services, setServices] = useState([]);
 
   const [currentRate, setCurrentRate] = useState(2.6);
@@ -287,7 +285,7 @@ export const Services = ({ setSelectedCategory, catalogFilterOpened, setSelected
 
       <CommonServices />
       <div className={`${DEFAULT_CLASSNAME}_content`}>
-        <ServiceItems isServicePage={true} favoriteItems={favoriteItems} currentRate={currentRate} items={services} setCartItems={setCartItems} setFavoriteItems={setFavoriteServices} />
+        <ServiceItems isServicePage={true} favoriteItems={favoriteItems} currentRate={currentRate} items={services} setCartItems={setCartItems} />
       </div>
       <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteCatalogItems} currentRate={currentRate} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
     </div>

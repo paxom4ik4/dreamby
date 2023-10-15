@@ -415,6 +415,7 @@ h1 {
         flex-wrap: nowrap;
         overflow-x: scroll;
         gap: 6px;
+        margin-bottom: 20px;
 
         &_wrapper {
           display: flex;
@@ -596,7 +597,7 @@ h1 {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: scroll;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
   }
 
   .catalog {

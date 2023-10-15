@@ -79,7 +79,11 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
   const handleNavToItem = (link, category, itemSubcategory) => {
     const itemCategory = objReplacer[category];
 
-    navigate(`catalog/${itemCategory}/${itemSubcategory}/${link}`);
+    if (link.includes('catalog')) {
+      window.location = `${window.location.origin}/${link}`;
+    } else {
+      navigate(`catalog/${itemCategory}/${itemSubcategory}/${link}`);
+    }
     setSearchText('');
   }
 
@@ -123,7 +127,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
                   return (
                       <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={() => handleNavToItem(itemLink, itemCategory, itemSubcategory)}>
                         <div className={`${DEFAULT_CLASSNAME}_searched-items_item_img`} style={{ width: "10%" }}>
-                          <img src={item.img_path.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`}/>
+                          <img src={item?.img_path?.includes('http') ? item?.img_path : `http://194.62.19.52:7000/${item?.img_path}`}/>
                         </div>
                         <div className={`${DEFAULT_CLASSNAME}_searched-items_item_text`}>{item.name}</div>
                         <span className={`${DEFAULT_CLASSNAME}_searched-items_item_about`}>Подробнее</span>

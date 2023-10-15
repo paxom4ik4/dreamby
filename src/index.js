@@ -18,7 +18,7 @@ import { Cart } from "./components/cart/cart";
 import { Compare } from "./components/compare";
 import { Login } from "./components/login";
 import { Billing } from "./components/billing";
-import { Catalog } from "./components/catalog/catalog";
+import Catalog from "./components/catalog/catalog";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -44,6 +44,8 @@ export const Loader = () => {
   )
 }
 
+export const FavoriteContext = React.createContext({});
+
 const App = () => {
   const navigate = useNavigate();
 
@@ -52,14 +54,6 @@ const App = () => {
   });
 
   const favoriteDeleteNotify = () => toast("Товар удален из избранных.", {
-    type: "info"
-  });
-
-  const favoriteServiceNotify = () => toast("Услуга добавлена в избранное!", {
-    type: "info"
-  });
-
-  const favoriteDeleteServiceNotify = () => toast("Услуга удалена из избранных.", {
     type: "info"
   });
 
@@ -111,33 +105,19 @@ const App = () => {
   const [favoriteServices, setFavoriteServices] = useState(JSON.parse(localStorage.getItem('favoriteServices')) || []);
   const [rerenderCart, setRerenderCart] = useState(false)
 
-  const setFavoriteItemHandler = (itemId) => {
-    if(Array.isArray(itemId)) {
+
+  const setFavoriteItemHandler = (item) => {
+    if(Array.isArray(item)) {
       setFavoriteItems([]);
       return;
     }
 
-    if (favoriteItems.includes(itemId)) {
-      setFavoriteItems(favoriteItems.filter(id => id !== itemId))
+    if (!!favoriteItems.find(product => product.id === item.id)) {
+      setFavoriteItems(favoriteItems.filter(product => product.id !== item.id))
       favoriteDeleteNotify();
     } else {
-      setFavoriteItems(prev => ([...prev, itemId]))
+      setFavoriteItems(prev => ([...prev, item]))
       favoriteNotify();
-    }
-  }
-
-  const setFavoriteServiceHandler = (itemId) => {
-    if(Array.isArray(itemId)) {
-      setFavoriteServices([]);
-      return;
-    }
-
-    if (favoriteServices.includes(itemId)) {
-      setFavoriteServices(favoriteServices.filter(id => id !== itemId));
-      favoriteDeleteServiceNotify();
-    } else {
-      setFavoriteServices(prev => ([...prev, itemId]));
-      favoriteServiceNotify();
     }
   }
 
@@ -171,10 +151,6 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
   }, [favoriteItems])
-
-  useEffect(() => {
-    localStorage.setItem('favoriteServices', JSON.stringify(favoriteServices));
-  }, [favoriteServices])
 
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -262,37 +238,39 @@ const App = () => {
         }
       }}>
         <Header setSelectedCategory={setSelectedCategory} isLoggedIn={isLoggedIn} setLoginData={setLoginData} />
-        <NavPanel subcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} selectedDeviceName={selectedDeviceName} selectedSubcategories={selectedSubcategories} />
-        <Wrapper>
-          <Routes location={displayLocation}>
-            <Route path={"/"} element={<Main setSelectedCategoryName={setSelectedCategoryName} favoriteServices={favoriteServices} favoriteItems={favoriteItems} setSelectedCategory={setSelectedCategory} favoriteNotify={favoriteNotify} setFavoriteServices={setFavoriteServiceHandler} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} categories={categories} setCategories={setCategories} />} />
-            <Route path={"/about"} element={<About setSelectedCategory={setSelectedCategory} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} />} />
-            <Route path={"/services"} element={<Services setSelectedCategory={setSelectedCategory} catalogFilterOpened={catalogFilterOpened} setCartItem={setCartItems} favoriteCatalogItems={favoriteItems} favoriteItems={favoriteServices} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setFavoriteServices={setFavoriteServiceHandler} setCartItems={setCartItemsHandler} />} />
-            <Route path={"/services/:id"} element={<ServicePage cartItems={cartItems} setCartItems={setCartItems} isAuthorized={isLoggedIn} setLoginData={setLoginData} />} />
-            <Route path={"/catalog"} element={<Catalog allSubcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} catalogFilterOpened={catalogFilterOpened} setCatalogFilterOpened={setCatalogFilterOpened} compareItems={compareItems} selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories} addItemToCompare={addItemToCompare} selectedCategoryName={selectedCategoryName} setSelectedCategoryName={setSelectedCategoryName} favoriteItems={favoriteItems} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} />}>
-              <Route path={"/catalog/:category"} element={<Catalog allSubcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} catalogFilterOpened={catalogFilterOpened} setCatalogFilterOpened={setCatalogFilterOpened} compareItems={compareItems} selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories} addItemToCompare={addItemToCompare} selectedCategoryName={selectedCategoryName} setSelectedCategoryName={setSelectedCategoryName} favoriteItems={favoriteItems} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} />}>
-                <Route path={"/catalog/:category/:subcategory"} element={<Catalog allSubcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} catalogFilterOpened={catalogFilterOpened} setCatalogFilterOpened={setCatalogFilterOpened} compareItems={compareItems} selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories} addItemToCompare={addItemToCompare} selectedCategoryName={selectedCategoryName} setSelectedCategoryName={setSelectedCategoryName} favoriteItems={favoriteItems} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} />} />
+        <NavPanel setSelectedDeviceName={setSelectedDeviceName} subcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} selectedDeviceName={selectedDeviceName} selectedSubcategories={selectedSubcategories} />
+        <FavoriteContext.Provider value={{ setFavoriteItems: setFavoriteItemHandler, favoriteItems, favoriteNotify }}>
+          <Wrapper>
+            <Routes location={displayLocation}>
+              <Route path={"/"} element={<Main setSelectedCategoryName={setSelectedCategoryName} favoriteServices={favoriteServices} favoriteItems={favoriteItems} setSelectedCategory={setSelectedCategory} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} categories={categories} setCategories={setCategories} />} />
+              <Route path={"/about"} element={<About setSelectedCategory={setSelectedCategory} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} />} />
+              <Route path={"/services"} element={<Services setSelectedCategory={setSelectedCategory} catalogFilterOpened={catalogFilterOpened} setCartItem={setCartItems} favoriteCatalogItems={favoriteItems} favoriteItems={favoriteServices} favoriteNotify={favoriteNotify} setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} />} />
+              <Route path={"/services/:id"} element={<ServicePage cartItems={cartItems} setCartItems={setCartItems} isAuthorized={isLoggedIn} setLoginData={setLoginData} />} />
+              <Route path={"/catalog"} element={<Catalog setSelectedDeviceName={setSelectedDeviceName} allSubcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} catalogFilterOpened={catalogFilterOpened} setCatalogFilterOpened={setCatalogFilterOpened} compareItems={compareItems} selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories} addItemToCompare={addItemToCompare} selectedCategoryName={selectedCategoryName} setSelectedCategoryName={setSelectedCategoryName} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} setCartItems={setCartItemsHandler} />}>
+                <Route path={"/catalog/:category"} element={<Catalog setSelectedDeviceName={setSelectedDeviceName} allSubcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} catalogFilterOpened={catalogFilterOpened} setCatalogFilterOpened={setCatalogFilterOpened} compareItems={compareItems} selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories} addItemToCompare={addItemToCompare} selectedCategoryName={selectedCategoryName} setSelectedCategoryName={setSelectedCategoryName} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} setCartItems={setCartItemsHandler} />}>
+                  <Route path={"/catalog/:category/:subcategory"} element={<Catalog setSelectedDeviceName={setSelectedDeviceName} allSubcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} catalogFilterOpened={catalogFilterOpened} setCatalogFilterOpened={setCatalogFilterOpened} compareItems={compareItems} selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories} addItemToCompare={addItemToCompare} selectedCategoryName={selectedCategoryName} setSelectedCategoryName={setSelectedCategoryName} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} setCartItems={setCartItemsHandler} />} />
+                </Route>
               </Route>
-            </Route>
-            <Route path={"/catalog/:category/:subcategory/:id"} element={
-              <Suspense fallback={<Loader />}><ItemPage setCartItems={setCartItems} allSubcategories={subcategories} setSelectedSubcategory={setSelectedSubcategory} compareItems={compareItems} setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} setSelectedSubcategories={setSelectedSubcategories} setSelectedDeviceName={setSelectedDeviceName} setLoginData={setLoginData} setFavoriteItems={setFavoriteItemHandler} favoriteItems={favoriteItems} loginData={loginData} addItemToCompare={addItemToCompare} addToCart={setCartItemsHandler} /> </Suspense>
-            } />
-            <Route path={"/registration"} element={<Registration registerNotify={registerNotify} registrationMode={true} />} />
-            <Route path={"/favorite"} element={<FavoriteItems setFavoriteItems={setFavoriteItemHandler} setFavoriteServices={setFavoriteServiceHandler} setCartItems={setCartItemsHandler} favoriteItems={favoriteItems} favoriteServices={favoriteServices} />} />
-            <Route path={"/cart"} element={<Cart setCartItems={setCartItems} orderSuccess={orderSuccess} cartItems={cartItems} loginData={loginData} rerenderCart={rerenderCart} />} />
-            <Route path={"/compare"} element={<Compare deleteFromCompare={deleteFromCompare} compareItems={compareItems} />} />
-            <Route path={"/login"} element={<Login loginNotify={loginNotify} loginFailed={loginFailed} setIsLoggedIn={setIsLoggedIn} setLoginData={setLoginData} />} />
-            <Route path={"/billing"} element={<Billing />} />
-            <Route path={"/admin/*"} element={<Admin />} />
-            <Route path={"/admin/*"} element={<Admin />} />
-            <Route path={"/profile"} element={<Profile />} />
-            <Route path={"/info"} element={<Info />} />
-            <Route path="*" element={<div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", height: "100vh"}}>
-              <h3>404. Страница не найдена</h3>
-              <Link style={{ color: "#0866D7", fontWeight: "400" }} to={"/"}>Вернуться на главную</Link>
-            </div>} />
-          </Routes>
-        </Wrapper>
+              <Route path={"/catalog/:category/:subcategory/:id"} element={
+                <Suspense fallback={<Loader />}><ItemPage setCartItems={setCartItems} allSubcategories={subcategories} setSelectedSubcategory={setSelectedSubcategory} compareItems={compareItems} setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} setSelectedSubcategories={setSelectedSubcategories} setSelectedDeviceName={setSelectedDeviceName} setLoginData={setLoginData} setFavoriteItems={setFavoriteItemHandler} favoriteItems={favoriteItems} loginData={loginData} addItemToCompare={addItemToCompare} addToCart={setCartItemsHandler} /> </Suspense>
+              } />
+              <Route path={"/registration"} element={<Registration registerNotify={registerNotify} registrationMode={true} />} />
+              <Route path={"/favorite"} element={<FavoriteItems setFavoriteItems={setFavoriteItemHandler} setCartItems={setCartItemsHandler} favoriteItems={favoriteItems} favoriteServices={favoriteServices} />} />
+              <Route path={"/cart"} element={<Cart setCartItems={setCartItems} orderSuccess={orderSuccess} cartItems={cartItems} loginData={loginData} rerenderCart={rerenderCart} />} />
+              <Route path={"/compare"} element={<Compare setSelectedDeviceName={setSelectedDeviceName} deleteFromCompare={deleteFromCompare} compareItems={compareItems} />} />
+              <Route path={"/login"} element={<Login loginNotify={loginNotify} loginFailed={loginFailed} setIsLoggedIn={setIsLoggedIn} setLoginData={setLoginData} />} />
+              <Route path={"/billing"} element={<Billing />} />
+              <Route path={"/admin/*"} element={<Admin />} />
+              <Route path={"/admin/*"} element={<Admin />} />
+              <Route path={"/profile"} element={<Profile />} />
+              <Route path={"/info"} element={<Info />} />
+              <Route path="*" element={<div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", height: "100vh"}}>
+                <h3>404. Страница не найдена</h3>
+                <Link style={{ color: "#0866D7", fontWeight: "400" }} to={"/"}>Вернуться на главную</Link>
+              </div>} />
+            </Routes>
+          </Wrapper>
+        </FavoriteContext.Provider>
         {!catalogFilterOpened && <Footer />}
       </div>
       <ToastContainer />
@@ -303,9 +281,7 @@ const App = () => {
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
-  <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>
 )

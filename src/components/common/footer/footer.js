@@ -50,7 +50,7 @@ export const Footer = () => {
               <div className={`${DEFAULT_CLASSNAME}_navigation_item`}>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item-title`}>{'Служба поддержки '}</div>
                 <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/about')}>{'Связаться с нами'}</div>
-                <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/info')}>{'Юридическа информация'}</div>
+                <div className={`${DEFAULT_CLASSNAME}_navigation_sub-item`} onClick={() => navigate('/info')}>{'Юридическая информация'}</div>
               </div>
             </div>
           </div>

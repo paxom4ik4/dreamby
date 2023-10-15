@@ -19,6 +19,7 @@ export const Slider = ({ slides, slidesPerView, aboutPage = false }) => {
 
   return (
     <Swiper
+      loop={true}
       mousewheel={{
         forceToAxis: true,
       }}

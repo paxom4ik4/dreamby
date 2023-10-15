@@ -58,8 +58,6 @@ export const Card = ({ paymentMethod = "Самовывоз", orderType = "Нал
                 })}
 
                 {!!servicesData?.length && servicesData.map(item => {
-                    console.log(item);
-
                     return (
                       <div className={`${DEFAULT_CLASSNAME}_order`}>
                           <div>Услгуга: {item?.service} <br /> (доп. информация)</div>

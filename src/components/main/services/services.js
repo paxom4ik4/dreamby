@@ -27,7 +27,7 @@ export const Services = ({ favoriteItems, setFavoriteItems }) => {
           price={item.price}
           isAvailable={true}
           isServiceItem={true}
-          isFavorite={favoriteItems?.includes(item.id)}
+          isFavorite={favoriteItems?.includes(item)}
         />)}
       </div>
     </div>

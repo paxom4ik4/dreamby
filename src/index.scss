@@ -4,6 +4,21 @@
 
 * {
   box-sizing: border-box;
+
+  ::-webkit-scrollbar {
+    height: 0 !important;
+    opacity: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 0 !important;
+    opacity: 0;
+  }
+
+  ::-webkit-scrollbar-track {
+    width: 0 !important;
+    opacity: 0;
+  }
 }
 
 body {

@@ -19,7 +19,7 @@ const PathNames = {
   "login": "Авторизация",
 }
 
-export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcategory, selectedCategory, setSelectedCategory, selectedDeviceName, selectedSubcategories, setSelectedSubcategories }) => {
+export const NavPanel = ({ setSelectedDeviceName, subcategories, setSelectedSubcategory, selectedSubcategory, selectedCategory, setSelectedCategory, selectedDeviceName, setSelectedSubcategories }) => {
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -63,10 +63,11 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
               if (idx === 0 ) navigate("/");
 
               if (item === "Каталог") {
-                navigate("/catalog");
                 setSelectedCategory(null);
                 setSelectedSubcategory(null);
                 setSelectedSubcategories([]);
+                setSelectedDeviceName(null);
+                navigate("/catalog");
               }
 
             }} className={`${DEFAULT_CLASSNAME}_item`}>
@@ -81,6 +82,7 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
 
           {currentPath[1] === "Каталог" && categoryInfo?.id && <div itemScope itemType="https://schema.org/ListItem" style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
             setSelectedCategory(categoryInfo.id);
+            setSelectedDeviceName(null);
             setSelectedSubcategory(null);
             navigate(`/catalog/${objReplacer[categoryInfo?.categoryName]}`);
           }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
@@ -92,8 +94,9 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
           </div>}
 
           {currentPath[1] === "Каталог" && subcategory && <div itemScope itemType="https://schema.org/ListItem" style={{  display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => {
+            setSelectedDeviceName(null);
+            setSelectedSubcategory(subcategory.id);
             navigate(`/catalog/${objReplacer[categoryInfo?.categoryName]}/${subcategory.link_name}`);
-              setSelectedSubcategory(subcategory.id);
           }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
             <div style={{ display: 'none'}} itemProp="item">
               <div itemProp="name" >{subcategory?.name}</div>
@@ -102,7 +105,7 @@ export const NavPanel = ({ subcategories, setSelectedSubcategory, selectedSubcat
             {subcategory?.name}
           </div>}
 
-          {selectedDeviceName && <div itemScope itemType="https://schema.org/ListItem" style={{ display: "flex", alignItems: "center", cursor: "pointer", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
+          {categoryInfo && subcategory && selectedDeviceName && <div itemScope itemType="https://schema.org/ListItem" style={{ display: "flex", alignItems: "center", cursor: "pointer", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}><div style={{ marginRight: "8px", marginLeft: "8px", paddingLeft: "6px"}} className={`${DEFAULT_CLASSNAME}_item-circle`} />
             <div style={{ display: 'none'}} itemProp="item">
               <div itemProp="name" >{selectedDeviceName}</div>
               <meta itemProp="position" content={`5`}/>

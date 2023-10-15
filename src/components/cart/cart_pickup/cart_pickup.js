@@ -23,8 +23,6 @@ export const CartPickup = ({ setCartItems, orderSuccess, loginData, cartItems })
 
   const hidePaymentMethod = cartItems.some(item => item.hidePayment);
 
-  console.log(hidePaymentMethod);
-
   return (
     <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
       <div className={DEFAULT_CLASSNAME}>

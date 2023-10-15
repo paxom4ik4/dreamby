@@ -17,7 +17,9 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
     if (!popularProductItems?.length) {
       const itemStart = Math.floor(Math.random() * 100);
 
-      fetch(`${process.env["REACT_APP_API_URL"]}product`).then(res => res.json())
+      fetch(`${process.env["REACT_APP_API_URL"]}product/search?full=123`, {
+          method: "POST",
+      }).then(res => res.json())
         .then(data => {
           if (activeMenuItem === 'Лидеры продаж') {
             setPopularItems(data.products.slice(itemStart, itemStart + 4))
@@ -56,6 +58,7 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
 
           return (
               <ItemCard
+                product={item}
                 productIdForCart={item?.id}
                 clickLink={`${categoryName}/${subcategory}/${item.id}`}
                 itemCategory={item?.category?.categoryName}
@@ -67,8 +70,9 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
                 setFavoriteItems={setFavoriteItems}
                 image={item.img_path}
                 isAvailable={item.in_stock > 0}
-                isFavorite={favoriteItems?.includes(item.id)}
+                isFavorite={favoriteItems?.includes(item)}
                 title={item.name}
+                link={item.link}
                 price={+item.price}
                 roundedBorders={true}
                 setSelectedCategory={setSelectedCategory}

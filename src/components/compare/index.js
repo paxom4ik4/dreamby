@@ -8,13 +8,15 @@ import {objReplacer} from "../catalog/catalog";
 
 const DEFAULT_CLASSNAME = 'compare';
 
-export const Compare = ({ deleteFromCompare, compareItems }) => {
+export const Compare = ({ deleteFromCompare, compareItems, setSelectedDeviceName }) => {
 
   const navigate = useNavigate();
 
   const [compareData, setCompareData] = useState(null);
 
   useEffect(() => {
+    setSelectedDeviceName(null);
+
     if (compareItems.length) {
       fetch(`${process.env["REACT_APP_API_URL"]}product/compare`, {
         method: "POST",
@@ -28,7 +30,7 @@ export const Compare = ({ deleteFromCompare, compareItems }) => {
     }
   }, [compareItems]);
 
-  const ids = compareData?.find(item => item.key === "id");
+  const ids = compareData?.find(item => item.key === "link");
   const names = compareData?.find(item => item.key === "name");
   const prices = compareData?.find(item => item.key === "price");
   const images = compareData?.find(item => item.key === "img_path");
@@ -108,7 +110,7 @@ export const Compare = ({ deleteFromCompare, compareItems }) => {
 
                       return (
                         <ItemCard
-                          clickLink={`${categoryName}/${subcategory}/${item.id}`}
+                          clickLink={`${categoryName}/${subcategory}/${item.link}`}
                           productId={ids?.value[index]}
                           image={images?.value[index]}
                           title={names?.value[index]}

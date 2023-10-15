@@ -44,8 +44,6 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
   const [selectedMemory, setSelectedMemory] = useState(null);
   const [selectedCondition, setSelectedCondition] = useState(null);
 
-  const [productModel, setProductModel] = useState([]);
-
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
@@ -54,13 +52,12 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
     fetch(`${process.env["REACT_APP_API_URL"]}product/${productId}`)
       .then(res => res.json()).then(data => {
 
-        setImages(data?.product?.color?.Image);
+        setImages(data?.product?.color?.Image ?? []);
 
-        setProductModel(data?.product?.ProductModel?.models);
         setItemData(data);
         setSelectedDeviceName(data.product?.name);
         setSelectedCategory(data?.product?.categoryId)
-        setCurrentImage(data?.product?.color?.Image[0]?.img_path);
+        setCurrentImage(data?.product?.color?.Image[0]?.img_path ?? data?.product?.img_path);
     })
   }, [navigate]);
 
@@ -104,6 +101,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
       setConfig({
         colors: itemData?.product?.ProductModel?.colors.filter(Boolean),
         memory: itemData?.product?.ProductModel?.memory.filter(Boolean),
+        models: itemData?.product?.ProductModel?.models,
       })
     }
   }, [itemData]);
@@ -149,7 +147,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
       id: itemData.product.id,
       image: itemData.product.img_path,
       title: itemData.product.name,
-      price: selectedMemory ? selectedMemory?.price ? Number(selectedMemory.price) : itemData.product.price : itemData.product.price,
+      price: selectedMemory ? selectedMemory?.price ? Number(selectedMemory?.price) : itemData?.product?.price : itemData?.product?.price,
       selectedMemory: selectedMemory ? selectedMemory.size : 0,
       selectedColor: selectedColor ? selectedColor : "no_color_selected",
       inStock: itemData.product.in_stock > 0,
@@ -187,28 +185,28 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
       }}>
         <div onClick={(event) => {
           event.stopPropagation()
-          const currentImageIndex = images.indexOf(currentImage);
+          const currentImageIndex = images.findIndex(image => image.img_path === currentImage);
           setCurrentImage(currentImageIndex === 0 ? images[images.length - 1].img_path : images[currentImageIndex - 1].img_path);
         }} className={`${DEFAULT_CLASSNAME}_image prev_photo`}>{"<"}</div>
         <img src={currentImage?.includes('http') ? currentImage : `http://194.62.19.52:7000/${currentImage}`}/>
         <div onClick={(event) => {
           event.stopPropagation()
-          const currentImageIndex = images.indexOf(currentImage);
+          const currentImageIndex = images.findIndex(image => image.img_path === currentImage);
           setCurrentImage(currentImageIndex === (images.length - 1) ? images[0].img_path : images[currentImageIndex + 1].img_path);
         }} className={`${DEFAULT_CLASSNAME}_image next_photo`}>{">"}</div>
       </div>
       <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
         <div className={`${DEFAULT_CLASSNAME}_stickers`}></div>
         <div className={`${DEFAULT_CLASSNAME}_compareLike`}>
-          <button className={`${DEFAULT_CLASSNAME}_like ${favoriteItems.includes(itemData?.product?.id) && 'like-active'}`} onClick={() => setFavoriteItems(itemData?.product.id)}>
+          <button className={`${DEFAULT_CLASSNAME}_like ${!!favoriteItems.find(product => product.id === itemData?.product.id) && 'like-active'}`} onClick={() => setFavoriteItems(itemData?.product)}>
             {likeIcon}
           </button>
-          <button className={`${DEFAULT_CLASSNAME}_compare ${compareItems.includes(itemData?.product?.id) && 'compare-active'}`} onClick={() => addItemToCompare(itemData?.id)}>
+          <button className={`${DEFAULT_CLASSNAME}_compare ${compareItems.includes(itemData?.product?.id) && 'compare-active'}`} onClick={() => addItemToCompare(itemData?.product?.id)}>
             {compareIcon}
           </button>
         </div>
         <div className={`${DEFAULT_CLASSNAME}_content`}>
-          {(images.length ? <div className={`${DEFAULT_CLASSNAME}_carousel ${itemData?.product?.in_stock <= 0 && "disabled"}`}>
+          {(images?.length ? <div className={`${DEFAULT_CLASSNAME}_carousel ${itemData?.product?.in_stock <= 0 && "disabled"}`}>
             <>
             <Swiper
                 style={{ width: "25%", maxHeight: "50%"}}
@@ -217,7 +215,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
                 modules={[Pagination]}
                 className="mySwiper"
             >
-              {images.map(item => (
+              {images.length && images.map(item => (
                 <SwiperSlide onClick={() => setCurrentImage(item.img_path)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
                   <img src={item.img_path?.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} alt={'slide_image'}/>
                 </SwiperSlide>)
@@ -234,7 +232,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
               {images.length ? images.map(item => {
                 return (
                     !!item && <SwiperSlide onClick={() => setCurrentImage(item.img_path)} style={{ padding: "12px 0"}} className={`${DEFAULT_CLASSNAME}_carousel_slide`}>
-                      <img src={item.img_path.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} alt={'slide_image'}/>
+                      <img src={item?.img_path?.includes('http') ? item.img_path : `http://194.62.19.52:7000/${item.img_path}`} alt={'slide_image'}/>
                     </SwiperSlide>
                 )}) : null}
             </Swiper>
@@ -257,19 +255,13 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
                 {config.colors.map(item => (
                   <img className={`${DEFAULT_CLASSNAME}_product_color-item ${itemData.product.color.link === item.link && 'active-image-selected'}`} alt={'photo-wtf'} onClick={() => {
-                    const link = window.location.href.split('/');
-                    const productLink = link[link.length - 1];
+                    const link = config.models.find(modelItem => modelItem.color === item.color && modelItem.memory === itemData?.product.memory.size)['link']
 
-                    const product = productLink.split('-');
-                    product[product.length - 2] = item.link;
+                    const current = window.location.pathname.split('/');
+                    current[current.length - 1] = link;
+                    const final = `${window.location.origin}${current.join('/')}`
 
-                    const linkProductFinal = product.join('-');
-
-                    link[link.length - 1] = linkProductFinal;
-
-                    const linkToFinal = link.join('/');
-
-                    window.location.replace(linkToFinal);
+                    window.location.replace(final);
                   }} src={item?.img_path[0]} />
                 ))}
               </div>
@@ -278,19 +270,13 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
               <div className={`${DEFAULT_CLASSNAME}_configuration_group_title`}>{"Объем встроенной памяти: "}</div>
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
                 {config?.memory?.map(memory => <div onClick={() => {
-                  const link = window.location.href.split('/');
-                  const productLink = link[link.length - 1];
+                  const link = config.models.find(modelItem => modelItem.memory === memory.size && modelItem.color === itemData?.product.color.color)['link']
 
-                  const product = productLink.split('-');
-                  product[product.length - 1] = memory.size;
+                  const current = window.location.pathname.split('/');
+                  current[current.length - 1] = link;
+                  const final = `${window.location.origin}${current.join('/')}`
 
-                  const linkProductFinal = product.join('-');
-
-                  link[link.length - 1] = linkProductFinal;
-
-                  const linkToFinal = link.join('/');
-
-                  window.location.replace(linkToFinal);
+                  window.location.replace(final);
                 }} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${itemData.product.memory.size === memory.size && 'config-item-block-active'}`}>{memory.size}</div>)}
               </div>
             </div> }
@@ -300,7 +286,9 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
                 {config?.condition?.map(condition => <div onClick={() => setSelectedCondition(condition)} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${selectedCondition === condition && 'config-item-block-active'}`}>{conditions[condition]}</div>)}
               </div>
             </div> }
-            <div className={`${DEFAULT_CLASSNAME}_price`} itemProp="price">{(((selectedMemory?.price === 0 || itemData?.product?.price === 0) || (selectedMemory?.price === "0" || itemData?.product?.price === "0")) ? "Уточните стоимость" : selectedMemory?.price ? Number(itemData.product.price).toFixed(2) : Number(itemData?.product?.memory.price).toFixed(2)) + " (BYN)"}</div>
+            <div className={`${DEFAULT_CLASSNAME}_price`} itemProp="price">
+              {Number(itemData?.product?.price) === 0 ? "Уточните стоимость у менеджера" : `${Number(itemData?.product?.price).toFixed(2)} BYN`}
+            </div>
             {/*<button disabled={itemData?.product?.in_stock <= 0 && !noItemOrder} onClick={() => addToCartHandler()} className={`${DEFAULT_CLASSNAME}_add-to-cart`}>{"Добавить в корзину"}</button>*/}
 
             {itemData?.product?.in_stock <= 0 && <span style={{ display: "flex", alignItems: "center", marginTop: "12px", fontSize: "14px" }}>{"Товара нет в наличии. Доступно под заказ"}

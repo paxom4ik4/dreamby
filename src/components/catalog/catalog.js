@@ -47,108 +47,130 @@ const objReplacer2 = {
   "flash-drives": "Носители информации",
 }
 
-export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubcategory, catalogFilterOpened, setCatalogFilterOpened, compareItems, selectedSubcategories, addItemToCompare, selectedCategory, favoriteItems, setSelectedCategory, categories, favoriteNotify, setFavoriteItems, setCartItems }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSubcategories, setSelectedSubcategory, catalogFilterOpened, setCatalogFilterOpened, compareItems, selectedSubcategories, addItemToCompare, selectedCategory, setSelectedCategory, categories, setCartItems }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
 
-  useEffect(() => {
+    useEffect(() => {
       if (location.pathname.endsWith('/null')) {
           navigate(location.pathname.replace('/null', ''));
       }
-  }, [location]);
 
-  const [catalogTitle, setCatalogTitle] = useState("Каталог");
-  const [catalogMetaTitle, setCatalogMetaTitle] = useState("Каталог");
-  const [catalogDescription, setCatalogDescription] = useState("Каталог товаров");
-  const [catalogKeywords, setCatalogKeywords] = useState("Техника, электронные устройства, аксессуары");
+      setSelectedDeviceName(null);
+    }, [location]);
 
-  const [catalogItems, setCatalogItems] = useState([])
+    const [catalogTitle, setCatalogTitle] = useState("Каталог");
+    const [catalogMetaTitle, setCatalogMetaTitle] = useState("Каталог");
+    const [catalogDescription, setCatalogDescription] = useState("Каталог товаров");
 
-  const [maxPage, setMaxPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+    const [catalogItems, setCatalogItems] = useState([])
 
-  const { category, subcategory } = useParams();
+    const [maxPage, setMaxPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const [price, setPrice] = useState({
+    const { category, subcategory } = useParams();
+
+    const [price, setPrice] = useState({
       from: null,
       to: null
-  })
-
-  const [sorting, setSorting] = useState('asc');
-
-  const handlerSorting = () => sorting === 'asc' ? setSorting('desc') : setSorting('asc');
-
-  const [currentRate, setCurrentRate] = useState(2.6);
-
-  const [selectedManufacturers, setSelectedManufacturers] = useState([]);
-  const [selectedYears, setSelectedYears] = useState([]);
-
-  const [subcategories, setSubcategories] = useState([]);
-
-  const [keyWord, setKeyWord] = useState("");
-  const [alphabetSort, setAlphabetSort] = useState(null);
-  const [sortingOrder, setSortingOrder] = useState(null);
-  const [sortingInStock, setSortingInStock] = useState(null);
-  const [selectedMemory, setSelectedMemory] = useState([]);
-  const [selectedColor, setSelectedColor] = useState([]);
-
-  //subsub
-  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState(null);
-
-  const [selectedSUBSUBCAETGORY, setSELECTEDSUBSUBCATEGORY] = useState(null);
-
-  const deleteManufacturer = item => {
-      const deleteIdx = selectedManufacturers.indexOf(item);
-
-      const newItems = [...selectedManufacturers.slice(0, deleteIdx), ...selectedManufacturers.slice(deleteIdx + 1)];
-
-      setSelectedManufacturers(newItems)
-  }
-
-  //pagination
-  const [pages, setPages] = useState(false);
-
-  useEffect(() => {
-    fetch(`${process.env["REACT_APP_API_URL"]}currency`)
-      .then(res => res.json()).then(data => setCurrentRate(data.rate));
-  }, []);
-
-  useEffect(() => {
-    if (!category) {
-      setSelectedCategory(null);
-    }
-
-    if (!subcategory) {
-      setSelectedSubcategory(null);
-    }
-
-    if (allSubcategories.length && subcategory) {
-        const targetCategory = allSubcategories?.find(item => item.link_name === subcategory);
-
-        if (targetCategory?.parentId?.length) {
-            setSelectedSubcategory(targetCategory.parentId);
-            setSELECTEDSUBSUBCATEGORY(targetCategory);
-        } else {
-            setSelectedSubcategory(targetCategory.id);
-            setSELECTEDSUBSUBCATEGORY(null);
-        }
-    }
-
-    if (categories.length && category) {
-      setSelectedCategory(categories.find(item => item.categoryName === objReplacer2[category]).id);
-    }
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
     })
-  }, [currentPage, allSubcategories, selectedCategory, category, subcategory, catalogItems, categories, setSELECTEDSUBSUBCATEGORY]);
+
+    const [sorting, setSorting] = useState('asc');
+
+    const handlerSorting = () => sorting === 'asc' ? setSorting('desc') : setSorting('asc');
+
+    const [currentRate, setCurrentRate] = useState(2.6);
+
+    const [selectedManufacturers, setSelectedManufacturers] = useState([]);
+    const [selectedYears, setSelectedYears] = useState([]);
+
+    const [subcategories, setSubcategories] = useState([]);
+
+    const [keyWord, setKeyWord] = useState("");
+    const [alphabetSort, setAlphabetSort] = useState(null);
+    const [sortingOrder, setSortingOrder] = useState(null);
+    const [sortingInStock, setSortingInStock] = useState(null);
+    const [selectedMemory, setSelectedMemory] = useState([]);
+    const [selectedColor, setSelectedColor] = useState([]);
+
+    //subsub
+    const [selectedSubSubcategory, setSelectedSubSubcategory] = useState(null);
+
+    const [selectedSUBSUBCAETGORY, setSELECTEDSUBSUBCATEGORY] = useState(null);
+
+    //pagination
+    const [pages, setPages] = useState(false);
+
+    useEffect(() => {
+        fetch(`${process.env["REACT_APP_API_URL"]}currency`)
+            .then(res => res.json()).then(data => setCurrentRate(data.rate));
+    }, []);
+
+    useEffect(() => {
+        if (!category) {
+          setSelectedCategory(null);
+        }
+
+        if (!subcategory) {
+          setSelectedSubcategory(null);
+        }
+
+        if (allSubcategories.length && subcategory) {
+            const targetCategory = allSubcategories?.find(item => item.link_name === subcategory);
+
+            if (targetCategory?.parentId?.length) {
+                setSelectedSubcategory(targetCategory.parentId);
+                setSELECTEDSUBSUBCATEGORY(targetCategory);
+            } else {
+                setSelectedSubcategory(targetCategory.id);
+                setSELECTEDSUBSUBCATEGORY(null);
+            }
+        }
+
+        if (categories.length && category) {
+          setSelectedCategory(categories.find(item => item.categoryName === objReplacer2[category]).id);
+        }
+    }, [currentPage, allSubcategories, selectedCategory, category, subcategory, categories, setSELECTEDSUBSUBCATEGORY]);
+
+    useEffect(() => {
+      window.scrollTo({
+          top: 80,
+          behavior: "smooth",
+      })
+    }, [currentPage]);
 
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedSubcategories]);
 
-  useEffect(() => {
+    useEffect(() => {
+        if (!selectedCategory) {
+            setSelectedManufacturers([]);
+        }
+
+        if(selectedCategory) {
+            fetch(`${process.env["REACT_APP_API_URL"]}category/${selectedCategory}`)
+                .then(res => res.json())
+                .then(data => {
+                    setSubcategories(data.subcats)
+                });
+        }
+
+        setPrice({
+            from: null,
+            to: null
+        })
+
+        setAlphabetSort(null);
+        setKeyWord("");
+        setSortingInStock(null);
+        setSortingOrder(null);
+        setSelectedMemory([]);
+        setSelectedColor([]);
+
+    }, [selectedCategory]);
+
+    useEffect(() => {
       if (!selectedCategory || !selectedSubcategory) {
           return;
       }
@@ -220,6 +242,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
       }
 
       const megaZapros = keyWord.length || alphabetSort || sortingOrder || sortingInStock !== null || price.to || price.from || selectedMemory.length || selectedColor.length;
+
       if(!!selectedManufacturers && selectedManufacturers.length || selectedSubcategory || megaZapros) {
           fetch(urlToFetch, {
               method: "POST",
@@ -235,10 +258,6 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
           })
               .then(res => res.json())
               .then(data => {
-                  if (data.statusCode === 500 || !data.products.length && data.max_page === 0) {
-                    selectedSubcategory(null);
-                  }
-
                   setCatalogItems(data.products)
                   setMaxPage(data.max_page);
               });
@@ -250,40 +269,9 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
                   setMaxPage(data.max_page);
               });
       }
-  }, [category, currentPage, selectedCategory, price, selectedManufacturers, selectedSubcategory, sortingOrder, sortingInStock, alphabetSort, keyWord, selectedMemory, selectedColor, selectedSUBSUBCAETGORY])
-
-    const [categoryName, setCategoryName] = useState("Товары");
-
-    useEffect(() => {
-        if (!selectedCategory) {
-          setSelectedManufacturers([]);
-        }
-
-        if(!!selectedCategory) {
-            fetch(`${process.env["REACT_APP_API_URL"]}category/${selectedCategory}`)
-                .then(res => res.json())
-                .then(data => {
-                  setCategoryName(data.categoryName);
-                  setSubcategories(data.subcats)
-                });
-        }
-
-        setPrice({
-          from: null,
-          to: null
-        })
-
-        setAlphabetSort(null);
-        setKeyWord("");
-        setSortingInStock(null);
-        setSortingOrder(null);
-        setSelectedMemory([]);
-        setSelectedColor([]);
-
-    }, [selectedCategory]);
+    }, [category, currentPage, selectedCategory, price, selectedManufacturers, selectedSubcategory, sortingOrder, sortingInStock, alphabetSort, keyWord, selectedMemory, selectedColor, selectedSUBSUBCAETGORY])
 
     const selectedSubcategoryItem = allSubcategories.find(item => item.id === selectedSubcategory);
-
 
     useEffect(() => {
         if (selectedSubcategory) {
@@ -302,7 +290,6 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
             setCatalogTitle(name);
             setCatalogMetaTitle(meta_keyword ?? name)
             setCatalogDescription(meta_description);
-            setCatalogKeywords(meta_keyword);
         }
             else if (selectedCategory && selectedSubcategory && allSubcategories && subcategory) {
             const { meta_description, meta_keyword, name } = allSubcategories.find(item => item.link_name === subcategory);
@@ -310,12 +297,10 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
             setCatalogTitle(name);
             setCatalogMetaTitle(meta_keyword ?? name)
             setCatalogDescription(meta_description);
-            setCatalogKeywords(meta_keyword);
         } else if (selectedCategory && category) {
             const { meta_description, meta_keyword, categoryName } = categories?.find(item => item.id === selectedCategory);
 
             setCatalogDescription(meta_description);
-            setCatalogKeywords(meta_keyword);
 
             setCatalogTitle(categoryName);
             setCatalogMetaTitle(meta_keyword ?? categoryName)
@@ -407,7 +392,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
               <h1 style={{ fontSize: "20px", fontWeight: "400" }}>{categories.find(item => item.id === selectedCategory)["categoryName"]}</h1>
               <img src={categories.find(item => item.id === selectedCategory)["img_path"]} alt={'CategoryItem'}/>
             </div>
-            {subcategories.length && subcategories.map(item => <div onClick={() => {
+            {!!subcategories.length && subcategories.map(item => <div onClick={() => {
               navigate(`${window.location.pathname}/${item.link_name}`)
               setSelectedSubcategory(item.id)
             }} className={`${DEFAULT_CLASSNAME}_selectSubcategory_item`}>
@@ -435,8 +420,8 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
               <div className={`${DEFAULT_CLASSNAME}_content`}>
                   <div className={`${DEFAULT_CLASSNAME}_content_filterWrapper`}>
                       <ServicesFilter
-                          selectedSubcategory={selectedSubcategory}
-                          selectedSubSubcategory={selectedSUBSUBCAETGORY}
+                        selectedSubcategory={selectedSubcategory}
+                        selectedSubSubcategory={selectedSUBSUBCAETGORY}
                         setCatalogFilterOpened={setCatalogFilterOpened}
                         catalogFilterOpened={catalogFilterOpened}
                         selectedMemory={selectedMemory}
@@ -485,10 +470,7 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
                               </div>)}
                           </div>
                       </div>
-                      {!catalogFilterOpened && <ServiceItems setSelectedCategory={setSelectedCategory} compareItems={compareItems} addItemToCompare={addItemToCompare} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify}
-                                    setCartItems={setCartItems} setFavoriteItems={setFavoriteItems}
-                                    items={catalogItems}
-                      />}
+                      {!catalogFilterOpened && <ServiceItems compareItems={compareItems} addItemToCompare={addItemToCompare} setCartItems={setCartItems} items={catalogItems} />}
                       <div className={`${DEFAULT_CLASSNAME}_pagination`}>
                           {pages && <div className={`${DEFAULT_CLASSNAME}_pagination_block`}>
                               {Array.from(Array(maxPage)).map((item, index) => <div onClick={() => {
@@ -511,4 +493,6 @@ export const Catalog = ({ selectedSubcategory, allSubcategories, setSelectedSubc
       </div>
     </div>
   )
-}
+});
+
+export default Catalog;

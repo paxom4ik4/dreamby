@@ -59,44 +59,17 @@ export const Products = () => {
             })
     }, [dataUpdated])
 
-    useEffect(() => {
-        let url = `${process.env["REACT_APP_API_URL"]}product`;
-
-        if (filteredUrl && currentPage !== 1) {
-            url = `${filteredUrl}&p=${currentPage}`;
-        } else if (filteredUrl) {
-            url = filteredUrl;
-        } else if (!filteredUrl && currentPage !== 1) {
-            url += `?p=${currentPage}`;
-        }
-
-        fetch(url, {
-            method: "GET",
-            headers: {
-                "Authorization": token,
-            },
-            body: JSON.stringify({
-                "by": "date_added",
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
-                setProducts(data.products)
-                setMaxPage(data.max_page);
-            })
-    }, [currentPage, filteredUrl]);
-
-    useEffect(() => {
-        fetch(`${process.env["REACT_APP_API_URL"]}product?name=${searchName}`, {
-            headers: {
-                "Authorization": token,
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-                setSearchProducts(data.products);
-            })
-    }, [searchName]);
+    // useEffect(() => {
+    //     fetch(`${process.env["REACT_APP_API_URL"]}product?p=${currentPage}`, {
+    //         headers: {
+    //             "Authorization": token,
+    //         },
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             setProducts(data.products);
+    //         })
+    // }, [searchName, currentPage]);
 
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
@@ -111,7 +84,6 @@ export const Products = () => {
             .then(data => setCategories(data));
     }, []);
 
-    const productsToShow = searchName.trim().length ? searchProducts : products;
 
     const [categoryToFilter, setCategoryToFilter] = useState("");
     const [subcategoryToFilter, setSubcategoryToFilter] = useState("");
@@ -128,54 +100,60 @@ export const Products = () => {
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
 
+    useEffect(() => {
+        (async () => {
+            await filterProducts()
+        })();
+    }, [currentPage]);
+
+    const productsToShow = products;
+
     const filterProducts = async () => {
         let url = `${process.env["REACT_APP_API_URL"]}product`;
+
+        if (searchName) {
+            url += url.includes('?') ? `&name=${searchName}` : `?name=${searchName}`;
+        }
 
         if (!!categoryToFilter && categoryToFilter !== "Категория") {
             url += url.includes('?') ? `&category=${categoryToFilter}` : `?category=${categoryToFilter}`;
         }
 
         if (!!minPrice) {
-            url += url.includes('?') ? `&minprice=${(minPrice / currentRate).toFixed(2)}`
-                : `?minprice=${(minPrice / currentRate).toFixed(2)}`
+            url += url.includes('?') ? `&min=${(minPrice / currentRate).toFixed(2)}`
+                : `?min=${(minPrice / currentRate).toFixed(2)}`
         }
 
         if (!!maxPrice) {
-            url += url.includes('?') ? `&maxprice=${(maxPrice / currentRate).toFixed(2)}`
-                : `?maxprice=${(maxPrice / currentRate).toFixed(2)}`
-        }
-
-        let body = {};
-
-        if (!!manufacturer) {
-            body = {
-                ...body,
-                producer: [`${manufacturer}`]
-            }
+            url += url.includes('?') ? `&max=${(maxPrice / currentRate).toFixed(2)}`
+                : `?max=${(maxPrice / currentRate).toFixed(2)}`
         }
 
         if (!!subcategoryToFilter && subcategoryToFilter !== "Подкатегория") {
-            body = {
-                ...body,
-                subcategory: subcategoryToFilter,
-            }
+            url += url.includes('?') ? `&subcategory=${subcategoryToFilter}` : `?subcategory=${subcategoryToFilter}`;
+        }
+
+        if (manufacturer) {
+            url += url.includes('?') ? `&producer=${manufacturer}` : `?producer=${manufacturer}`;
+        }
+
+        if (currentPage) {
+            url += url.includes('?') ? `&p=${currentPage}` : `?p=${currentPage}`;
         }
 
         if (url !== `${process.env["REACT_APP_API_URL"]}product`) setFilteredUrl(url);
 
         await fetch(url, {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": token,
             },
-            body: JSON.stringify(body),
         })
             .then(res => res.json())
             .then(data => {
                 setMaxPage(data.max_page);
                 setProducts(data.products)
-                setCurrentPage(1);
             });
     }
 
@@ -216,6 +194,8 @@ export const Products = () => {
                             }}>{"Сбросить"}</span>
                         </div>
 
+                        {/*<input type={}/>*/}
+
                         <select style={{ marginTop: '32px'}} placeholder={"Категория"} onChange={(e) => setCategoryToFilter(e.currentTarget.value)}>
                             <option>{"Категория"}</option>
                             {categories?.map(item => (
@@ -243,10 +223,13 @@ export const Products = () => {
                             <input placeholder={"Производитель..."} value={manufacturer} onChange={(e) => setManufacturer(e.currentTarget.value)}/>
                         </div>
 
-                        <div onClick={() => filterProducts()} className={`${DEFAULT_CLASSNAME}_content_filter_search`}>Отфильтровать</div>
+                        <div onClick={() =>{
+                            setCurrentPage(1);
+                            filterProducts()
+                        }} className={`${DEFAULT_CLASSNAME}_content_filter_search`}>Отфильтровать</div>
                     </div>
                 </div>
-                {!searchName.trim().length && <div className={`${DEFAULT_CLASSNAME}_pagination`}> <img alt={'left-arrow'} src={left} className={`${DEFAULT_CLASSNAME}_nav_prev`} onClick={() => setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1)} /> {"" + currentPage} / {maxPage} <img alt={'right-arrow'} src={right} onClick={() => setCurrentPage(currentPage === maxPage ? currentPage : currentPage + 1)} className={`${DEFAULT_CLASSNAME}_nav_next`} /></div>}
+                <div className={`${DEFAULT_CLASSNAME}_pagination`}> <img alt={'left-arrow'} src={left} className={`${DEFAULT_CLASSNAME}_nav_prev`} onClick={() => setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1)} /> {"" + currentPage} / {maxPage} <img alt={'right-arrow'} src={right} onClick={() => setCurrentPage(currentPage === maxPage ? currentPage : currentPage + 1)} className={`${DEFAULT_CLASSNAME}_nav_next`} /></div>
             </div>
         </div>
     )

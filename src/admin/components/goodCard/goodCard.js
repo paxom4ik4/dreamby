@@ -55,10 +55,9 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
 
     useEffect(() => {
         if (editMode) {
-            fetch(`http://194.62.19.52:7001/api/product/${id}?f=1234`)
+            fetch(`https://dreamstore.by/api/product/${id}?f=1234`)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
                     setSelectedProduct(data.product.ProductModel)
                 });
         }

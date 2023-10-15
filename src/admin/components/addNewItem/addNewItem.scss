@@ -280,12 +280,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100px;
-            height: 140px;
+            width: 120px;
+            height: 220px;
             object-fit: contain;
             padding: 4px;
             border: 2px solid rgba(44, 117, 255, 1);
             border-radius: 12px;
+
+            &_index {
+              display: flex;
+              flex-direction: row;
+              gap: 4px;
+
+              button {
+                cursor: pointer;
+                border-radius: 4px;
+                background-color: #2c75ff;
+                color: #FFFFFF;
+                transition: 0.3s;
+
+                &:hover {
+                  opacity: 0.8;
+                }
+              }
+            }
 
             img {
               margin-bottom: 4px;

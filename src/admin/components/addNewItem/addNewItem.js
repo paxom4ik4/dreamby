@@ -800,6 +800,50 @@ export const AddNewItem = ({ isEditMode }) => {
         )
     };
 
+    const ColorImageComponent = props => {
+        const { id, img_path, priority } = props;
+
+        const [priorityValue, setPriorityValue] = useState(priority);
+
+        const handleIndexPhotoChange = async () => {
+            const token = sessionStorage.getItem('admin-dream-token');
+
+            await fetch(`${process.env["REACT_APP_API_URL"]}image/${id}`, {
+                method: "PATCH",
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    priority: Number(priorityValue),
+                })
+            }).finally(() => {
+                setDataUpdated(dataUpdated + 1);
+            })
+        }
+
+        return (
+            <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image_index`}>
+                    <input type={"number"} value={priorityValue} onChange={e => setPriorityValue(e.currentTarget.value)} />
+                    <button onClick={handleIndexPhotoChange}>OK</button>
+                </div>
+                <img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={id} src={img_path} />
+                <div onClick={async () => {
+                    const token = sessionStorage.getItem('admin-dream-token');
+
+                    await fetch(`${process.env["REACT_APP_API_URL"]}image/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': token,
+                            'Content-Type': 'application/json',
+                        }
+                    }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1))
+                }} style={{cursor: 'pointer', background: 'red', width: '100%', textAlign: 'center', color: '#fff', padding: '4px', borderRadius: '12px', fontSize: '12px'}}>Удалить</div>
+            </div>
+        )
+    }
+
     const ColorComponent = props => {
         const { Image, link, color, id } = props;
 
@@ -848,23 +892,10 @@ export const AddNewItem = ({ isEditMode }) => {
                             },
                             body: photoData,
                         }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1));
-                    }} style={{ width: '100px', height: '140px', borderRadius: '12px', opacity: 0, position: 'absolute' }} type={'file'} /><img src={addPhoto} />
+                    }} style={{ width: '140px', height: '220px', borderRadius: '12px', opacity: 0, position: 'absolute' }} type={'file'} /><img width={120} src={addPhoto} />
 
                     {!!Image?.length && Image?.map(item => {
-                        return <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}>
-                            <img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={item.id} src={item.img_path}/>
-                            <div onClick={async () => {
-                                const token = sessionStorage.getItem('admin-dream-token');
-
-                                await fetch(`${process.env["REACT_APP_API_URL"]}image/${item.id}`, {
-                                    method: 'DELETE',
-                                    headers: {
-                                        'Authorization': token,
-                                        'Content-Type': 'application/json',
-                                    }
-                                }).then(res => res.json()).then(() => setDataUpdated(dataUpdated + 1))
-                            }} style={{cursor: 'pointer', background: 'red', width: '100%', textAlign: 'center', color: '#fff', padding: '4px', borderRadius: '12px', fontSize: '12px'}}>Удалить</div>
-                        </div>
+                        return <ColorImageComponent priority={item.priority} id={item.id} img_path={item.img_path} />
                     })}
                 </div>
                 <div className={`color-component-btns`}>

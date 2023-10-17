@@ -42,7 +42,7 @@ export const ServicesFilter = ({ setCatalogFilterOpened, catalogFilterOpened, se
           .then(data => {
               setCategoryFilters(data);
           });
-  }, []);
+  }, [selectedSubSubcategory, selectedSubcategory, selectedCategory]);
 
   const deleteItem = (selected, setSelected, item) => {
         const deleteIdx = selected.indexOf(item);

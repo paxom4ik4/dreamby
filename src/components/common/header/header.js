@@ -146,6 +146,10 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
             {/*  <img src={cartIcon} alt={'cart-icon'} />*/}
             {/*  {cartItemsLength > 0 && <div className={`${DEFAULT_CLASSNAME}_cart-in`}>{cartItemsLength}</div>}*/}
             {/*</div>*/}
+            <div className={`${DEFAULT_CLASSNAME}_phone--text`}>
+              <a href={"tel:375291553020"}>{'+375 (29) 155-30-20'}</a>
+              <a href={"tel:375297555562"}>{'+375 (29) 755-55-62'}</a>
+            </div>
             <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_profile`} onClick={() => setIsMenuOpen(true)}>
               <img src={cabinet} alt={'profile-icon'} />
               {isLoggedIn && <div className={`${DEFAULT_CLASSNAME}_logged-in`} />}

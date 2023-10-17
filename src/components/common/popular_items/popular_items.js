@@ -15,18 +15,18 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
 
   useEffect(() => {
     if (!popularProductItems?.length) {
-      const itemStart = Math.floor(Math.random() * 100);
-
-      fetch(`${process.env["REACT_APP_API_URL"]}product/search?full=123`, {
+      fetch(`${process.env["REACT_APP_API_URL"]}product/search`, {
           method: "POST",
       }).then(res => res.json())
         .then(data => {
           if (activeMenuItem === 'Лидеры продаж') {
-            setPopularItems(data.products.slice(itemStart, itemStart + 4))
+              const itemStart = Math.round(Math.random() * 10);
+              setPopularItems(data.products.slice(itemStart, itemStart + 4))
           } else if (activeMenuItem === 'Специальные предложения') {
-            setPopularItems(data.products.slice(itemStart, itemStart + 4))
+              const itemStart = Math.round(Math.random() * 10);
+              setPopularItems(data.products.slice(itemStart, itemStart + 4))
           } else {
-            setPopularItems(data.products.slice(itemStart, itemStart + 4))
+              setPopularItems(data.products.slice(0, 4))
           }
         });
     } else {
@@ -60,7 +60,7 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
               <ItemCard
                 product={item}
                 productIdForCart={item?.id}
-                clickLink={`${categoryName}/${subcategory}/${item.id}`}
+                clickLink={`${categoryName}/${subcategory}/${item.link}`}
                 itemCategory={item?.category?.categoryName}
                 itemSubcategory={item?.subcategory.link_name}
                 itemSubcategoryId={item?.subcategoryId}

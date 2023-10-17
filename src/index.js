@@ -227,6 +227,7 @@ const App = () => {
 
   return (
     <>
+      <Header setSelectedCategory={setSelectedCategory} isLoggedIn={isLoggedIn} setLoginData={setLoginData} />
       {window.location.pathname.startsWith("/catalog") && !!selectedCategory && !!selectedSubcategory && !catalogFilterOpened && (window.location.pathname.split('/').length < 5) && <div onClick={() => setCatalogFilterOpened(true)} className={"mobile-filter-btn"}>{"Фильтр и сортировка"}</div>}
 
       {window.location.pathname !== "/compare" && compareItems.length >= 2 && <div className={`${DEFAULT_CLASSNAME}_compare`}>Товар в сравнении: {compareItems.length} <span onClick={() => navigate('/compare')}>Перейти к сравнению</span> <span style={{ color: "#000" }} onClick={() => setCompareItems([])}>или очистите</span></div>}
@@ -237,7 +238,6 @@ const App = () => {
           setDisplayLocation(location);
         }
       }}>
-        <Header setSelectedCategory={setSelectedCategory} isLoggedIn={isLoggedIn} setLoginData={setLoginData} />
         <NavPanel setSelectedDeviceName={setSelectedDeviceName} subcategories={subcategories} selectedSubcategory={selectedSubcategory} setSelectedSubcategory={setSelectedSubcategory} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} selectedDeviceName={selectedDeviceName} selectedSubcategories={selectedSubcategories} />
         <FavoriteContext.Provider value={{ setFavoriteItems: setFavoriteItemHandler, favoriteItems, favoriteNotify }}>
           <Wrapper>

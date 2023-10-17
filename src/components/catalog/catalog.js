@@ -94,9 +94,9 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
     const [selectedColor, setSelectedColor] = useState([]);
 
     //subsub
-    const [selectedSubSubcategory, setSelectedSubSubcategory] = useState(null);
+    const [selectedCatalogSubcategory, setSelectedCatalogSubcategory] = useState(null);
 
-    const [selectedSUBSUBCAETGORY, setSELECTEDSUBSUBCATEGORY] = useState(null);
+    const [selectedSubSubCategory, setSelectedSubSubCategory] = useState(null);
 
     //pagination
     const [pages, setPages] = useState(false);
@@ -120,17 +120,17 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
 
             if (targetCategory?.parentId?.length) {
                 setSelectedSubcategory(targetCategory.parentId);
-                setSELECTEDSUBSUBCATEGORY(targetCategory);
+                setSelectedSubSubCategory(targetCategory);
             } else {
                 setSelectedSubcategory(targetCategory.id);
-                setSELECTEDSUBSUBCATEGORY(null);
+                setSelectedSubSubCategory(null);
             }
         }
 
         if (categories.length && category) {
           setSelectedCategory(categories.find(item => item.categoryName === objReplacer2[category]).id);
         }
-    }, [currentPage, allSubcategories, selectedCategory, category, subcategory, categories, setSELECTEDSUBSUBCATEGORY]);
+    }, [currentPage, allSubcategories, selectedCategory, category, subcategory, categories, setSelectedSubSubCategory]);
 
     useEffect(() => {
       window.scrollTo({
@@ -168,7 +168,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
         setSelectedMemory([]);
         setSelectedColor([]);
 
-    }, [selectedCategory]);
+    }, [selectedCategory, selectedSubSubCategory]);
 
     useEffect(() => {
       if (!selectedCategory || !selectedSubcategory) {
@@ -253,7 +253,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
               body: JSON.stringify({
                   ...additionalFilters,
                   producer: selectedManufacturers,
-                  subcategory: selectedSUBSUBCAETGORY?.id || selectedSubcategory,
+                  subcategory: selectedSubSubCategory?.id || selectedSubcategory,
               })
           })
               .then(res => res.json())
@@ -269,13 +269,13 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                   setMaxPage(data.max_page);
               });
       }
-    }, [category, currentPage, selectedCategory, price, selectedManufacturers, selectedSubcategory, sortingOrder, sortingInStock, alphabetSort, keyWord, selectedMemory, selectedColor, selectedSUBSUBCAETGORY])
+    }, [category, currentPage, selectedCategory, price, selectedManufacturers, selectedSubcategory, sortingOrder, sortingInStock, alphabetSort, keyWord, selectedMemory, selectedColor, selectedSubSubCategory])
 
     const selectedSubcategoryItem = allSubcategories.find(item => item.id === selectedSubcategory);
 
     useEffect(() => {
         if (selectedSubcategory) {
-            fetch(`${process.env["REACT_APP_API_URL"]}subcategory/${selectedSubcategory}`).then(res => res.json()).then(data => setSelectedSubSubcategory(data))
+            fetch(`${process.env["REACT_APP_API_URL"]}subcategory/${selectedSubcategory}`).then(res => res.json()).then(data => setSelectedCatalogSubcategory(data))
         }
     }, [selectedSubcategory]);
 
@@ -284,8 +284,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
             setCatalogTitle("Каталог товаров DreamStore.by - Все для вашего комфорта и развлечения");
             setCatalogDescription("В каталоге DreamStore.by представлены товары различных категорий: от телефонов и планшетов до аксессуаров для дома и автомобиля. Выбирайте и покупайте качественные товары по доступным ценам с доставкой по Минску")
             setCatalogMetaTitle("Каталог товаров DreamStore.by - Все для вашего комфорта и развлечения")
-        } else if (selectedSUBSUBCAETGORY) {
-            const { name, meta_keyword, meta_description } = selectedSUBSUBCAETGORY;
+        } else if (selectedSubSubCategory) {
+            const { name, meta_keyword, meta_description } = selectedSubSubCategory;
 
             setCatalogTitle(name);
             setCatalogMetaTitle(meta_keyword ?? name)
@@ -305,13 +305,18 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
             setCatalogTitle(categoryName);
             setCatalogMetaTitle(meta_keyword ?? categoryName)
         }
-    }, [selectedSubcategory, selectedCategory, allSubcategories, subcategory, category, selectedSUBSUBCAETGORY]);
+    }, [selectedSubcategory, selectedCategory, allSubcategories, subcategory, category, selectedSubSubCategory]);
 
+    const [subSubcategories, setSubSubcategories] = useState([]);
 
-    const subSubcategories = selectedSubSubcategory?.subcats;
+    useEffect(() => {
+        if (selectedCatalogSubcategory) {
+            setSubSubcategories(selectedCatalogSubcategory?.subcats || []);
+        }
+    }, [selectedCatalogSubcategory]);
 
-    const metaText = (selectedSUBSUBCAETGORY ? selectedSUBSUBCAETGORY.meta_text : selectedSubcategoryItem?.meta_text) || "";
-    const metaTitle = (selectedSUBSUBCAETGORY ? selectedSUBSUBCAETGORY.meta_title : selectedSubcategoryItem?.meta_title) || "";
+    const metaText = (selectedSubSubCategory ? selectedSubSubCategory.meta_text : selectedSubcategoryItem?.meta_text) || "";
+    const metaTitle = (selectedSubSubCategory ? selectedSubSubCategory.meta_title : selectedSubcategoryItem?.meta_title) || "";
 
     const metaTextCategory = categories.find(item => item.id === selectedCategory)?.meta_text || "";
     const metaTitleCategory = categories.find(item => item.id === selectedCategory)?.meta_h1 || "";
@@ -413,7 +418,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
               <div className={`${DEFAULT_CLASSNAME}_title`}>
                 <img onClick={() => {
                     navigate(window.location.pathname.split('/').slice(0, -1).join('/'))
-                    setSELECTEDSUBSUBCATEGORY(null);
+                    setSelectedSubSubCategory(null);
                 }} src={filter} alt={'filter'} />
                 <h1>{catalogTitle}</h1>
               </div>
@@ -421,7 +426,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                   <div className={`${DEFAULT_CLASSNAME}_content_filterWrapper`}>
                       <ServicesFilter
                         selectedSubcategory={selectedSubcategory}
-                        selectedSubSubcategory={selectedSUBSUBCAETGORY}
+                        selectedSubSubcategory={selectedSubSubCategory}
                         setCatalogFilterOpened={setCatalogFilterOpened}
                         catalogFilterOpened={catalogFilterOpened}
                         selectedMemory={selectedMemory}
@@ -446,15 +451,15 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                   <div className={`${DEFAULT_CLASSNAME}_content-main`}>
                       <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_wrapper`}>
                           <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories`}>
-                              {subSubcategories?.map(item => <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item ${selectedSUBSUBCAETGORY?.id === item.id && 'active-subSubCategory'}`}>
+                              {subSubcategories?.map(item => <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item ${selectedSubSubCategory?.id === item.id && 'active-subSubCategory'}`}>
                                   <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item_image_wrapper`}>
                                   <div onClick={() => {
-                                      setSELECTEDSUBSUBCATEGORY(selectedSUBSUBCAETGORY === item ? null : item);
+                                      setSelectedSubSubCategory(selectedSubSubCategory === item ? null : item);
 
                                       const locationArr = location.pathname.split('/');
 
-                                      if (selectedSUBSUBCAETGORY?.id === item.id) {
-                                          locationArr[locationArr.length - 1] = allSubcategories.find(item => item.id === selectedSUBSUBCAETGORY.parentId)["link_name"];
+                                      if (selectedSubSubCategory?.id === item.id) {
+                                          locationArr[locationArr.length - 1] = allSubcategories.find(item => item.id === selectedSubSubCategory.parentId)["link_name"];
                                       } else {
                                           locationArr[locationArr.length - 1] = item.link_name;
                                       }

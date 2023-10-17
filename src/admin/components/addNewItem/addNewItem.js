@@ -826,7 +826,7 @@ export const AddNewItem = ({ isEditMode }) => {
             <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image`}>
                 <div className={`${DEFAULT_CLASSNAME}_general_product_info_item_image_index`}>
                     <input type={"number"} value={priorityValue} onChange={e => setPriorityValue(e.currentTarget.value)} />
-                    <button onClick={handleIndexPhotoChange}>OK</button>
+                    <div onClick={handleIndexPhotoChange}>OK</div>
                 </div>
                 <img style={{ objectFit: 'contain', borderRadius: '12px' }} alt={id} src={img_path} />
                 <div onClick={async () => {

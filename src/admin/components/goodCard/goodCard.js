@@ -6,10 +6,8 @@ import close from  './close.svg';
 import preview from './preview.svg';
 import edit from './edit.svg';
 import right from './right.svg';
-import copy from './copy.png';
 
 import gear from './gear.png';
-import goodCardExample from '../../assets/goodCardExample.png';
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {Link, useNavigate} from "react-router-dom";
@@ -76,12 +74,12 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
                     {serviceItem ? <div className={`${DEFAULT_CLASSNAME}_config`} style={{ fontWeight: "700"}} onClick={() => deleteServiceItem(id)}>{"Удалить"}</div> : <div className={`${DEFAULT_CLASSNAME}_config`}>
                         {editMode
                             ? <div className={`${DEFAULT_CLASSNAME}_btn`}>
-                                <img src={close} onClick={() => deleteItemHandler(id)}
-                                     className={`${DEFAULT_CLASSNAME}_btn_item red`}/>
-
-                                <img src={edit} onClick={() => editItem(id)} className={`${DEFAULT_CLASSNAME}_btn_item white`}/>
-
-                                <img src={right} onClick={() => setEditMode(!editMode)}
+                                <img alt={'no-name-delete'} src={close} onClick={() => {
+                                    deleteItemHandler(id)
+                                    setEditMode(!editMode)
+                                }} className={`${DEFAULT_CLASSNAME}_btn_item red`}/>
+                                <img alt={'no-name-edit'} src={edit} onClick={() => editItem(id)} className={`${DEFAULT_CLASSNAME}_btn_item white`}/>
+                                <img alt={'no-name-close'} src={right} onClick={() => setEditMode(!editMode)}
                                      className={`${DEFAULT_CLASSNAME}_btn_item close-btn`}/>
                             </div>
                             : <img onClick={() => setEditMode(!editMode)} src={gear} alt={'config'}/>
@@ -96,14 +94,16 @@ export const GoodCard = ({ serviceItem, dataUpdated, setDataUpdated, id, link, i
                         <div className={`${DEFAULT_CLASSNAME}_title`}>{product.name}</div>
                     </div>
                     <div className={`${DEFAULT_CLASSNAME}_btns`}>
-                        {serviceItem ? <div className={`${DEFAULT_CLASSNAME}_config`} style={{ fontWeight: "700"}} onClick={() => deleteServiceItem(id)}>{"Удалить"}</div> : <div className={`${DEFAULT_CLASSNAME}_config`}>
-                            {editMode
-                                ? <div className={`${DEFAULT_CLASSNAME}_btn`}>
-                                    <img src={edit} onClick={() => navigate(`/admin/edit-child-item/${product.id}`)} />
-                                </div>
-                                : <img onClick={() => setEditMode(!editMode)} src={gear} alt={'config'}/>
-                            }
-                        </div>}
+                        {serviceItem ?
+                            <div className={`${DEFAULT_CLASSNAME}_config`} style={{ fontWeight: "700"}} onClick={() => deleteServiceItem(id)}>{"Удалить"}</div> : <div className={`${DEFAULT_CLASSNAME}_config`}>
+                                {editMode ?
+                                    <div className={`${DEFAULT_CLASSNAME}_btn`}>
+                                        <img alt={'navigate-config'} src={edit} onClick={() => navigate(`/admin/edit-child-item/${product.id}`)} />
+                                    </div>
+                                    : <img onClick={() => setEditMode(!editMode)} src={gear} alt={'config'}/>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             ))}

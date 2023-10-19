@@ -157,6 +157,10 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
           </div>
           {isMenuOpen && <HeaderMenu setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} setLoginData={setLoginData}/>}
         </div>
+        <div className={`${DEFAULT_CLASSNAME}_phone`}>
+          <a href={"tel:375291553020"}>{'+375 (29) 155-30-20'}</a>
+          <a href={"tel:375297555562"}>{'+375 (29) 755-55-62'}</a>
+        </div>
       </div>
   )
 }

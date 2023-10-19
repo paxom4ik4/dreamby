@@ -255,7 +255,14 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
                 {config.colors.map(item => (
                   <img className={`${DEFAULT_CLASSNAME}_product_color-item ${itemData.product.color.link === item.link && 'active-image-selected'}`} alt={'photo-wtf'} onClick={() => {
-                    const link = config.models.find(modelItem => modelItem.color === item.color && modelItem.memory === itemData?.product.memory.size)['link']
+
+                    let link = "";
+
+                    if (config.memory?.length) {
+                      link = config.models.find(modelItem => modelItem.color === item.color && modelItem.memory === itemData?.product.memory.size)['link']
+                    } else {
+                      link = config.models.find(modelItem => modelItem.color === item.color)['link']
+                    }
 
                     const current = window.location.pathname.split('/');
                     current[current.length - 1] = link;
@@ -270,7 +277,13 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
               <div className={`${DEFAULT_CLASSNAME}_configuration_group_title`}>{"Объем встроенной памяти: "}</div>
               <div className={`${DEFAULT_CLASSNAME}_configuration_items`}>
                 {config?.memory?.map(memory => <div onClick={() => {
-                  const link = config.models.find(modelItem => modelItem.memory === memory.size && modelItem.color === itemData?.product.color.color)['link']
+                  let link = "";
+
+                  if (config.colors?.length) {
+                    link = config.models.find(modelItem => modelItem.memory === memory.size && modelItem.color === itemData?.product.color.color)['link']
+                  } else {
+                    link = config.models.find(modelItem => modelItem.memory === memory.size)['link']
+                  }
 
                   const current = window.location.pathname.split('/');
                   current[current.length - 1] = link;

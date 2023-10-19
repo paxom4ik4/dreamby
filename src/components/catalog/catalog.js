@@ -47,6 +47,8 @@ const objReplacer2 = {
   "flash-drives": "Носители информации",
 }
 
+const MOBILE_PHONES_NAME = "Смартфоны Apple";
+
 const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSubcategories, setSelectedSubcategory, catalogFilterOpened, setCatalogFilterOpened, compareItems, selectedSubcategories, addItemToCompare, selectedCategory, setSelectedCategory, categories, setCartItems }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -144,6 +146,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
     }, [selectedSubcategories]);
 
     useEffect(() => {
+        setCurrentPage(1);
+
         if (!selectedCategory) {
             setSelectedManufacturers([]);
         }
@@ -167,7 +171,6 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
         setSortingOrder(null);
         setSelectedMemory([]);
         setSelectedColor([]);
-
     }, [selectedCategory, selectedSubSubCategory]);
 
     useEffect(() => {
@@ -311,7 +314,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
 
     useEffect(() => {
         if (selectedCatalogSubcategory) {
-            setSubSubcategories(selectedCatalogSubcategory?.subcats || []);
+
+            setSubSubcategories((selectedCatalogSubcategory.name === MOBILE_PHONES_NAME ? selectedCatalogSubcategory?.subcats.reverse() : selectedCatalogSubcategory?.subcats) || []);
         }
     }, [selectedCatalogSubcategory]);
 
@@ -449,7 +453,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                       />
                   </div>
                   <div className={`${DEFAULT_CLASSNAME}_content-main`}>
-                      <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_wrapper`}>
+                      {!!subSubcategories?.length && <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_wrapper`}>
                           <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories`}>
                               {subSubcategories?.map(item => <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item ${selectedSubSubCategory?.id === item.id && 'active-subSubCategory'}`}>
                                   <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item_image_wrapper`}>
@@ -474,7 +478,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                                   <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item_text`}>{item.name}</div>
                               </div>)}
                           </div>
-                      </div>
+                      </div>}
                       {!catalogFilterOpened && <ServiceItems compareItems={compareItems} addItemToCompare={addItemToCompare} setCartItems={setCartItems} items={catalogItems} />}
                       <div className={`${DEFAULT_CLASSNAME}_pagination`}>
                           {pages && <div className={`${DEFAULT_CLASSNAME}_pagination_block`}>

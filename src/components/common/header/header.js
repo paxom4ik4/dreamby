@@ -76,7 +76,9 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
       setSearchData([]);
     }  }, [searchText])
 
-  const handleNavToItem = (link, category, itemSubcategory) => {
+  const handleNavToItem = (event, link, category, itemSubcategory) => {
+    event.preventDefault();
+
     const itemCategory = objReplacer[category];
 
     if (link.includes('catalog')) {
@@ -125,7 +127,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
                   const itemSubcategory = item?.subcategory?.link_name;
 
                   return (
-                      <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={() => handleNavToItem(itemLink, itemCategory, itemSubcategory)}>
+                      <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={(event) => handleNavToItem(event, itemLink, itemCategory, itemSubcategory)}>
                         <div className={`${DEFAULT_CLASSNAME}_searched-items_item_img`} style={{ width: "10%" }}>
                           <img src={item?.img_path?.includes('http') ? item?.img_path : `http://194.62.19.52:7000/${item?.img_path}`}/>
                         </div>

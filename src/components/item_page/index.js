@@ -290,7 +290,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
                   const final = `${window.location.origin}${current.join('/')}`
 
                   window.location.replace(final);
-                }} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${itemData.product.memory.size === memory.size && 'config-item-block-active'}`}>{memory.size}</div>)}
+                }} className={`${DEFAULT_CLASSNAME}_configuration_item config-item-block ${itemData.product?.memory?.size === memory?.size && 'config-item-block-active'}`}>{memory?.size}</div>)}
               </div>
             </div> }
             {!!config?.condition?.length && <div className={`${DEFAULT_CLASSNAME}_configuration_group`}>

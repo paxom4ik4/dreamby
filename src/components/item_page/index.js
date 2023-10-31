@@ -166,6 +166,9 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
 
   const [images, setImages] = useState([]);
 
+  // mocked until BE ready
+  const productPriceToShow = Number(itemData?.product?.price) === 0 ? Number(itemData?.product?.memory?.price ?? 0) : Number(itemData?.product?.price)
+
   if (!itemData) {
     return (
         <Loader />
@@ -300,7 +303,7 @@ export const ItemPage = ({ allSubcategories, setCartItems, compareItems, setSele
               </div>
             </div> }
             <div className={`${DEFAULT_CLASSNAME}_price`} itemProp="price">
-              {Number(itemData?.product?.price) === 0 ? "Уточните стоимость у менеджера" : `${Number(itemData?.product?.price).toFixed(2)} BYN`}
+              {(productPriceToShow === 0) ? "Уточните стоимость у менеджера" : `${productPriceToShow.toFixed(2)} BYN`}
             </div>
             {/*<button disabled={itemData?.product?.in_stock <= 0 && !noItemOrder} onClick={() => addToCartHandler()} className={`${DEFAULT_CLASSNAME}_add-to-cart`}>{"Добавить в корзину"}</button>*/}
 

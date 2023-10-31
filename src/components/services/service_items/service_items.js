@@ -18,6 +18,9 @@ export const ServiceItems = React.memo(({ setSelectedCategory, compareItems, add
   return (
     <div className={DEFAULT_CLASSNAME}>
       {itemsToShow?.length ? itemsToShow.map(item => {
+        // mocked until BE ready
+        const productPriceToShow = Number(item.price) === 0 ? Number(item?.memory?.price ?? 0) : Number(item.price)
+
         return (<ItemCard
           product={item}
           setSelectedCategory={setSelectedCategory}
@@ -37,7 +40,7 @@ export const ServiceItems = React.memo(({ setSelectedCategory, compareItems, add
           isServiceItem={item.isServiceItem}
           roundedBorders={true}
           link={item.link}
-          price={(+item.price)}
+          price={productPriceToShow}
           setCartItems={setCartItems}
           addItemToCompare={addItemToCompare}
         />)}) : <div className={`${DEFAULT_CLASSNAME}_empty`}>{"Загрузка..."}</div>}

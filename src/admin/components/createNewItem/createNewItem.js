@@ -23,6 +23,8 @@ const EditChildItem = () => {
 
     const [dataUpdated, setDataUpdated] = useState(1);
 
+    const [modelPrice, setModelPrice] = useState('0');
+
     useEffect(() => {
         const pathArr = window.location.href.split('/');
         const id = pathArr[pathArr.length - 1];
@@ -45,10 +47,11 @@ const EditChildItem = () => {
 
             setHideProduct(!productData?.isVisible);
             setHidePayment(productData?.hidePayment);
+            setModelPrice(productData?.price)
         }
     }, [productData]);
 
-    const saveEdits = async () => {
+    const saveEdits = async (resetPrice = false) => {
         const token = sessionStorage.getItem('admin-dream-token');
 
         await axios.patch(`${process.env["REACT_APP_API_URL"]}productModel/${productData?.id}`, JSON.stringify({
@@ -57,11 +60,12 @@ const EditChildItem = () => {
             in_stock: Number(amount),
             isVisible: !hideProduct,
             hidePayment: hidePayment,
+            price: resetPrice ? '0' : modelPrice,
         }), { headers: { 'Authorization': 'Bearer '+token.slice(7), 'Content-Type': 'application/json' } });
 
 
         setDataUpdated(dataUpdated + 1);
-        toast.info("Модель отредактирована");
+        toast.info(resetPrice ? "Теперь цена соотвествует цене родительского товара" : "Модель отредактирована");
     }
 
     const generalContent = (
@@ -69,6 +73,11 @@ const EditChildItem = () => {
             <div className={`${DEFAULT_CLASSNAME}_general_title`}>{productData?.name}</div>
             <div className={`${DEFAULT_CLASSNAME}_general_product_info`}>
                 <div className={`${DEFAULT_CLASSNAME}_general_product_info_title`}>Информация о товаре</div>
+                <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
+                    <label style={{ width: '150px', fontWeight: '700' }} htmlFor={'model-price'}>Цена товара: </label>
+                    <input type={'text'} value={modelPrice} onChange={(e) => setModelPrice(e.currentTarget.value)} />
+                    <button className={`model-price-reset`} onClick={() => saveEdits(true)}>Сбросить</button>
+                </div>
                 <div className={`${DEFAULT_CLASSNAME}_general_product_info_item`}>
                     <input checked={newIn} onChange={(e) => setNewIn(!newIn)} style={{ width: '40px' }} type={'checkbox'}/> <label>Новое поступление</label>
                 </div>

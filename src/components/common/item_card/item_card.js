@@ -121,10 +121,10 @@ export const ItemCard = React.memo(({
           {!isServiceItem && <div style={{ display: 'none '}} itemProp="offers" itemScope itemType="http://schema.org/Offer">
             <link itemProp="availability" href="https://schema.org/InStock"/>
             <meta itemProp="priceCurrency" content="BYN"/>
-            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>BYN</span>
+            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>{price !== 0 && "BYN"}</span>
           </div>}
           {!isServiceItem && <div className={`${DEFAULT_CLASSNAME}_content_price`}>
-            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>BYN</span>
+            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>{price !== 0 && "BYN"}</span>
           </div>}
           {isServiceItem && <div className={`${DEFAULT_CLASSNAME}_more`}>{"Подробнее"}</div>}
         </div>

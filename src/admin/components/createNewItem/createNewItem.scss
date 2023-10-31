@@ -4,6 +4,17 @@
   color: rgba(67, 67, 67, 1) !important;
 }
 
+.model-price-reset {
+  padding: 7px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .create-new-item {
   width: 1200px;
   display: flex;

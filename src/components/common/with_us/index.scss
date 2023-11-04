@@ -1,0 +1,52 @@
+.with-us-hidden {
+  transform: translateY(100%);
+}
+
+.with-us {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  width: 300px;
+  height: 120px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(165deg, #DEE7EE, #FFE2DB);
+  border-radius: 10px;
+  z-index: 1000;
+  opacity: 1;
+  transition: transform 0.3s ease;
+
+  &_title {
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  &_phones {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    font-size: 12px;
+  }
+
+  &_email {
+    font-size: 12px;
+  }
+
+  &_links {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    a img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}

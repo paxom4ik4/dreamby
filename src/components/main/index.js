@@ -7,6 +7,8 @@ import './index.scss';
 import {MainSlider} from "./main_slider/main_slider";
 import {Helmet} from "react-helmet";
 
+import servicesMocked from '../../assets/services_mocked.png';
+
 const DEFAULT_CLASSNAME = 'main';
 
 export const Main = ({ setSelectedSubcategories, setSelectedCategoryName, setFavoriteServices, favoriteServices, favoriteItems, setSelectedCategory, favoriteNotify, setFavoriteItems, setCartItems, categories, setCategories }) => {
@@ -22,7 +24,9 @@ export const Main = ({ setSelectedSubcategories, setSelectedCategoryName, setFav
 
       <MainSlider />
 
-      <h1 align={"center"}>{"Dreamstore.by"}</h1>
+      <h1 align={"center"}>{"Dreamstore. Лучший способ приобрести"} <br /> {"желанную технику."}</h1>
+      <div className={`${DEFAULT_CLASSNAME}_title`}>Последние новинки. <span>Узнайте, что нового у нас сейчас.</span></div>
+
 
         <div style={{ display: 'none'}} itemScope itemType="https://schema.org/Store">
             <h1 itemProp="name">DreamStore</h1>
@@ -40,7 +44,12 @@ export const Main = ({ setSelectedSubcategories, setSelectedCategoryName, setFav
 
       <Categories setSelectedCategoryName={setSelectedCategoryName} setSelectedCategory={setSelectedCategory} categories={categories} setCategories={setCategories} />
       <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
-      <Services favoriteItems={favoriteServices} setFavoriteItems={setFavoriteServices} />
+
+      <div className={`${DEFAULT_CLASSNAME}_services`}>
+          <img src={servicesMocked} alt={'main_services'}/>
+      </div>
+
+      {/*<Services favoriteItems={favoriteServices} setFavoriteItems={setFavoriteServices} />*/}
     </div>
   )
 }

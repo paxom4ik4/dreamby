@@ -1,8 +1,36 @@
+@import "src/global/variables";
+
 .main {
   flex-direction: column;
   display: flex;
   align-items: center;
   width: 100%;
+
+  h1 {
+    font-size: 44px;
+  }
+
+  &_title {
+    font-size: 30px;
+    span {
+      color: $orange-primary;
+    };
+  }
+
+  &_services {
+    margin-top: 80px;
+    width: 1225px;
+    transition: 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
 }
 
 @media (max-width: 525px) {

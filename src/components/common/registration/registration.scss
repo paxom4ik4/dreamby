@@ -1,3 +1,5 @@
+@import "src/global/variables";
+
 .registration {
   display: flex;
   flex-direction: column;
@@ -15,7 +17,7 @@
     width: 280px;
     height: 40px;
     color: #FFFFFF;
-    background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%);
+    background: linear-gradient(271.38deg, rgb(255, 105, 62) -8.46%, rgb(253, 81, 30) 75.71%);
     border-radius: 12px;
     transition: .3s;
 

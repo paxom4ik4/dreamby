@@ -1,22 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import { NavLink, useNavigate } from "react-router-dom";
-import cabinet from './cabinet.svg';
-import cartIcon from './cart.svg';
 
 import './header.scss';
-import header_logo from '../../../assets/logo.png';
-import search_icon from '../../../assets/header/search_icon.png';
 import {HeaderMenu} from "./header_menu/header_menu";
 import {objReplacer} from "../../catalog/catalog";
+
+import searchIcon from './icons/search.svg';
+import favoriteIcon from './icons/favorite.svg';
+import cartIcon from './icons/cart.svg';
+import profileIcon from './icons/profile.svg';
+import compareIcon from './icons/compare.svg';
+
+import logo from './Logo.png';
 
 const DEFAULT_CLASSNAME = 'header';
 
 const NAV_ITEMS = [
   {title: 'Каталог', link: '/catalog'},
   {title: 'Услуги', link: 'services'},
-  {title: 'О нас', link: 'about'},
   {title: 'Оплата', link: 'billing'},
+  {title: 'О нас', link: 'about'}
 ];
 
 const MobileMenu = () => {
@@ -54,6 +58,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState([]);
+  const [searchOpened, setSearchOpened] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
 
   const navigate = useNavigate();
@@ -93,11 +98,17 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
     if (searchText.trim() === "" && searchData.length) setSearchData([]);
   }, [searchText, searchData]);
 
+  useEffect(() => {
+    setSearchOpened(false);
+  }, [navigate]);
+
   const clickOnCatalog = (item) => {
     if (item.link === "/catalog") {
       setSelectedCategory(null)
     }
   }
+
+  const searchRef = useRef();
 
   const showHeader = window.location.pathname.includes('/admin');
 
@@ -105,64 +116,75 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
       !showHeader && <div className={DEFAULT_CLASSNAME}>
         <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
           <div className={`${DEFAULT_CLASSNAME}_wrapper_logo`} onClick={() => navigate('/')}>
-            <img src={header_logo} alt={'header-logo'}/>
-            <span>{'dreamstore'}</span>
+            <img src={logo} alt={'header-logo'}/>
           </div>
           <div className={`${DEFAULT_CLASSNAME}_wrapper_navigation`}>
             <MobileMenu />
-            <nav className={`menu`}>
+            <nav className={`${'menu'} ${searchOpened && 'menu-hidden'}`}>
               {NAV_ITEMS.map((item, id) =>
                   <NavLink onClick={() => clickOnCatalog(item)} to={item.link} key={id.toString()} className={`${DEFAULT_CLASSNAME}_wrapper_navigation_item`}
                            activeClassName="selected">{item.title}</NavLink>)}
             </nav>
           </div>
-          {
-              !!searchData && searchText.length >= 1 && searchFocused && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
+          <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel`}>
 
-                {!searchData.length && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
+            <input className={`${'search-input'} ${!searchOpened && 'search-input-hidden'}`} onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>
+            <img onClick={() => setSearchOpened(!searchOpened)} src={searchIcon} alt={'search'} className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}/>
 
-                {searchData?.map(item => {
-                  const itemCategory = item?.category?.categoryName;
-                  const itemLink = item?.link || item?.id;
-                  const itemSubcategory = item?.subcategory?.link_name;
+            <img onClick={() => navigate('/favorite')} src={favoriteIcon} alt={'favorite'} />
+            <img onClick={() => navigate('/cart')} src={cartIcon} alt={'cart'} />
+            <img onClick={() => navigate('/profile')} src={profileIcon} alt={'profile'} />
+            <img onClick={() => navigate('/compare')} src={compareIcon} alt={'compare'} />
+          </div>
 
-                  return (
-                      <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={(event) => handleNavToItem(event, itemLink, itemCategory, itemSubcategory)}>
-                        <div className={`${DEFAULT_CLASSNAME}_searched-items_item_img`} style={{ width: "10%" }}>
-                          <img src={item?.img_path?.includes('http') ? item?.img_path : `http://194.62.19.52:7000/${item?.img_path}`}/>
+          {searchOpened &&
+              <div ref={searchRef}>
+                {!!searchData && searchText.length >= 1 && searchOpened && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
+
+                  {!searchData.length && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
+
+                  {searchData?.map(item => {
+                    const itemCategory = item?.category?.categoryName;
+                    const itemLink = item?.link || item?.id;
+                    const itemSubcategory = item?.subcategory?.link_name;
+
+                    return (
+                        <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={(event) => handleNavToItem(event, itemLink, itemCategory, itemSubcategory)}>
+                          <img alt={'product-photo'} src={item?.img_path?.includes('http') ? item?.img_path : `http://194.62.19.52:7000/${item?.img_path}`}/>
+                          <div className={`${DEFAULT_CLASSNAME}_searched-items_item_content`}>
+                            <div className={`${DEFAULT_CLASSNAME}_searched-items_item_text`}>{item.name}</div>
+                            <div className={`${DEFAULT_CLASSNAME}_searched-items_item_footer`}>
+                              <span className={`${DEFAULT_CLASSNAME}_searched-items_item_price`}>{item.price} BYN</span>
+                              <span className={`${DEFAULT_CLASSNAME}_searched-items_item_about`}>Перейти</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className={`${DEFAULT_CLASSNAME}_searched-items_item_text`}>{item.name}</div>
-                        <span className={`${DEFAULT_CLASSNAME}_searched-items_item_about`}>Подробнее</span>
-                      </div>
-                  )
-                })}
+                    )
+                  })}
+                </div>
+                }
               </div>
           }
-          <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel`}>
-            <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}>
-              <input onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>
-              <img className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search_icon`} src={search_icon}
-                   alt={'search-icon'}/>
-            </div>
-            {/*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_cart`} onClick={() => navigate('/cart')}>*/}
-            {/*  <img src={cartIcon} alt={'cart-icon'} />*/}
-            {/*  {cartItemsLength > 0 && <div className={`${DEFAULT_CLASSNAME}_cart-in`}>{cartItemsLength}</div>}*/}
-            {/*</div>*/}
-            <div className={`${DEFAULT_CLASSNAME}_phone--text`}>
-              <a href={"tel:375291553020"}>{'+375 (29) 155-30-20'}</a>
-              <a href={"tel:375297555562"}>{'+375 (29) 755-55-62'}</a>
-            </div>
-            <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_profile`} onClick={() => setIsMenuOpen(true)}>
-              <img src={cabinet} alt={'profile-icon'} />
-              {isLoggedIn && <div className={`${DEFAULT_CLASSNAME}_logged-in`} />}
-            </div>
-          </div>
+
           {isMenuOpen && <HeaderMenu setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} setLoginData={setLoginData}/>}
-        </div>
-        <div className={`${DEFAULT_CLASSNAME}_phone`}>
-          <a href={"tel:375291553020"}>{'+375 (29) 155-30-20'}</a>
-          <a href={"tel:375297555562"}>{'+375 (29) 755-55-62'}</a>
         </div>
       </div>
   )
 }
+
+
+{/*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_cart`} onClick={() => navigate('/cart')}>*/}
+{/*  <img src={cartIcon} alt={'cart-icon'} />*/}
+{/*  {cartItemsLength > 0 && <div className={`${DEFAULT_CLASSNAME}_cart-in`}>{cartItemsLength}</div>}*/}
+{/*</div>*/}
+
+{/*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}>*/}
+{/*  <input onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>*/}
+{/*  <img className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search_icon`} src={search_icon}*/}
+{/*       alt={'search-icon'}/>*/}
+{/*</div>*/}
+
+{/*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_profile`} onClick={() => setIsMenuOpen(true)}>*/}
+{/*  <img src={cabinet} alt={'profile-icon'} />*/}
+{/*  {isLoggedIn && <div className={`${DEFAULT_CLASSNAME}_logged-in`} />}*/}
+{/*</div>*/}

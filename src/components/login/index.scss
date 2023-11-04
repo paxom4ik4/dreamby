@@ -1,3 +1,5 @@
+@import "src/global/variables";
+
 .login {
   margin-top: 60px;
   width: 1200px;
@@ -16,11 +18,11 @@
   }
 
   .registration_btn.secondary_btn {
-    background: linear-gradient(271.38deg, #0681E4 -8.46%, rgba(39, 135, 245, 0.91) 75.71%);
+    background: linear-gradient(271.38deg, rgb(255, 105, 62) -8.46%, rgb(253, 81, 30) 75.71%);
   }
 
   .registration_btn.light_btn {
-    background: linear-gradient(271.38deg, #0681E4 -8.46%, rgba(39, 135, 245, 0.72) 75.71%);
+    background: linear-gradient(271.38deg, rgb(255, 105, 62) -8.46%, rgb(253, 81, 30) 75.71%);
   }
 
   &_forget {
@@ -28,7 +30,7 @@
 
     span {
       cursor: pointer;
-      color: #095ED4;
+      color: $orange-primary;
     }
   }
 

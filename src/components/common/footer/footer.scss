@@ -30,7 +30,7 @@
     font-weight: 500;
 
     &__colored {
-      color: #305878;
+      color: $orange-primary;
     }
   }
 
@@ -54,7 +54,7 @@
   &_contact_info_item_title {
     font-weight: 500;
     padding: 4px 0;
-    color: $footer_secondary_color;
+    color: $orange-primary;
   }
 
   &_contact_info_item_text {

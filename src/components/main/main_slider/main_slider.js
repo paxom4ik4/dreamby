@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import './main_slider.scss';
 import { Slider } from "../../common/slider/slider";
 
+import mockedSlide from '../../../assets/main-widget-mocked.png';
+
 const DEFAULT_CLASSNAME = 'main-slider'
 
 export const MainSlider = () => {
@@ -17,9 +19,45 @@ export const MainSlider = () => {
       });
   }, [])
 
+    const mockedSlides = [
+      {
+        aboutPage: false,
+        description: null,
+        id: "d647208b-dfcf-4437-94b2-c572a251766b",
+        img_path: mockedSlide,
+        link: "catalog/smart-watches/apple-watch-ultra/umnyye-chasy-apple-watch-ultra-lte-49-mm-midnight-32",
+        priority: 0,
+        productId: null,
+        title: null,
+        used: true
+      },
+      {
+        aboutPage: false,
+        description: null,
+        id: "e647208b-dfcf-4437-94b2-c572a251766b",
+        img_path: mockedSlide,
+        link: "catalog/smart-watches/apple-watch-ultra/umnyye-chasy-apple-watch-ultra-lte-49-mm-midnight-32",
+        priority: 0,
+        productId: null,
+        title: null,
+        used: true
+      },
+      {
+        aboutPage: false,
+        description: null,
+        id: "f647208b-dfcf-4437-94b2-c572a251766b",
+        img_path: mockedSlide,
+        link: "catalog/smart-watches/apple-watch-ultra/umnyye-chasy-apple-watch-ultra-lte-49-mm-midnight-32",
+        priority: 0,
+        productId: null,
+        title: null,
+        used: true
+      },
+    ];
+
   return (
     <div className={DEFAULT_CLASSNAME}>
-      <Slider slides={slides} slidesPerView={1} />
+      <Slider slides={mockedSlides} slidesPerView={1} />
     </div>
   )
 }

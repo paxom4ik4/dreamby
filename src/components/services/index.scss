@@ -1,12 +1,21 @@
 @import "src/global/variables";
 
 .manufacturer-input-keyword {
-  color: #303030;
+  color: $text-color-primary;
   background: #fafafa;
   border: 1px solid #9c9c9c;
   border-radius: 4px;
   padding: 4px 12px;
   width: 100%;
+
+  &:active {
+    border: 1px solid $orange-primary;
+  }
+
+  &:focus-visible {
+    outline-color: $orange-primary;
+    border: 1px solid $orange-primary !important;
+  }
 }
 
 .services {
@@ -75,8 +84,6 @@
   background-color: $item-card-background;
 
   &_color_item {
-    width: 24px;
-    height: 24px;
     border-radius: 50%;
     margin: 4px;
     border: 1px solid #e6e6e6;
@@ -86,24 +93,17 @@
 
   &_memory_item {
     background: rgba(255, 255, 255);
-    border: 1px solid #9c9c9c;
+    border: 1.5px solid #9c9c9c;
     border-radius: 12px;
-    font-size: 14px;
-    padding: 4px 8px;
+    font-size: 16px;
+    padding: 2px 8px;
     margin: 4px;
     transition: 0.3s;
     cursor: pointer;
   }
 
   &_memory_item.selected_color {
-    border: 1px solid #0A5BD3;
-    transition: 0.3s;
-  }
-
-  &_color_item.selected_color {
-    width: 24px;
-    height: 24px;
-    border: 1px solid #0A5BD3;
+    border: 1.5px solid $orange-primary;
     transition: 0.3s;
   }
 
@@ -133,7 +133,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    color: #434343;
+    color: $text-color-primary;
     border: none;
     border-bottom: 1px solid #9c9c9c;
 
@@ -145,7 +145,7 @@
 
   &_search {
     margin-top: 32px;
-    background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%);
+    background: $orange-primary;
     border-radius: 12px;
     text-align: center;
     color: #FFFFFF;
@@ -184,7 +184,7 @@
       font-weight: 500;
       font-size: 14px;
       margin: 12px 0;
-      color: #434343;
+      color: $text-color-primary;
     }
 
     &_wrapper {
@@ -198,17 +198,17 @@
       height: 30px;
       padding: 4px 8px;
       outline: none;
-      border: 1px solid rgba(102, 102, 102, 0.59);
+      border: 1px solid $text-color-primary;
       width: 50%;
 
       &:first-child {
-        border: 1px solid rgba(102, 102, 102, 0.59);
+        border: 1px solid $text-color-primary;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
       }
 
       &:last-child {
-        border: 1px solid rgba(102, 102, 102, 0.59);
+        border: 1px solid $text-color-primary;
         border-left: none;
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -224,7 +224,7 @@
       flex-direction: row;
       align-items: center;
       margin: 4px 0;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
     }
 
@@ -240,7 +240,7 @@
       height: 14px;
       top: 0;
       left: -1px;
-      border: 1px solid #095CD3;
+      border: 1px solid $orange-primary;
       border-radius: 4px;
       background-color: white;
     }
@@ -249,7 +249,7 @@
       display: block;
       width: 3px;
       height: 8px;
-      border: solid #095CD3;
+      border: solid $orange-primary;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
       position: absolute;
@@ -263,7 +263,7 @@
       justify-content: space-between;
       font-weight: 500;
       margin: 12px 0;
-      color: #434343;
+      color: $text-color-primary;
       font-size: 14px;
 
       span {
@@ -274,7 +274,7 @@
     }
 
     label {
-      color: #434343;
+      color: $text-color-primary;
       font-size: 14px;
       margin-top: 2px;
       margin-left: 8px;
@@ -295,7 +295,7 @@
     width: 100%;
     align-self: center;
     color: $white;
-    background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%);
+    background-color: $orange-primary;
     border-radius: 20px;
   }
 }
@@ -365,7 +365,7 @@
 }
 
 .confirm-filter-btn {
-  background: #0A5BD3;
+  background: $orange-primary;
   color: #FAFCFD;
   text-align: center;
   border-radius: 12px;

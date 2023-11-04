@@ -24,20 +24,16 @@ export const Slider = ({ slides, slidesPerView, aboutPage = false }) => {
         forceToAxis: true,
       }}
       key={slides.length.toString()}
-      scrollbar={{
-        hide: false,
-        draggable: false,
-      }}
       slidesPerView={slidesPerView ?? 1}
       spaceBetween={40}
       speed={500}
       autoplay={{
-        delay: 4000,
+        delay: 3000,
         disableOnInteraction: true,
       }}
       className="mySwiper"
       navigation={!aboutPage}
-      modules={[Autoplay, Scrollbar]}
+      modules={[Autoplay]}
     >
       {slides.map((slide) => {
         let linkUrl = "";

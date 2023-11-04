@@ -9,13 +9,13 @@ import {useNavigate} from "react-router-dom";
 
 const DEFAULT_CLASSNAME = 'footer';
 
-export const Footer = () => {
+export const Footer = ({ footerRef }) => {
   const navigate = useNavigate();
 
   const showFooter = window.location.pathname.includes('/admin');
 
   return (
-    !showFooter && <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
+    !showFooter && <div className={`${DEFAULT_CLASSNAME}_wrapper`} ref={footerRef}>
         <div className={DEFAULT_CLASSNAME}>
           <div className={`${DEFAULT_CLASSNAME}_title`}>
             <span className={`${DEFAULT_CLASSNAME}_title__colored`}>D</span>REAM

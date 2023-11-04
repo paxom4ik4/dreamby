@@ -150,7 +150,7 @@ export const CategoryCard = ({
         {!hideLink && <div className={`${DEFAULT_CLASSNAME}_link`}>
           <a itemProp="url" href={categoryLink || '#'}>
             <span>{'Смотреть модели'}</span>
-            {linkArrow}
+            <span color={'#000'} className={`${DEFAULT_CLASSNAME}_link_arrow`}>{linkArrow}</span>
           </a>
         </div>}
       </div>

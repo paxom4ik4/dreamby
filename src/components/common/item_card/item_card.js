@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faHeart, faScaleUnbalancedFlip} from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faScaleUnbalancedFlip } from '@fortawesome/free-solid-svg-icons';
 
 import './item_card.scss';
 import available from '../../../assets/item_card/available.svg';
@@ -87,48 +87,59 @@ export const ItemCard = React.memo(({
     <div itemScope itemType={"https://schema.org/ItemList"} onClick={openProductHandler} className={`${DEFAULT_CLASSNAME} ${!isAvailable && 'unavailable'}`} style={{ borderRadius: roundedBorders && "12px", background: compareMode && '#FFF'}}>
       <div className={`${DEFAULT_CLASSNAME}_wrapper`} itemScope itemType={isServiceItem ? 'https://schema.org/Service' : 'https://schema.org/Product'}>
         {isServiceItem && <meta itemProp="serviceType" content={title} />}
-        {(compareMode) && <div className={'delete-from-compare'} onClick={deleteFromCompare}>Убрать из сравнения</div>}
-        { !compareMode && <div className={`${DEFAULT_CLASSNAME}_favoriteWrapper`}>
-          {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_favorite`} onClick={() => {setFavoriteItems(product)}} style={{ color: isFavorite && "red" }}>{favoriteIcon}</span>}
-          {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(product)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}
+        <div className={`${DEFAULT_CLASSNAME}_image_wrapper`}>
+          <img itemProp="image" className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={title} title={`Купить ${title}`} />
         </div>
-        }
-        <img itemProp="image" className={`${DEFAULT_CLASSNAME}_image`} src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`} alt={title} title={`Купить ${title}`} />
-        <div className={`${DEFAULT_CLASSNAME}_content`} style={{ boxShadow: compareMode && '0px 0px 29px 11px rgba(52, 100, 223, 0.23)' }}>
-          <div className={`${DEFAULT_CLASSNAME}_content_status`}>
-            <div className={`${DEFAULT_CLASSNAME}_availability`}>
-              {availableContent}
-            </div>
-            {!isServiceItem && <div style={{ display: 'none'}} itemScope itemProp="aggregateRating" itemType="https://schema.org/AggregateRating">
-              <meta itemProp="reviewCount" content="100"/>
-              <meta itemProp="ratingValue" content="5"/>
-            </div>}
-            {/*{!isServiceItem && !compareMode &&*/}
-            {/*<div className={`${DEFAULT_CLASSNAME}_cart`} onClick={() => {*/}
-            {/*  setCartItems({*/}
-            {/*    id: productIdForCart,*/}
-            {/*    image,*/}
-            {/*    title,*/}
-            {/*    price,*/}
-            {/*    inStock: isAvailable,*/}
-            {/*    hidePayment: hidePayment,*/}
-            {/*    equipment: minEquipment ?? "0",*/}
-            {/*})}}>*/}
-            {/*  <button disabled={!isAvailable} className={'add-to-cart'}>{"В корзину"} <img src={cart} alt={'cart-image'} /></button>*/}
-            {/*</div>}*/}
+        <div className={`${DEFAULT_CLASSNAME}_content_status`}>
+          <div className={`${DEFAULT_CLASSNAME}_availability`}>
+            {availableContent}
           </div>
-          <span className={`${DEFAULT_CLASSNAME}_content_title`} itemProp="name">{`${title}`}</span>
-          {!isServiceItem && <div style={{ display: 'none '}} itemProp="offers" itemScope itemType="http://schema.org/Offer">
-            <link itemProp="availability" href="https://schema.org/InStock"/>
-            <meta itemProp="priceCurrency" content="BYN"/>
-            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>{price !== 0 && "BYN"}</span>
+          {!isServiceItem && <div style={{ display: 'none'}} itemScope itemProp="aggregateRating" itemType="https://schema.org/AggregateRating">
+            <meta itemProp="reviewCount" content="100"/>
+            <meta itemProp="ratingValue" content="5"/>
           </div>}
-          {!isServiceItem && <div className={`${DEFAULT_CLASSNAME}_content_price`}>
-            <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>{price !== 0 && "BYN"}</span>
-          </div>}
-          {isServiceItem && <div className={`${DEFAULT_CLASSNAME}_more`}>{"Подробнее"}</div>}
         </div>
+        <span className={`${DEFAULT_CLASSNAME}_content_title`} itemProp="name">{`${title}`}</span>
+        {!isServiceItem && <div style={{ display: 'none '}} itemProp="offers" itemScope itemType="http://schema.org/Offer">
+          <link itemProp="availability" href="https://schema.org/InStock"/>
+          <meta itemProp="priceCurrency" content="BYN"/>
+          <span itemProp="price">{price === 0 ? "Уточните цену" : `${price}.00`}</span> <span>{price !== 0 && "BYN"}</span>
+        </div>}
+        {!isServiceItem && <div className={`${DEFAULT_CLASSNAME}_content_buttons`}>
+          <button onClick={() => {setFavoriteItems(product)}} style={{ color: isFavorite && "red" }} className={`${DEFAULT_CLASSNAME}_content_buttons_favorite`}>{favoriteIcon}</button>
+          <button className={`${DEFAULT_CLASSNAME}_content_buttons_add_to_card`}>
+              <span
+                  itemProp="price"
+                  className={`${DEFAULT_CLASSNAME}_content_buttons_add_to_card_price`}
+              >
+                {price === 0 ? "Уточните цену" : `${price}.00`}
+                {price !== 0 && " BYN"}
+              </span>
+            <span className={`${DEFAULT_CLASSNAME}_content_buttons_add_to_card_btn`}>В корзину</span>
+          </button>
+        </div>}
       </div>
     </div>
   )
 })
+
+{/*{(compareMode) && <div className={'delete-from-compare'} onClick={deleteFromCompare}>Убрать из сравнения</div>}*/}
+{/*{ !compareMode && <div className={`${DEFAULT_CLASSNAME}_favoriteWrapper`}>*/}
+{/*  {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_favorite`} onClick={() => {setFavoriteItems(product)}} style={{ color: isFavorite && "red" }}>{favoriteIcon}</span>}*/}
+{/*  {!isServiceItem && <span className={`${DEFAULT_CLASSNAME}_compare`} onClick={() => addItemToCompare(product)} style={{ fontSize: "19px", color: inCompareMode && "#0A5BD3" }}>{compareIcon}</span>}*/}
+{/*</div>*/}
+{/*}*/}
+
+{/*{!isServiceItem && !compareMode &&*/}
+{/*<div className={`${DEFAULT_CLASSNAME}_cart`} onClick={() => {*/}
+{/*  setCartItems({*/}
+{/*    id: productIdForCart,*/}
+{/*    image,*/}
+{/*    title,*/}
+{/*    price,*/}
+{/*    inStock: isAvailable,*/}
+{/*    hidePayment: hidePayment,*/}
+{/*    equipment: minEquipment ?? "0",*/}
+{/*})}}>*/}
+{/*  <button disabled={!isAvailable} className={'add-to-cart'}>{"В корзину"} <img src={cart} alt={'cart-image'} /></button>*/}
+{/*</div>}*/}

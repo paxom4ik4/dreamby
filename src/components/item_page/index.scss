@@ -1,3 +1,5 @@
+@import '../../global/variables';
+
 .like-active {
   transition: .1s;
   color: #FF4545 !important;
@@ -5,7 +7,7 @@
 
 .compare-active {
   transition: .1s;
-  color: #0A5BD3 !important;
+  color: $orange-primary !important;
 }
 
 .order-checkbox {
@@ -20,12 +22,12 @@
 .config-item-block-color-active {
   width: 30px !important;
   height: 30px !important;
-  box-shadow: 0 0 2px 2px #0681E4 !important;
+  box-shadow: 0 0 2px 2px $orange-primary-hover !important;
   transition: 0.3s !important;
 }
 
 .active-image-selected {
-  box-shadow: 0 0 3px 2px #0681E4 !important;
+  box-shadow: 0 0 2px 1px $orange-primary !important;
 }
 
 .item-page {
@@ -38,9 +40,8 @@
     object-fit: contain;
     width: 58px;
     height: 80px;
-    border: 2px solid rgba(32, 94, 187, 1);
+    border: 1.5px solid $orange-primary;
     border-radius: 5px;
-    padding: 5px;
     transition: 0.3s;
 
     &:hover {
@@ -184,8 +185,9 @@
   }
 
   &_price {
-    font-size: 18px;
-    color: #305878;
+    font-size: 20px;
+    font-weight: 500;
+    color: $orange-primary;
     padding: 20px 4px 12px;
   }
 
@@ -310,6 +312,7 @@
 }
 
 .config-item-block {
+  cursor: pointer;
   font-size: 14px;
   font-weight: 500;
   padding: 8px 12px;
@@ -318,8 +321,9 @@
 
   &-active {
     color: #FFFFFF;
-    background: rgba(9, 96, 212, 0.82);
-    box-shadow: 0 0 29px 11px rgba(52, 100, 223, 0.26);
+    font-weight: 600;
+    background: $orange-primary;
+    box-shadow: 0 0 29px 11px $orange-primary-hover;
     border-radius: 20px;
   }
 }

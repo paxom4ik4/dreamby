@@ -37,7 +37,6 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
 
   return (
     <div className={DEFAULT_CLASSNAME}>
-      <p className={`${DEFAULT_CLASSNAME}_title`}>{"Популярные товары"}</p>
       {!isRecommended && <div className={`${DEFAULT_CLASSNAME}_menu`}>
         {menuItems.map((item, id) =>
           <span

@@ -12,10 +12,11 @@ import up from './subsubCategory2.svg';
 
 import left from './left.svg';
 import right from './right.svg';
-import {cardSize, CategoryCard} from "../common/category_card/category_card";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {Helmet} from "react-helmet";
-import {all} from "axios";
+import { cardSize, CategoryCard } from "../common/category_card/category_card";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_CLASSNAME = 'catalog';
 
@@ -94,6 +95,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
     const [sortingInStock, setSortingInStock] = useState(null);
     const [selectedMemory, setSelectedMemory] = useState([]);
     const [selectedColor, setSelectedColor] = useState([]);
+
+    const [isDataLoading, setIsDataLoading] = useState(true);
 
     //subsub
     const [selectedCatalogSubcategory, setSelectedCatalogSubcategory] = useState(null);
@@ -177,6 +180,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
       if (!selectedCategory || !selectedSubcategory) {
           return;
       }
+
+      setIsDataLoading(true);
 
       let urlToFetch = `${process.env["REACT_APP_API_URL"]}product/search?category=${selectedCategory}`;
 
@@ -263,6 +268,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
               .then(data => {
                   setCatalogItems(data.products)
                   setMaxPage(data.max_page);
+                  setIsDataLoading(false);
               });
       } else {
           fetch(urlToFetch)
@@ -270,6 +276,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
               .then(data => {
                   setCatalogItems(data.products)
                   setMaxPage(data.max_page);
+                  setIsDataLoading(false);
               });
       }
     }, [category, currentPage, selectedCategory, price, selectedManufacturers, selectedSubcategory, sortingOrder, sortingInStock, alphabetSort, keyWord, selectedMemory, selectedColor, selectedSubSubCategory])
@@ -325,6 +332,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
     const metaTextCategory = categories.find(item => item.id === selectedCategory)?.meta_text || "";
     const metaTitleCategory = categories.find(item => item.id === selectedCategory)?.meta_h1 || "";
 
+    const linkArrow = <FontAwesomeIcon icon={faCircleArrowLeft} />;
+
   return (
     <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
 
@@ -352,7 +361,6 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
         {(!selectedSubcategory && !selectedCategory) && <h1 className={`${DEFAULT_CLASSNAME}_page_title`}>{"Каталог"}</h1>}
 
         {!selectedCategory && <div className={`${DEFAULT_CLASSNAME}_select`}>
-          <div className={`${DEFAULT_CLASSNAME}_select_title`}>{"Выберите категорию товаров"}</div>
           <div className={`${DEFAULT_CLASSNAME}_select_categories`}>
             {categories.map(category => {
                 let size;
@@ -391,8 +399,8 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
             <div onClick={() => {
               navigate('/catalog');
               setSelectedCategory(null)
-            }} style={{ color: "#4575EED9" }}>
-              <img src={backArrow} alt={'back-arrow'} />
+            }}>
+                {linkArrow}
                 <span>Вернуться к категориям </span>
               </div>
           </div>
@@ -453,7 +461,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                       />
                   </div>
                   <div className={`${DEFAULT_CLASSNAME}_content-main`}>
-                      {!!subSubcategories?.length && <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_wrapper`}>
+                      {!isDataLoading && !!subSubcategories?.length && <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_wrapper`}>
                           <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories`}>
                               {subSubcategories?.map(item => <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item ${selectedSubSubCategory?.id === item.id && 'active-subSubCategory'}`}>
                                   <div className={`${DEFAULT_CLASSNAME}_content-main_subsubcategories_item_image_wrapper`}>
@@ -479,8 +487,9 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                               </div>)}
                           </div>
                       </div>}
-                      {!catalogFilterOpened && <ServiceItems compareItems={compareItems} addItemToCompare={addItemToCompare} setCartItems={setCartItems} items={catalogItems} />}
-                      <div className={`${DEFAULT_CLASSNAME}_pagination`}>
+                      {isDataLoading && <div>Loading...</div>}
+                      {!catalogFilterOpened && !isDataLoading && <ServiceItems compareItems={compareItems} addItemToCompare={addItemToCompare} setCartItems={setCartItems} items={catalogItems} />}
+                      {!isDataLoading && <div className={`${DEFAULT_CLASSNAME}_pagination`}>
                           {pages && <div className={`${DEFAULT_CLASSNAME}_pagination_block`}>
                               {Array.from(Array(maxPage)).map((item, index) => <div onClick={() => {
                                   setCurrentPage(index + 1);
@@ -490,7 +499,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                           <img style={{ display: pages && "none" }}  onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)} src={left} alt={'left'} />
                           <div style={{ display: pages && "none" }}  className={`${DEFAULT_CLASSNAME}_btn pagination-btn`} onClick={() => setPages(true)}>{currentPage} <img src={left}/></div>
                           <img style={{ display: pages && "none" }}  onClick={() => setCurrentPage(currentPage === maxPage ? maxPage : currentPage + 1)} src={right} alt={'right'} />
-                      </div>
+                      </div>}
                   </div>
               </div>
               {(!!metaText.length || !!metaTextCategory.length) && <div className={'catalog-additional-info'}>

@@ -262,7 +262,6 @@ export const Services = ({ setSelectedCategory, catalogFilterOpened, setSelected
 
   return (
     <div className={DEFAULT_CLASSNAME}>
-
       <Helmet>
         <title>Услуги по восстановлению и настройке техники Apple в Минске - DreamStore.by</title>
         <meta name="description" content="DreamStore.by предлагает услуги по восстановлению и настройке техники Apple. Обратитесь к нам в Минске и мы поможем вам с вашими устройствами." />

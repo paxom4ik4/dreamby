@@ -59,7 +59,7 @@ export const ItemCard = React.memo(({
   const openProductHandler = (event) => {
     setSelectedCategory(category);
 
-    if (!isServiceItem && event.target.className !== "add-to-cart" && event.target.className !== "tem_card_cart" && event.target.className !== 'item_card_compare' && event.target.closest('div').className !== 'item_card_favoriteWrapper' && clickLink) {
+    if (!isServiceItem && event.target.className !== "item_card_content_buttons" && event.target.className !== "item_card_content_buttons" && event.target.className !== 'item_card_content_buttons_add_to_card' && event.target.closest('div').className !== 'item_card_content_buttons' && clickLink) {
       if (clickLink === "default") {
         navigate('/catalog/')
       }
@@ -68,7 +68,7 @@ export const ItemCard = React.memo(({
       return;
     }
 
-    if (!isServiceItem && event.target.className !== "add-to-cart" && event.target.className !== "tem_card_cart" && event.target.className !== 'item_card_compare' && event.target.closest('div').className !== 'item_card_favoriteWrapper') {
+    if (!isServiceItem && event.target.className !== "item_card_content_buttons_favorite" && event.target.className !== "item_card_content_buttons_favorite" && event.target.className !== 'item_card_content_buttons_add_to_card' && event.target.closest('div').className !== 'item_card_content_buttons') {
       if (!isServiceItem && link) {
         if (link.includes('catalog')) {
           window.location = `${window.location.origin}/${link}`;
@@ -78,7 +78,7 @@ export const ItemCard = React.memo(({
       }
     }
 
-    if (isServiceItem && event.target.className !== 'add-to-cart' && event.target.closest('div').className !== 'item_card_favorite') {
+    if (isServiceItem && event.target.className !== 'item_card_content_buttons_favorite' && event.target.closest('div').className !== 'item_card_content_buttons') {
       navigate(`/services/${serviceId}`);
     }
   }

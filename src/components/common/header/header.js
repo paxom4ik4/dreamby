@@ -115,38 +115,37 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
             <img className={`tablet-hide`} onClick={() => navigate('/compare')} src={compareIcon} alt={'compare'} />
             <img className={'tablet-show'} onClick={() => setIsMobileMenuOpened(true)} src={menu} alt={'menu'} />
           </div>
+        </div>
+        {searchOpened &&
+            <div ref={searchRef}>
+              {searchText.length >= 1 && searchOpened && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
 
-          {searchOpened &&
-              <div ref={searchRef}>
-                {searchText.length >= 1 && searchOpened && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
+                {isSearchDataLoading && <Loader />}
 
-                  {isSearchDataLoading && <Loader />}
+                {!searchData.length && !isSearchDataLoading && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
 
-                  {!searchData.length && !isSearchDataLoading && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
+                {!isSearchDataLoading && searchData?.map(item => {
+                  const itemCategory = item?.category?.categoryName;
+                  const itemLink = item?.link || item?.id;
+                  const itemSubcategory = item?.subcategory?.link_name;
 
-                  {!isSearchDataLoading && searchData?.map(item => {
-                    const itemCategory = item?.category?.categoryName;
-                    const itemLink = item?.link || item?.id;
-                    const itemSubcategory = item?.subcategory?.link_name;
-
-                    return (
-                        <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={(event) => handleNavToItem(event, itemLink, itemCategory, itemSubcategory)}>
-                          <img alt={'product-photo'} src={item?.img_path?.includes('http') ? item?.img_path : `http://194.62.19.52:7000/${item?.img_path}`}/>
-                          <div className={`${DEFAULT_CLASSNAME}_searched-items_item_content`}>
-                            <div className={`${DEFAULT_CLASSNAME}_searched-items_item_text`}>{item.name}</div>
-                            <div className={`${DEFAULT_CLASSNAME}_searched-items_item_footer`}>
-                              <span className={`${DEFAULT_CLASSNAME}_searched-items_item_price`}>{item.price} BYN</span>
-                              <span className={`${DEFAULT_CLASSNAME}_searched-items_item_about`}>Перейти</span>
-                            </div>
+                  return (
+                      <div className={`${DEFAULT_CLASSNAME}_searched-items_item`} onClick={(event) => handleNavToItem(event, itemLink, itemCategory, itemSubcategory)}>
+                        <img alt={'product-photo'} src={item?.img_path?.includes('http') ? item?.img_path : `http://194.62.19.52:7000/${item?.img_path}`}/>
+                        <div className={`${DEFAULT_CLASSNAME}_searched-items_item_content`}>
+                          <div className={`${DEFAULT_CLASSNAME}_searched-items_item_text`}>{item.name}</div>
+                          <div className={`${DEFAULT_CLASSNAME}_searched-items_item_footer`}>
+                            <span className={`${DEFAULT_CLASSNAME}_searched-items_item_price`}>{item.price} BYN</span>
+                            <span className={`${DEFAULT_CLASSNAME}_searched-items_item_about`}>Перейти</span>
                           </div>
                         </div>
-                    )
-                  })}
-                </div>
-                }
+                      </div>
+                  )
+                })}
               </div>
-          }
-        </div>
+              }
+            </div>
+        }
       </div>
   )
 }

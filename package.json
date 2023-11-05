@@ -23,6 +23,7 @@
     "react-scripts": "5.0.1",
     "react-snap": "^1.23.0",
     "react-structured-data": "^0.0.14",
+    "react-swipeable": "^7.0.1",
     "react-toastify": "^9.0.5",
     "react-yandex-maps": "^4.6.0",
     "schema-dts": "^1.1.2",

@@ -199,7 +199,7 @@
     height: 32px;
     color: #FFFFFF;
     width: 240px;
-    background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%);
+    background: linear-gradient(271.38deg, $orange-primary -8.46%, $orange-primary 75.71%);
     transition: .3s;
 
     &:hover {
@@ -433,7 +433,7 @@
       }
 
       .swiper-pagination-bullet.swiper-pagination-bullet-active {
-        background: #3173d5 !important;
+        background: $orange-primary !important;
       }
 
       .swiper-pagination-bullet {
@@ -441,7 +441,7 @@
         height: 10px;
         opacity: 1 !important;
         background: transparent !important;
-        border: 1px solid #3173d5;
+        border: 1px solid $orange-primary;
       }
     }
 

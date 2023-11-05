@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import logo from '../Logo.png';
 import closeIcon from './close_icon.svg';
 
 import './mobile_menu.scss';
 import {useNavigate} from "react-router-dom";
+import {Loader} from "../../loader/loader";
 
 const DEFAULT_CLASSNAME = 'new-mobile-menu';
 

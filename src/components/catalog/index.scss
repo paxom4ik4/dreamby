@@ -592,6 +592,18 @@ h1 {
     box-sizing: border-box;
   }
 
+  .catalog_selectSubcategory_category {
+    width: 100%;
+  }
+
+  .catalog_selectSubcategory_item {
+    width: 100%;
+
+    img {
+      width: 40%;
+    }
+  }
+
   .catalog_select_categories {
     flex-direction: column;
   }
@@ -624,9 +636,9 @@ h1 {
 
   .mobile-filter-btn {
     position: fixed;
-    bottom: 20px;
+    bottom: 80px;
     z-index: 100;
-    background: #0A5BD3;
+    background: $orange-primary;
     color: #FAFCFD;
     padding: 8px 20px;
     border-radius: 12px;

@@ -281,8 +281,6 @@ const App = () => {
 
   const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
 
-  console.log(isMobileMenuOpened);
-
   return (
     <>
       {showInitialLoader && location.pathname === '/' && <div className={'INITIAL_LOADER'}>

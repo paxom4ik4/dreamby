@@ -12,7 +12,10 @@
 
   &_title {
     font-size: 30px;
+    text-align: center;
+
     span {
+      text-align: center;
       color: $orange-primary;
     };
   }
@@ -33,14 +36,38 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .main {
+    &_services {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 36px;
+    }
+
+    &_title {
+      padding: 0 20px;
+      font-size: 24px;
+    }
+  }
+}
+
 @media (max-width: 525px) {
   .main {
     margin-top: 20px;
+
+    &_title {
+      font-size: 16px;
+    }
   }
 
   .main h1 {
-    font-weight: 400;
-    font-size: 16px;
-    margin: 0;
+    font-weight: 500;
+    font-size: 24px;
+
+    margin-top: 0;
+    margin-bottom: 20px;
   }
 }

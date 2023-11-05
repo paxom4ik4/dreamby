@@ -17,6 +17,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {Loader} from "../common/loader/loader";
 
 const DEFAULT_CLASSNAME = 'catalog';
 
@@ -487,7 +488,7 @@ const Catalog = React.memo(({ setSelectedDeviceName, selectedSubcategory, allSub
                               </div>)}
                           </div>
                       </div>}
-                      {isDataLoading && <div>Loading...</div>}
+                      {isDataLoading && <Loader />}
                       {!catalogFilterOpened && !isDataLoading && <ServiceItems compareItems={compareItems} addItemToCompare={addItemToCompare} setCartItems={setCartItems} items={catalogItems} />}
                       {!isDataLoading && <div className={`${DEFAULT_CLASSNAME}_pagination`}>
                           {pages && <div className={`${DEFAULT_CLASSNAME}_pagination_block`}>

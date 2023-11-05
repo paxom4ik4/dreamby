@@ -26,6 +26,9 @@
   &_title {
     font-size: 24px;
     font-weight: 700;
+    align-self: flex-start;
+    margin-bottom: -20px;
+    color: $orange-primary;
   }
 
   &_menu {
@@ -57,21 +60,41 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .popular-items {
-    margin: 40px 0 0;
+    padding: 0 20px;
+    margin: 40px 0;
     width: 100%;
 
     &_content {
-      justify-content: center;
+      width: 100%;
       margin: 20px 20px;
       flex-wrap: wrap;
     }
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 760px) {
   .popular-items {
+    .active_menu_item {
+      color: $orange-primary;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    &_title {
+      font-size: 14px;
+      font-weight: 700;
+      align-self: flex-start;
+      margin-bottom: -20px;
+      color: $orange-primary;
+    }
+
+    &_content {
+      justify-content: center;
+      align-items: center;
+    }
+
     &_title {
       margin: 12px 0;
     }
@@ -80,7 +103,7 @@
       flex-direction: column;
 
       &_item {
-        margin: 2px 0;
+        font-size: 14px;
       }
     }
   }

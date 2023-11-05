@@ -287,7 +287,7 @@ export const Services = ({ setSelectedCategory, catalogFilterOpened, setSelected
       <div className={`${DEFAULT_CLASSNAME}_content`}>
         <ServiceItems isServicePage={true} favoriteItems={favoriteItems} currentRate={currentRate} items={services} setCartItems={setCartItems} />
       </div>
-      <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteCatalogItems} currentRate={currentRate} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
+      <PopularItems showTitle={false} setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteCatalogItems} currentRate={currentRate} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
     </div>
   )
 }

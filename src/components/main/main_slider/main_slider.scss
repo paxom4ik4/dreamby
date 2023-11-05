@@ -38,6 +38,12 @@
   }
 }
 
+@media (max-width: 760px) {
+  .main-slider {
+    margin-top: 32px;
+  };
+}
+
 @media (max-width: 450px) {
   .swiper-horizontal>.swiper-scrollbar {
     top: 280px !important;

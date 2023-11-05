@@ -30,6 +30,11 @@ import {WithUs} from "./components/common/with_us/with_us";
 import logo from './components/common/header/Logo.png';
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
+import preLoader from './Logo_Text_Dark.gif';
+import screenLoader from './Logo_Screensaver.gif';
+import {FooterMenu} from "./components/common/footer_menu/footer_menu";
+import {MobileMenu} from "./components/common/header/mobile_menu/mobile_menu";
+
 export const MAX_COMPARE_ITEMS = 4;
 
 const DEFAULT_CLASSNAME = 'app';
@@ -248,7 +253,7 @@ const App = () => {
 
     const timer = setTimeout(() => {
       setShowInitialLoader(false);
-    }, 1500)
+    }, 4000)
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -256,21 +261,39 @@ const App = () => {
     };
   }, []);
 
-  const queryClient = new QueryClient()
+  const [showScreenLoader, setShowScreenLoader] = useState(false);
 
-  if (showInitialLoader && location.pathname === '/') {
-    return (
-        <div className={'INITIAL_LOADER'}>
-          <img alt={'initial_logo'} src={logo} />
-        </div>
-    )
-  }
+  useEffect(() => {
+    if (location.pathname.split('/').length <= 2) {
+      setShowScreenLoader(true);
+    }
+
+    const timer = setTimeout(() => {
+      setShowScreenLoader(false)
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [navigate]);
+
+  const queryClient = new QueryClient();
+
+  const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
+
+  console.log(isMobileMenuOpened);
 
   return (
     <>
+      {showInitialLoader && location.pathname === '/' && <div className={'INITIAL_LOADER'}>
+        <img alt={'initial_logo'} src={preLoader} />
+      </div>}
+
+      {!showInitialLoader && showScreenLoader && <div className={`${'INITIAL_LOADER'} ${'PAGE_LOADER'}`}><img src={screenLoader} alt={'pre-screen'}/></div>}
+
       <QueryClientProvider client={queryClient}>
-        <WithUs isHidden={isFooterVisible} />
-        <Header setSelectedCategory={setSelectedCategory} isLoggedIn={isLoggedIn} setLoginData={setLoginData} />
+        <WithUs isHidden={isFooterVisible || isMobileMenuOpened} />
+        <Header setIsMobileMenuOpened={setIsMobileMenuOpened} isMobileMenuOpened={isMobileMenuOpened} setSelectedCategory={setSelectedCategory} isLoggedIn={isLoggedIn} setLoginData={setLoginData} />
         {window.location.pathname.startsWith("/catalog") && !!selectedCategory && !!selectedSubcategory && !catalogFilterOpened && (window.location.pathname.split('/').length < 5) && <div onClick={() => setCatalogFilterOpened(true)} className={"mobile-filter-btn"}>{"Фильтр и сортировка"}</div>}
 
         {window.location.pathname !== "/compare" && compareItems.length >= 2 && <div className={`${DEFAULT_CLASSNAME}_compare`}>Товар в сравнении: {compareItems.length} <span onClick={() => navigate('/compare')}>Перейти к сравнению</span> <span style={{ color: "#000" }} onClick={() => setCompareItems([])}>или очистите</span></div>}
@@ -317,6 +340,8 @@ const App = () => {
           {!catalogFilterOpened && <Footer footerRef={footerRef} />}
         </div>
         <ToastContainer />
+        <MobileMenu isMobileMenuOpened={isMobileMenuOpened} setIsMobileMenuOpened={setIsMobileMenuOpened} />
+        <FooterMenu setIsMobileMenuOpened={setIsMobileMenuOpened} />
       </QueryClientProvider>
     </>
   )

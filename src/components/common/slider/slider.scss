@@ -157,3 +157,10 @@
     min-height: 320px;
   }
 }
+
+@media (max-width: 425px) {
+  .slider_slide {
+    width: 100%;
+    min-height: 240px;
+  }
+}

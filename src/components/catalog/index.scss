@@ -21,7 +21,9 @@
 }
 
 h1 {
+  padding-top: 2px;
   font-size: 24px;
+  font-weight: 500;
 }
 
 .pagination-btn img {
@@ -129,7 +131,7 @@ h1 {
       width: calc(100% - 16px);
       height: 200px;
       transition: 0.3s;
-      font-weight: 500;
+      font-weight: 400;
 
       &:hover {
         cursor: pointer;
@@ -468,8 +470,8 @@ h1 {
               padding: 2px;
               position: relative;
               border-radius: 50%;
-              background: linear-gradient(#0066FF, #56FE53);
-              box-shadow: 2px 2px 8px 0px rgba(11, 120, 236, 0.25);
+              background: linear-gradient($orange-primary, #ff450b);
+              box-shadow: 2px 2px 8px 0 $orange-primary-hover;
             }
           }
 
@@ -531,11 +533,20 @@ h1 {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      &-main {
+        padding: 0 20px;
+        width: 100%;
+      }
     }
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .catalog_title {
+    padding: 0 20px;
+  }
+
   .catalog {
     &_selectSubcategory {
       padding: 0 20px;
@@ -579,10 +590,6 @@ h1 {
     align-self: center;
     justify-self: center;
     box-sizing: border-box;
-  }
-
-  .catalog_title {
-    padding: 0 16px;
   }
 
   .catalog_select_categories {

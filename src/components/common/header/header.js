@@ -11,8 +11,11 @@ import favoriteIcon from './icons/favorite.svg';
 import cartIcon from './icons/cart.svg';
 import profileIcon from './icons/profile.svg';
 import compareIcon from './icons/compare.svg';
+import menu from './icons/menu.svg';
 
 import logo from './Logo.png';
+import {Loader} from "../loader/loader";
+import {MobileMenu} from "./mobile_menu/mobile_menu";
 
 const DEFAULT_CLASSNAME = 'header';
 
@@ -23,34 +26,7 @@ const NAV_ITEMS = [
   {title: 'О нас', link: 'about'}
 ];
 
-const MobileMenu = () => {
-  const [isOpen, setOpen] = useState(false)
-
-  const handleIsOpen = () => {
-    setOpen(!isOpen)
-  }
-
-  const closeSideBar = () => {
-    setOpen(false)
-  }
-
-  return (
-    <div className={`${DEFAULT_CLASSNAME}_mobile_menu`}>
-      <Menu
-        isOpen={isOpen}
-        onOpen={handleIsOpen}
-        onClose={handleIsOpen}
-      >
-        {NAV_ITEMS.map((item, id) =>
-          <NavLink onClick={closeSideBar} to={item.link} key={id.toString()} className={`${DEFAULT_CLASSNAME}_wrapper_navigation_item`} activeClassName="selected">
-            <span>{item.title}</span>
-          </NavLink>)}
-      </Menu>
-    </div>
-  )
-};
-
-export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
+export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMenuOpened }) => {
   const cartItems = JSON.parse(localStorage.getItem("cartItems"));
   const cartItemsLength = cartItems ? cartItems.length : 0;
 
@@ -66,6 +42,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
   const inputHandler = (e) => setSearchText(e.currentTarget.value);
 
   useEffect(() => {
+    setIsSearchDataLoading(true)
     if(searchText.length) {
       fetch(`${process.env.REACT_APP_API_URL}product/search?name=${searchText}`, {
         method: "POST",
@@ -76,7 +53,7 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
         } else {
           setSearchData(data.products)
         }
-      });
+      }).finally(() => setIsSearchDataLoading(false));
     } else {
       setSearchData([]);
     }  }, [searchText])
@@ -112,6 +89,8 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
 
   const showHeader = window.location.pathname.includes('/admin');
 
+  const [isSearchDataLoading, setIsSearchDataLoading] = useState(true);
+
   return (
       !showHeader && <div className={DEFAULT_CLASSNAME}>
         <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
@@ -119,7 +98,6 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
             <img src={logo} alt={'header-logo'}/>
           </div>
           <div className={`${DEFAULT_CLASSNAME}_wrapper_navigation`}>
-            <MobileMenu />
             <nav className={`${'menu'} ${searchOpened && 'menu-hidden'}`}>
               {NAV_ITEMS.map((item, id) =>
                   <NavLink onClick={() => clickOnCatalog(item)} to={item.link} key={id.toString()} className={`${DEFAULT_CLASSNAME}_wrapper_navigation_item`}
@@ -128,22 +106,25 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
           </div>
           <div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel`}>
 
-            <input className={`${'search-input'} ${!searchOpened && 'search-input-hidden'}`} onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>
+            <input autoFocus={true} className={`${'search-input'} ${!searchOpened && 'search-input-hidden'}`} onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>
             <img onClick={() => setSearchOpened(!searchOpened)} src={searchIcon} alt={'search'} className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}/>
 
-            <img onClick={() => navigate('/favorite')} src={favoriteIcon} alt={'favorite'} />
+            <img className={`tablet-hide`} onClick={() => navigate('/favorite')} src={favoriteIcon} alt={'favorite'} />
             <img onClick={() => navigate('/cart')} src={cartIcon} alt={'cart'} />
             <img onClick={() => navigate('/profile')} src={profileIcon} alt={'profile'} />
-            <img onClick={() => navigate('/compare')} src={compareIcon} alt={'compare'} />
+            <img className={`tablet-hide`} onClick={() => navigate('/compare')} src={compareIcon} alt={'compare'} />
+            <img className={'tablet-show'} onClick={() => setIsMobileMenuOpened(true)} src={menu} alt={'menu'} />
           </div>
 
           {searchOpened &&
               <div ref={searchRef}>
-                {!!searchData && searchText.length >= 1 && searchOpened && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
+                {searchText.length >= 1 && searchOpened && <div className={`${DEFAULT_CLASSNAME}_searched-items`}>
 
-                  {!searchData.length && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
+                  {isSearchDataLoading && <Loader />}
 
-                  {searchData?.map(item => {
+                  {!searchData.length && !isSearchDataLoading && <div style={{ textAlign: "center", fontSize: "14px", fontWeight: "500", lineHeight: "70vh"}}>{"Товаров не найдено"}</div>}
+
+                  {!isSearchDataLoading && searchData?.map(item => {
                     const itemCategory = item?.category?.categoryName;
                     const itemLink = item?.link || item?.id;
                     const itemSubcategory = item?.subcategory?.link_name;
@@ -165,8 +146,6 @@ export const Header = ({ setSelectedCategory, isLoggedIn, setLoginData }) => {
                 }
               </div>
           }
-
-          {isMenuOpen && <HeaderMenu setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} setLoginData={setLoginData}/>}
         </div>
       </div>
   )

@@ -60,7 +60,7 @@ export const About = ({setSelectedCategory, setSelectedSubcategories, favoriteIt
                 220020, г. Минск, пр-т Победителей, 84, магазин «Dream Store» <br />
             </p>
         </div>
-      <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
+      <PopularItems showTitle={false} setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
     </div>
   )
 }

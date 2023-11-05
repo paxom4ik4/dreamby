@@ -8,7 +8,7 @@ const DEFAULT_CLASSNAME = 'popular-items';
 
 const menuItems = ['Новые поступления', 'Лидеры продаж', 'Специальные предложения'];
 
-export const PopularItems = ({ setSelectedCategory, popularProductItems, setSelectedSubcategories, favoriteItems, favoriteNotify, setCartItems, setFavoriteItems, isRecommended }) => {
+export const PopularItems = ({ showTitle = true, setSelectedCategory, popularProductItems, setSelectedSubcategories, favoriteItems, favoriteNotify, setCartItems, setFavoriteItems, isRecommended }) => {
   const [popularItems, setPopularItems] = useState([]);
 
   const [activeMenuItem, setActiveMenuItem] = useState('Лидеры продаж');
@@ -37,6 +37,7 @@ export const PopularItems = ({ setSelectedCategory, popularProductItems, setSele
 
   return (
     <div className={DEFAULT_CLASSNAME}>
+        {showTitle && <p className={`${DEFAULT_CLASSNAME}_title`}>{"Популярные товары"}</p>}
       {!isRecommended && <div className={`${DEFAULT_CLASSNAME}_menu`}>
         {menuItems.map((item, id) =>
           <span

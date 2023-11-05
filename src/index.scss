@@ -2,12 +2,66 @@
 
 @import "src/global/variables";
 
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-DemiBold.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-Bold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-Black.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-Light.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-ExtraLight.ttf");
+  font-weight: 200;
+}
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url("fonts/TTFirsNeue-Thin.ttf");
+  font-weight: 100;
+}
+
+
+
 .INITIAL_LOADER {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000000;
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #FFFFFF;
+
+  img {
+    width: 300px;
+    object-fit: contain;
+  }
+}
+
+.PAGE_LOADER {
+  img {
+    width: 120px;
+  }
 }
 
 * {
@@ -40,7 +94,7 @@
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'TTFirsNeue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: $white;
@@ -57,13 +111,13 @@ code {
 }
 
 .fadeIn {
-  animation: 0.4s fadeIn forwards;
+  animation: 0.3s fadeIn forwards;
   width: 100%;
   height: 100vh;
 }
 
 .fadeOut {
-  animation: 0.4s fadeOut forwards;
+  animation: 0.3s fadeOut forwards;
   width: 100%;
   height: 100vh;
 }

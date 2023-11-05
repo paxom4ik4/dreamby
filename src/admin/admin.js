@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Routes, Route, useNavigate, Redirect} from "react-router-dom";
+import {Routes, Route, useNavigate} from "react-router-dom";
 
 import './admin.scss';
 import {Login} from "./components/login/login";
@@ -21,9 +21,8 @@ import close from './menu_assets/close.png';
 import homeLogo from './assets/homeLogo.png';
 import {Services} from "./components/services/services";
 import {AddNewService} from "./components/addNewService/addNewService";
-import {toast} from "react-toastify";
 import {Subcategories} from "./components/subcategories/subcategories";
-import {EditSubcategory, editSubcategory} from "./components/editSubcategory/editSubcategory";
+import {EditSubcategory} from "./components/editSubcategory/editSubcategory";
 import {AddSubcategory} from "./components/addNewSubcategory/addNewSubcategory";
 import axios from "axios";
 import EditChildItem from "./components/createNewItem/createNewItem";
@@ -67,12 +66,12 @@ export const Admin = () => {
                     <img className={`${DEFAULT_CLASSNAME}_header_btn`}
                          onClick={() => setHeaderMenuOpen((prev) => !prev)} src={homeLogo} alt={'home-logo'}/>
                     <div className={`${DEFAULT_CLASSNAME}_header_menu`}>
-                        <img onClick={() => navigate('/admin/products')}
+                        <img alt={'products'} onClick={() => navigate('/admin/products')}
                              className={`${DEFAULT_CLASSNAME}_header_menu_item items`} src={items}/>
-                        <img onClick={() => navigate('/admin/clients')}
+                        <img alt={'clients'} onClick={() => navigate('/admin/clients')}
                              className={`${DEFAULT_CLASSNAME}_header_menu_item clients`} src={clients}/>
-                        <img className={`${DEFAULT_CLASSNAME}_header_menu_item metrics`} src={metrics}/>
-                        <img onClick={() => {
+                        <img alt={'metrics'} className={`${DEFAULT_CLASSNAME}_header_menu_item metrics`} src={metrics}/>
+                        <img alt={'auth'} onClick={() => {
                             sessionStorage.removeItem('admin-dream-token')
                             navigate('/admin/auth')
                         }} className={`${DEFAULT_CLASSNAME}_header_menu_item exit`} src={close}/>

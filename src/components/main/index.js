@@ -1,6 +1,5 @@
 import React from "react";
 import { PopularItems } from "../common/popular_items/popular_items";
-import { Services } from "./services/services";
 import { Categories } from "./categories/categories";
 
 import './index.scss';
@@ -8,10 +7,14 @@ import {MainSlider} from "./main_slider/main_slider";
 import {Helmet} from "react-helmet";
 
 import servicesMocked from '../../assets/services_mocked.png';
+import {useNavigate} from "react-router-dom";
 
 const DEFAULT_CLASSNAME = 'main';
 
 export const Main = ({ setSelectedSubcategories, setSelectedCategoryName, setFavoriteServices, favoriteServices, favoriteItems, setSelectedCategory, favoriteNotify, setFavoriteItems, setCartItems, categories, setCategories }) => {
+
+    const navigate = useNavigate();
+
   return (
     <div className={`${DEFAULT_CLASSNAME}`}>
 
@@ -43,9 +46,9 @@ export const Main = ({ setSelectedSubcategories, setSelectedCategoryName, setFav
         </div>
 
       <Categories setSelectedCategoryName={setSelectedCategoryName} setSelectedCategory={setSelectedCategory} categories={categories} setCategories={setCategories} />
-      <PopularItems setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
+      <PopularItems showTitle={false} setSelectedCategory={setSelectedCategory} setSelectedSubcategories={setSelectedSubcategories} favoriteItems={favoriteItems} favoriteNotify={favoriteNotify} setCartItems={setCartItems} setFavoriteItems={setFavoriteItems} />
 
-      <div className={`${DEFAULT_CLASSNAME}_services`}>
+      <div className={`${DEFAULT_CLASSNAME}_services`} onClick={() => navigate('/services')}>
           <img src={servicesMocked} alt={'main_services'}/>
       </div>
 

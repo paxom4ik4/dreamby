@@ -1,6 +1,8 @@
 .categories {
   margin-top: 80px;
-  width: 1200px;
+  width: 100%;
+  max-width: 1920px;
+  padding: 0 100px;
   display: grid;
   grid-gap: 9px;
   grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
@@ -8,7 +10,7 @@
   grid-auto-flow: dense;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
   .categories {
     width: 100%;
     padding: 0 20px;
@@ -16,15 +18,7 @@
   }
 }
 
-@media (max-width: 768px) {
-  .categories {
-    width: 100%;
-    padding: 0 20px;
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
-  }
-}
-
-@media (max-width: 560px) {
+@media (max-width: 760px) {
   .categories {
     width: 100%;
     padding: 0 20px;

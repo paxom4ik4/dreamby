@@ -205,7 +205,7 @@ export const ServicePage = ({ cartItems, setCartItems, setLoginData, isAuthorize
         </div>
 
       <ServicePageContent cartItems={cartItems} setCartItems={setCartItems} isAuthorized={isAuthorized} setLoginData={setLoginData} />
-      <PopularItems />
+      <PopularItems showTitle={false} />
     </div>
   )
 }

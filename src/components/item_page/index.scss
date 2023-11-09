@@ -255,7 +255,7 @@
 
   &_wrapper {
     position: relative;
-    width: 1200px;
+    width: 1240px;
     display: flex;
     flex-direction: column;
   }
@@ -328,7 +328,7 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
   .item-page {
     &_wrapper {
       padding: 0 20px;

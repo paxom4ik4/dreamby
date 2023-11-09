@@ -12,6 +12,15 @@
   }
 }
 
+.item-card-hide-controls {
+  width: 240px !important;
+
+  .item_card_image_wrapper {
+    width: 200px;
+    height: 200px;
+  }
+}
+
 .item_card {
   transition: 0.5s;
   width: 300px;
@@ -36,7 +45,8 @@
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0 0 8px 4px $orange-primary-hover;
+    border-color: $orange-primary;
+    box-shadow: 0 0 5px 1px $orange-primary;
   }
 
   &_image {
@@ -131,6 +141,7 @@
       height: 60px;
 
       button {
+        font-family: 'TTFirsNeue', sans-serif;
         background: $black-primary;
         color: $white;
         border-radius: 10px;
@@ -159,7 +170,7 @@
         &_price {
           color: $orange-primary;
           font-size: 18px;
-          font-weight: 600;
+          font-weight: 500;
         }
 
         &_btn {

@@ -1,4 +1,7 @@
 .about {
+  width: 100%;
+  max-width: 1920px;
+  padding: 0 100px;
   margin-top: 40px;
   display: flex;
   justify-content: center;
@@ -27,15 +30,14 @@
 
 .about_additional_text {
   margin-top: 40px;
-  width: 1200px;
   font-weight: 500;
   font-size: 16px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
   .about_additional_text {
     width: 100%;
-    padding: 0 26px;
+    padding: 0 20px;
   }
 }
 

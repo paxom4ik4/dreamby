@@ -1,7 +1,9 @@
 .main-slider {
   position: relative;
-  width: 1200px;
-  margin-top: 80px;
+  width: 100%;
+  max-width: 1920px;
+  padding: 0 100px;
+  margin-top: 100px;
 }
 
 .swiper-scrollbar {
@@ -13,17 +15,12 @@
   width: 40% !important;
 }
 
-.swiper-scrollbar-drag {
-  background: linear-gradient(271.38deg, #0B3FC5 -8.46%, #0681E4 75.71%) !important;
-  border-radius: 8px;
-}
-
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
   .main-slider {
     position: relative;
     width: calc(100% - 20px);
     margin-top: 120px;
-    padding-bottom: 40px;
+    padding: 0;
   }
 }
 
@@ -41,6 +38,13 @@
 @media (max-width: 760px) {
   .main-slider {
     margin-top: 32px;
+  };
+}
+
+
+@media (max-width: 550px) {
+  .main-slider {
+    margin-top: 0;
   };
 }
 

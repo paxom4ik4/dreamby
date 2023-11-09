@@ -1,86 +1,88 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 
 import './popular_items.scss';
-import { ItemCard } from "../item_card/item_card";
-import {objReplacer} from "../../catalog/catalog";
+import { ItemCard } from '../item_card/item_card';
+import { objReplacer } from '../../catalog/catalog';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Slider } from '../slider/slider';
 
 const DEFAULT_CLASSNAME = 'popular-items';
 
 const menuItems = ['Новые поступления', 'Лидеры продаж', 'Специальные предложения'];
 
-export const PopularItems = ({ showTitle = true, setSelectedCategory, popularProductItems, setSelectedSubcategories, favoriteItems, favoriteNotify, setCartItems, setFavoriteItems, isRecommended }) => {
+export const PopularItems = ({
+  showTitle = true,
+  setSelectedCategory,
+  popularProductItems,
+  setSelectedSubcategories,
+  favoriteItems,
+  favoriteNotify,
+  setCartItems,
+  setFavoriteItems,
+  isRecommended,
+}) => {
   const [popularItems, setPopularItems] = useState([]);
 
   const [activeMenuItem, setActiveMenuItem] = useState('Лидеры продаж');
 
   useEffect(() => {
     if (!popularProductItems?.length) {
-      fetch(`${process.env["REACT_APP_API_URL"]}product/search`, {
-          method: "POST",
-      }).then(res => res.json())
-        .then(data => {
+      fetch(`${process.env['REACT_APP_API_URL']}product/search`, {
+        method: 'POST',
+      })
+        .then((res) => res.json())
+        .then((data) => {
           if (activeMenuItem === 'Лидеры продаж') {
-              const itemStart = Math.round(Math.random() * 10);
-              setPopularItems(data.products.slice(itemStart, itemStart + 4))
+            const itemStart = Math.round(Math.random() * 10);
+            setPopularItems(data.products.slice(itemStart, itemStart + 5));
           } else if (activeMenuItem === 'Специальные предложения') {
-              const itemStart = Math.round(Math.random() * 10);
-              setPopularItems(data.products.slice(itemStart, itemStart + 4))
+            const itemStart = Math.round(Math.random() * 10);
+            setPopularItems(data.products.slice(itemStart, itemStart + 5));
           } else {
-              setPopularItems(data.products.slice(0, 4))
+            setPopularItems(data.products.slice(0, 5));
           }
         });
     } else {
-      setPopularItems(popularProductItems)
+      setPopularItems(popularProductItems);
     }
   }, [activeMenuItem, popularProductItems]);
 
-
   return (
     <div className={DEFAULT_CLASSNAME}>
-        {showTitle && <p className={`${DEFAULT_CLASSNAME}_title`}>{"Популярные товары"}</p>}
-      {!isRecommended && <div className={`${DEFAULT_CLASSNAME}_menu`}>
-        {menuItems.map((item, id) =>
-          <span
-            key={id.toString()}
-            className={`${DEFAULT_CLASSNAME}_menu_item ${item === activeMenuItem && 'active_menu_item'}`}
-            onClick={() => setActiveMenuItem(item)}
-          >
-            {item}
-          </span>
-        )}
-      </div>}
+      {showTitle && <p className={`${DEFAULT_CLASSNAME}_title`}>{'Популярные товары'}</p>}
+      {!isRecommended && <div className={`${DEFAULT_CLASSNAME}_menu`}></div>}
       <div className={`${DEFAULT_CLASSNAME}_content`}>
-        {popularItems.map(item => {
+        {popularItems.map((item) => {
           const categoryName = objReplacer[item?.category?.categoryName];
           const subcategory = item?.subcategory?.link_name;
 
-          if (!categoryName || !subcategory) return <>{"Популярных товаров нет"}</>
+          if (!categoryName || !subcategory) return <>{'Популярных товаров нет'}</>;
 
           return (
-              <ItemCard
-                product={item}
-                productIdForCart={item?.id}
-                clickLink={`${categoryName}/${subcategory}/${item.link}`}
-                itemCategory={item?.category?.categoryName}
-                itemSubcategory={item?.subcategory.link_name}
-                itemSubcategoryId={item?.subcategoryId}
-                productId={item.id}
-                favoriteNotify={favoriteNotify}
-                setCartItems={setCartItems}
-                setFavoriteItems={setFavoriteItems}
-                image={item.img_path}
-                isAvailable={item.in_stock > 0}
-                isFavorite={favoriteItems?.includes(item)}
-                title={item.name}
-                link={item.link}
-                price={+item.price}
-                roundedBorders={true}
-                setSelectedCategory={setSelectedCategory}
-                setSelectedSubcategory={setSelectedSubcategories}
-             />
-           )
+            <ItemCard
+              product={item}
+              productIdForCart={item?.id}
+              clickLink={`${categoryName}/${subcategory}/${item.link}`}
+              itemCategory={item?.category?.categoryName}
+              itemSubcategory={item?.subcategory.link_name}
+              itemSubcategoryId={item?.subcategoryId}
+              productId={item.id}
+              favoriteNotify={favoriteNotify}
+              setCartItems={setCartItems}
+              setFavoriteItems={setFavoriteItems}
+              image={item.img_path}
+              isAvailable={item.in_stock > 0}
+              isFavorite={favoriteItems?.includes(item)}
+              title={item.name}
+              link={item.link}
+              price={+item.price}
+              roundedBorders={true}
+              setSelectedCategory={setSelectedCategory}
+              setSelectedSubcategory={setSelectedSubcategories}
+            />
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -5,10 +5,6 @@ import { ServiceItems } from "../services/service_items/service_items";
 import { ServicesFilter } from "../services";
 
 import filter from './filter.svg';
-import backArrow from './backArrow.svg';
-
-import down from './subsubCategory.svg';
-import up from './subsubCategory2.svg';
 
 import left from './left.svg';
 import right from './right.svg';

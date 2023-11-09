@@ -2,6 +2,14 @@
 
 @import "src/global/variables";
 
+.Toastify__progress-bar--info {
+  background: $orange-primary !important;
+}
+
+.Toastify__toast-icon svg {
+  fill: $orange-primary !important;
+}
+
 @font-face {
   font-family: 'TTFirsNeue';
   src: url("fonts/TTFirsNeue-Regular.ttf");
@@ -53,14 +61,14 @@
   background-color: #FFFFFF;
 
   img {
-    width: 300px;
+    width: 30%;
     object-fit: contain;
   }
 }
 
 .PAGE_LOADER {
   img {
-    width: 120px;
+    width: 10%;
   }
 }
 
@@ -103,11 +111,6 @@ body {
 a {
   color: #000000;
   text-decoration: none;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 .fadeIn {
@@ -155,6 +158,20 @@ code {
   animation: none !important;
 }
 
+@media (max-width: 1200px) {
+  .INITIAL_LOADER {
+    img {
+      width: 50%;
+    }
+  }
+
+  .PAGE_LOADER {
+    img {
+      width: 50%;
+    }
+  }
+}
+
 @media (max-width: 500px) {
   //.app {
   //  overflow-x: hidden;
@@ -173,7 +190,7 @@ code {
   z-index: 1000;
 
   span {
-    color: #0A5BD3;
+    color: $orange-primary;
     transition: 0.3s;
 
     &:hover {
@@ -196,6 +213,18 @@ code {
     top: 0 !important;
     left: 0 !important;
     overflow-x: hidden;
+  }
+
+  .INITIAL_LOADER {
+    img {
+      width: 70%;
+    }
+  }
+
+  .PAGE_LOADER {
+    img {
+      width: 70%;
+    }
   }
 }
 

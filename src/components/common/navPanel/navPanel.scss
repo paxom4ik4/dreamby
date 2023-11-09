@@ -1,5 +1,7 @@
 .nav-panel {
-  width: 1200px;
+  width: 100%;
+  padding: 0 100px;
+  max-width: 1920px;
   display: flex;
   flex-direction: row;
   margin-top: 120px;
@@ -31,11 +33,11 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
   .nav-panel {
-    padding: 12px;
     margin: 80px 12px 30px;
     max-width: 100%;
+    padding: 12px 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

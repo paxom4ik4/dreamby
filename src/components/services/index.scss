@@ -24,6 +24,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 0 100px;
 
   * {
     animation: fadeIn 0.5s;
@@ -301,7 +302,19 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
+  .services {
+    padding: 0 20px;
+  }
+
+  .service_items {
+    width: 100%;
+
+    &_wrapper {
+      width: 100%;
+    }
+  }
+
   .catalog_content_filterWrapper {
     display: flex;
     justify-content: center;
@@ -312,7 +325,7 @@
   }
 
   .services-filter {
-    width: 97%;
+    width: 100%;
     margin-bottom: 20px;
     height: fit-content;
     min-height: 300px;

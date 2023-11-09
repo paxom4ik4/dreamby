@@ -15,8 +15,8 @@
 }
 
 .swiper-button-prev {
-  height: calc(100% - 87px);
-  top: 45px;
+  height: 94%;
+  top: 0;
   border-top-left-radius: 22px;
   border-bottom-left-radius: 22px;
   left: 10px;
@@ -29,11 +29,7 @@
   &:hover {
     cursor: pointer;
     transition: background-color 0.3s;
-    background-color: $orange-primary-hover;
-
-    .swiper-button-prev:after {
-      color: $orange-primary;
-    }
+    background-color: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -47,16 +43,12 @@
   transition: 0.3s;
   padding-right: 70px;
   color: transparent;
-
-  &:hover {
-    color: $orange-primary;
-    font-size: 16px;
-  }
 }
 
 .swiper-button-next {
-  height: calc(100% - 87px);
-  top: 45px;
+  height: 100%;
+
+  top: 0;
   border-top-right-radius: 22px;
   border-bottom-right-radius: 22px;
   right: 10px;
@@ -69,11 +61,7 @@
   &:hover {
     cursor: pointer;
     transition: background-color 0.3s;
-    background-color: $orange-primary-hover;
-
-    .swiper-button-next:after {
-      color: $orange-primary !important;
-    }
+    background-color: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -87,11 +75,6 @@
   transition: 0.3s;
   color: transparent;
   padding-left: 70px;
-
-  &:hover {
-    color: $orange-primary;
-    font-size: 16px;
-  }
 }
 
 
@@ -106,7 +89,7 @@
     font-size: 9px;
     width: calc(100% - 20px);
     height: 100%;
-    min-height: 520px;
+    min-height: 600px;
     margin: 0 auto;
     color: $white;
     display: flex;
@@ -152,6 +135,17 @@
 }
 
 @media (max-width: 768px) {
+  .swiper {
+    padding-bottom: 0;
+  }
+
+  .slider_slide {
+    width: 100%;
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 550px) {
   .slider_slide {
     width: 100%;
     min-height: 320px;

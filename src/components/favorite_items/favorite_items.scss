@@ -1,3 +1,5 @@
+@import "src/global/variables";
+
 .favorite-items {
   display: flex;
   flex-direction: column;
@@ -17,7 +19,7 @@
     font-size: 14px;
     right: 20px;
     top: -40px;
-    border: 1px solid #173248;
+    border: 1px solid $orange-primary;
     padding: 4px 8px;
     border-radius: 12px;
     position: absolute;
@@ -25,7 +27,7 @@
 
     &:hover {
       cursor: pointer;
-      background-color: #173248;
+      background-color: $orange-primary;
       color: #FFFFFF;
     }
 

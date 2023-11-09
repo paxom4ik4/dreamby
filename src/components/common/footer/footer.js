@@ -7,6 +7,9 @@ import tg from './svg/telegram.svg';
 import vk from './svg/vk.svg';
 import {useNavigate} from "react-router-dom";
 
+import logoSpin from '../../../Logo_Screensaver.gif';
+import logo from '../../common/header/logo-dream-new.svg';
+
 const DEFAULT_CLASSNAME = 'footer';
 
 export const Footer = ({ footerRef }) => {
@@ -18,8 +21,8 @@ export const Footer = ({ footerRef }) => {
     !showFooter && <div className={`${DEFAULT_CLASSNAME}_wrapper`} ref={footerRef}>
         <div className={DEFAULT_CLASSNAME}>
           <div className={`${DEFAULT_CLASSNAME}_title`}>
-            <span className={`${DEFAULT_CLASSNAME}_title__colored`}>D</span>REAM
-            <span className={`${DEFAULT_CLASSNAME}_title__colored`}>S</span>TORE.BY
+            <img className={`${DEFAULT_CLASSNAME}_title_logo`} src={logoSpin} alt={'logo-spin'}/>
+            <img className={`${DEFAULT_CLASSNAME}_title_spin`} src={logo} alt={'logo'} />
           </div>
           <div className={`${DEFAULT_CLASSNAME}_content`}>
             <div className={`${DEFAULT_CLASSNAME}_contact-info`}>

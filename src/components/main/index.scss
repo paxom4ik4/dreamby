@@ -5,12 +5,20 @@
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+
+  .popular-items {
+    padding: 0 100px;
+  }
 
   h1 {
+    padding: 0 20px;
     font-size: 44px;
   }
 
   &_title {
+    padding: 0 20px;
     font-size: 30px;
     text-align: center;
 
@@ -22,7 +30,8 @@
 
   &_services {
     margin-top: 80px;
-    width: 1225px;
+    width: 100%;
+    padding: 0 100px;
     transition: 0.3s;
 
     &:hover {
@@ -36,10 +45,14 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1440px) {
   .main {
     &_services {
       width: 100%;
+      padding: 0 20px;
+    }
+
+    .popular-items {
       padding: 0 20px;
     }
 
@@ -54,18 +67,26 @@
   }
 }
 
-@media (max-width: 525px) {
+@media (max-width: 768px) {
   .main {
     &_title {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 
   .main h1 {
     font-weight: 500;
-    font-size: 24px;
+    font-size: 16px;
 
     margin-top: 0;
     margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .main {
+    &_services {
+      margin-top: 10px;
+    }
   }
 }

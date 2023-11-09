@@ -1,3 +1,5 @@
+@import "src/global/variables";
+
 .cart_card {
   padding: 20px 16px;
   width: fit-content;
@@ -18,7 +20,7 @@
     align-items: center;
     width: 20px;
     height: 20px;
-    border: 1px solid #0A5BD3;
+    border: 1px solid $orange-primary;
     border-radius: 20px;
   }
 
@@ -60,7 +62,7 @@
     display: flex;
     align-items: center;
     margin-left: auto;
-    color: #095ED4;
+    color: $orange-primary;
   }
 }
 
@@ -83,5 +85,4 @@
     max-width: 100% !important;
     width: 100% !important;
   }
-
 }

@@ -62,6 +62,7 @@
   }
 
   &_menu {
+    height: 120px;
     align-self: flex-start;
     color: $text-secondary;
     display: flex;
@@ -71,7 +72,7 @@
     animation: animationEasy2 0.5s;
 
     &_item {
-      color: $black-primary;
+      color: $black-primary_hui;
       cursor: pointer;
       font-size: 16px;
       font-weight: 600;
@@ -115,7 +116,7 @@
   .popular-items {
     .active_menu_item {
       color: $orange-primary;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
     }
 
@@ -137,10 +138,109 @@
     }
 
     &_menu {
+      height: 80px;
       flex-direction: column;
 
       &_item {
-        font-size: 14px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+@media (max-width: 660px) {
+  .popular-items {
+    height: 640px;
+
+    &_content {
+      overflow: hidden;
+      height: 520px !important;
+      max-height: 520px !important;
+
+      .item_card_content_buttons_add_to_card_price {
+        font-size: 10px;
+        font-weight: 400;
+      }
+
+      .item_card_content_buttons_add_to_card_btn {
+        font-size: 8px;
+      }
+
+      .item_card_content_buttons_add_to_card {
+        border-radius: 5px;
+        padding: 0;
+        height: 30px !important;
+        width: 100px;
+      }
+
+      .item_card_content_buttons_favorite {
+        border-radius: 5px;
+        width: 30px;
+        height: 30px;
+      }
+
+      .item_card_content_status {
+        height: 8px;
+      }
+
+      .item_card_content_buttons_favorite svg {
+        width: 10px;
+      }
+
+      .item_card_content_title {
+        min-height: 24px;
+        max-height: 24px;
+        margin: 5px 0;
+      }
+
+      .item_card_availability_content {
+        font-size: 8px;
+
+        img {
+          width: 6px;
+        }
+      }
+
+      .item_card {
+        height: 250px;
+        width: 155px;
+        padding: 10px;
+        margin: 5px;
+
+        &_wrapper {
+          gap: 4px;
+        }
+
+        &_content {
+          &_buttons {
+            height: 30px;
+
+            &_favorite {
+
+            }
+
+            &_add-to-card {
+              &_price {
+                font-size: 10px;
+              }
+
+              &_button {
+                font-size: 8px;
+              }
+            }
+          }
+        }
+
+        &_content_title {
+          font-size: 8px;
+        }
+
+        &_image_wrapper {
+          justify-self: center;
+          align-self: center;
+          width: 125px;
+          height: 125px;
+        }
       }
     }
   }

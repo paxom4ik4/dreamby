@@ -595,6 +595,7 @@ const App = () => {
         <MobileMenu
           isMobileMenuOpened={isMobileMenuOpened}
           setIsMobileMenuOpened={setIsMobileMenuOpened}
+          compareItems={compareItems.length}
         />
         <FooterMenu setIsMobileMenuOpened={setIsMobileMenuOpened} />
       </QueryClientProvider>

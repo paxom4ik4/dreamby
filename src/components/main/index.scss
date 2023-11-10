@@ -13,12 +13,12 @@
   }
 
   h1 {
+    width: 60%;
     padding: 0 20px;
     font-size: 44px;
   }
 
   &_title {
-    padding: 0 20px;
     font-size: 30px;
     text-align: center;
 
@@ -57,6 +57,7 @@
     }
 
     h1 {
+      width: 914px;
       font-size: 36px;
     }
 
@@ -85,6 +86,21 @@
 
 @media (max-width: 560px) {
   .main {
+    h1 {
+      padding: 0;
+      width: 320px;
+      text-align: center;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%;
+      letter-spacing: 0.06px;
+    }
+
+    &_title {
+      font-size: 12px;
+    }
+
     &_services {
       margin-top: 10px;
     }

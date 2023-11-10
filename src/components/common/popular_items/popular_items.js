@@ -50,7 +50,20 @@ export const PopularItems = ({
   return (
     <div className={DEFAULT_CLASSNAME}>
       {showTitle && <p className={`${DEFAULT_CLASSNAME}_title`}>{'Популярные товары'}</p>}
-      {!isRecommended && <div className={`${DEFAULT_CLASSNAME}_menu`}></div>}
+      {!isRecommended && (
+        <div className={`${DEFAULT_CLASSNAME}_menu`}>
+          {menuItems.map((item, id) => (
+            <span
+              key={id.toString()}
+              className={`${DEFAULT_CLASSNAME}_menu_item ${
+                item === activeMenuItem && 'active_menu_item'
+              }`}
+              onClick={() => setActiveMenuItem(item)}>
+              {item}
+            </span>
+          ))}
+        </div>
+      )}
       <div className={`${DEFAULT_CLASSNAME}_content`}>
         {popularItems.map((item) => {
           const categoryName = objReplacer[item?.category?.categoryName];

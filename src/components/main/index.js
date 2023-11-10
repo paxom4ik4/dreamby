@@ -6,7 +6,7 @@ import './index.scss';
 import { MainSlider } from './main_slider/main_slider';
 import { Helmet } from 'react-helmet';
 
-import servicesMocked from '../../assets/services_mocked.png';
+import servicesBanner from './services_banner.png';
 import { useNavigate } from 'react-router-dom';
 
 const DEFAULT_CLASSNAME = 'main';
@@ -94,7 +94,7 @@ export const Main = ({
       />
 
       <div className={`${DEFAULT_CLASSNAME}_services`} onClick={() => navigate('/services')}>
-        <img src={servicesMocked} alt={'main_services'} />
+        <img src={servicesBanner} alt={'main_services'} />
       </div>
     </div>
   );

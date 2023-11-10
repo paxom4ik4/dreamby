@@ -206,6 +206,12 @@ a {
   height: 100vh;
 }
 
+@media (max-width: 760px) {
+  .app_compare {
+    display: none;
+  }
+}
+
 @media (max-width: 500px) {
   #root .bm-overlay {
     display: none !important;

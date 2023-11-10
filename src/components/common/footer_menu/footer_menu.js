@@ -113,6 +113,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
         <img
           className={`${swipeStared && 'search-close-zoomed'}`}
           {...handlers}
+          onClick={() => setIsSearchOpened(false)}
           alt={'close-search'}
           src={closeSearch}
         />

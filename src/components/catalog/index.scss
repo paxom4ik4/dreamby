@@ -518,10 +518,14 @@ h1 {
     text-align: justify;
   }
 
+  .catalog_content-main_subsubcategories_wrapper {
+    max-width: 100%;
+  }
+
   .catalog {
     display: flex;
     width: 100%;
-    padding: 0 20px;
+    margin: 0 20px;
 
     .service_items {
       display: flex;
@@ -623,6 +627,23 @@ h1 {
     margin: 20px auto;
   }
 }
+
+@media (max-height: 768px) {
+  .catalog {
+    &_select_categories {
+      width: 100%;
+      padding: 0;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .catalog_selectSubcategory {
+    padding: 0 20px;
+  }
+}
+
 
 @media (max-width: 525px) {
   .catalog_content-main {

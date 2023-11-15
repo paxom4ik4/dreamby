@@ -84,6 +84,7 @@
   min-height: 600px;
   border-radius: 12px;
   background-color: $item-card-background;
+  transition: 0.3s;
 
   &_color_item {
     border-radius: 50%;
@@ -105,7 +106,7 @@
   }
 
   &_memory_item.selected_color {
-    border: 1.5px solid $orange-primary;
+    border: 2px solid $orange-primary;
     transition: 0.3s;
   }
 
@@ -316,6 +317,7 @@
   }
 
   .catalog_content_filterWrapper {
+    padding: 0 20px;
     display: flex;
     justify-content: center;
     align-items: center;

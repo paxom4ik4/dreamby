@@ -164,15 +164,16 @@
       justify-content: space-between;
 
       .footer_text {
+        width: 100%;
         left: 50%;
-        top: -12px;
+        top: 0;
         transform: translateX(-50%);
         position: absolute;
       }
     }
 
     &_links {
-      margin: 20px auto 0;
+      margin: 32px auto 0;
       width: fit-content;
 
     }

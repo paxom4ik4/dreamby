@@ -6,7 +6,6 @@ import { objReplacer } from '../../catalog/catalog';
 
 import searchIcon from './icons/search.svg';
 import favoriteIcon from './icons/favorite.svg';
-import cartIcon from './icons/cart.svg';
 import profileIcon from './icons/profile.svg';
 import compareIcon from './icons/compare.svg';
 import menu from './icons/menu.svg';
@@ -147,7 +146,7 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
               src={favoriteIcon}
               alt={'favorite'}
             />
-            <img onClick={() => navigate('/cart')} src={cartIcon} alt={'cart'} />
+            {/*<img onClick={() => navigate('/cart')} src={cartIcon} alt={'cart'} />*/}
             <img onClick={() => navigate('/profile')} src={profileIcon} alt={'profile'} />
             <img
               className={`tablet-hide`}

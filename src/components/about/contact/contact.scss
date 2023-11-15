@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 1920px;
   padding: 0 100px;
-  margin: 20px 0 80px;
+  margin: 80px 0 80px;
 
   &_content {
     display: flex;
@@ -127,9 +127,11 @@
     }
 
     &_contact_info_container {
+      margin-top: 40px;
       display: flex;
       width: 100%;
     }
+
     &_form_container {
       margin-top: 20px;
       display: flex;

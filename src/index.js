@@ -27,13 +27,15 @@ import { Profile } from './components/profile/profile';
 import { Info } from './components/info/info';
 import { WithUs } from './components/common/with_us/with_us';
 
-import logo from './components/common/header/Logo.png';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import preLoader from './Logo_Text_Dark.gif';
 import screenLoader from './Logo_Screensaver.gif';
 import { FooterMenu } from './components/common/footer_menu/footer_menu';
 import { MobileMenu } from './components/common/header/mobile_menu/mobile_menu';
+
+import blueGradient from './GradientBlue.svg';
+import orangeGradient from './GradientOrange.svg';
 
 export const MAX_COMPARE_ITEMS = 4;
 
@@ -267,7 +269,7 @@ const App = () => {
 
     const timer = setTimeout(() => {
       setShowInitialLoader(false);
-    }, 4000);
+    }, 5700);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -299,6 +301,8 @@ const App = () => {
     <>
       {showInitialLoader && location.pathname === '/' && (
         <div className={'INITIAL_LOADER'}>
+          <img alt={'gradient-orange'} src={blueGradient} className={`INITIAL_LOADER_BLUE`} />
+          <img alt={'gradient-blue'} src={orangeGradient} className={`INITIAL_LOADER_ORANGE`} />
           <img alt={'initial_logo'} src={preLoader} />
         </div>
       )}
@@ -306,6 +310,8 @@ const App = () => {
       {!showInitialLoader && showScreenLoader && (
         <div className={`${'INITIAL_LOADER'} ${'PAGE_LOADER'}`}>
           <img src={screenLoader} alt={'pre-screen'} />
+          <img alt={'gradient-orange'} src={blueGradient} className={`INITIAL_LOADER_BLUE`} />
+          <img alt={'gradient-blue'} src={orangeGradient} className={`INITIAL_LOADER_ORANGE`} />
         </div>
       )}
 

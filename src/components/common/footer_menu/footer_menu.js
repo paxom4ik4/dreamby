@@ -10,6 +10,9 @@ import account from './icons/account.svg';
 import cart from './icons/cart.svg';
 import closeSearch from './icons/close-search.svg';
 import search_small from './icons/search-small.svg';
+import spin from '../../../Logo_Screensaver.gif';
+
+import phone from './icons/phone.svg';
 
 import { Loader } from '../loader/loader';
 import { objReplacer } from '../../catalog/catalog';
@@ -21,7 +24,7 @@ const FOOTER_MENU_ITEMS = [
   {
     title: 'Главная',
     link: '/',
-    image: main,
+    image: spin,
   },
   {
     title: 'Поиск',
@@ -39,9 +42,9 @@ const FOOTER_MENU_ITEMS = [
     image: account,
   },
   {
-    title: 'Корзина',
-    link: '/cart',
-    image: cart,
+    title: 'Связаться',
+    link: '',
+    image: phone,
   },
 ];
 
@@ -188,22 +191,49 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
       </div>
       {!isSearchOpened && (
         <div className={DEFAULT_CLASSNAME}>
-          {FOOTER_MENU_ITEMS.map(({ title, link, image }) => (
-            <div
-              onClick={
-                !!link.length
-                  ? () => navigate(link)
-                  : title === 'Меню'
-                  ? () => setIsMobileMenuOpened(true)
-                  : () => setIsSearchOpened(!isSearchOpened)
-              }
-              className={`${DEFAULT_CLASSNAME}_item ${
-                location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
-              }`}>
-              <img src={image} alt={title} />
-              <span>{title}</span>
-            </div>
-          ))}
+          {FOOTER_MENU_ITEMS.map(({ title, link, image }) => {
+            if (title === 'Связаться') {
+              return (
+                <a
+                  href={'tel:+375291553020,297555562'}
+                  className={`${DEFAULT_CLASSNAME}_item ${
+                    location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
+                  }`}>
+                  <div className={`${DEFAULT_CLASSNAME}_item_image`}>
+                    <img src={image} alt={title} />
+                  </div>
+                  <span>{title}</span>
+                </a>
+              );
+            }
+
+            return (
+              <div
+                onClick={() => {
+                  if (link.length) navigate(link);
+
+                  if (title === 'Меню') {
+                    setIsMobileMenuOpened(true);
+                  }
+
+                  if (title === 'Поиск') {
+                    setIsSearchOpened(!isSearchOpened);
+                  }
+
+                  if (title === 'Связаться') {
+                  }
+                }}
+                className={`${DEFAULT_CLASSNAME}_item ${
+                  location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
+                }`}>
+                <div className={`${DEFAULT_CLASSNAME}_item_image`}>
+                  <img src={image} alt={title} />
+                </div>
+
+                <span>{title}</span>
+              </div>
+            );
+          })}
         </div>
       )}
     </>

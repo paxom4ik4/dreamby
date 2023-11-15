@@ -8,6 +8,10 @@
   align-items: center;
   flex-direction: column;
 
+  &_mainText {
+    font-size: 20px;
+  }
+
   * {
     animation: fadeIn 0.5s;
   }

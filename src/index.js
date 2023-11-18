@@ -36,6 +36,7 @@ import { MobileMenu } from './components/common/header/mobile_menu/mobile_menu';
 
 import blueGradient from './GradientBlue.svg';
 import orangeGradient from './GradientOrange.svg';
+import { Helmet } from 'react-helmet';
 
 export const MAX_COMPARE_ITEMS = 4;
 
@@ -316,7 +317,9 @@ const App = () => {
       )}
 
       <QueryClientProvider client={queryClient}>
-        <WithUs isHidden={isFooterVisible || isMobileMenuOpened} />
+        <WithUs
+          isHidden={isFooterVisible || isMobileMenuOpened || location.pathname.includes('admin')}
+        />
         <Header
           setIsMobileMenuOpened={setIsMobileMenuOpened}
           isMobileMenuOpened={isMobileMenuOpened}
@@ -593,6 +596,11 @@ const App = () => {
                   }
                 />
               </Routes>
+              <Helmet>
+                {!location.pathname.includes('admin') && (
+                  <script src="//code.jivo.ru/widget/HUzGdE38gy" async></script>
+                )}
+              </Helmet>
             </Wrapper>
           </FavoriteContext.Provider>
           {!catalogFilterOpened && <Footer footerRef={footerRef} />}

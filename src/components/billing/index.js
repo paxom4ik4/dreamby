@@ -9,7 +9,7 @@ export const Billing = () => {
   return (
     <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
       <Helmet>
-        <title>Оплата в интернет-магазине DreamStore.by в Минске</title>
+        <title>Оплата в магазине DreamStore.by в Минске</title>
         <meta
           name="description"
           content="DreamStore.by предлагает удобные способы оплаты в Минске. Оплатите товары картой или наличными, забирая заказ самостоятельно."
@@ -35,7 +35,7 @@ export const Billing = () => {
           Сайт Компании
         </a>
         <div itemScope itemProp="description">
-          Интернет Магазин Электронной Техники
+          Магазин Электронной Техники
         </div>
         <img
           itemProp="image"

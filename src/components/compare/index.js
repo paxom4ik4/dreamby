@@ -70,7 +70,7 @@ export const Compare = ({ deleteFromCompare, compareItems, setSelectedDeviceName
             Сайт Компании
           </a>
           <div itemScope itemProp="description">
-            Интернет Магазин Электронной Техники
+            Магазин Электронной Техники
           </div>
           <img
             itemProp="image"
@@ -128,7 +128,7 @@ export const Compare = ({ deleteFromCompare, compareItems, setSelectedDeviceName
               Сайт Компании
             </a>
             <div itemScope itemProp="description">
-              Интернет Магазин Электронной Техники
+              Магазин Электронной Техники
             </div>
             <img
               itemProp="image"

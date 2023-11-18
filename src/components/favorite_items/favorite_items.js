@@ -39,7 +39,7 @@ export const FavoriteItems = ({ setFavoriteItems, favoriteItems, setCartItems })
           Сайт Компании
         </a>
         <div itemScope itemProp="description">
-          Интернет Магазин Электронной Техники
+          Магазин Электронной Техники
         </div>
         <img
           itemProp="image"

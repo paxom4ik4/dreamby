@@ -44,10 +44,10 @@ export const About = ({
             '@context': 'https://schema.org',
             '@type': 'MovingCompany',
             name: 'DreamStore.by',
-            brand: 'Интернет магазин электронной техники',
+            brand: 'Магазин электронной техники',
           }),
         ]}>
-        <title>Интернет-магазин электроники и акссесуаров - DreamStore.by</title>
+        <title>Магазин электроники и акссесуаров - DreamStore.by</title>
         <meta
           name="description"
           content="Узнайте больше о DreamStore.by, нашей миссии и ценностях. Мы предлагаем широкий выбор электроники и аксессуаров в Минске."

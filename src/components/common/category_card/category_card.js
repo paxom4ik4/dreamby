@@ -8,6 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import categoryCardExample from './category_card.png';
 
+import phonesAndTables from './Apple-IPhone-15-Natural-Titanium-PNG.png';
+
 export const cardSize = {
   default: 'DEFAULT',
   wide: 'WIDE',
@@ -17,6 +19,7 @@ export const cardSize = {
 const DEFAULT_CLASSNAME = 'category_card';
 
 export const CategoryCard = ({
+  cardImage,
   linkCard = false,
   link,
   clickHandler,
@@ -150,7 +153,13 @@ export const CategoryCard = ({
           itemProp="image"
           style={{ width: size === cardSize.wide ? '50%' : '100%' }}
           className={`${DEFAULT_CLASSNAME}_image`}
-          src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`}
+          src={
+            title === 'Телефоны и планшеты'
+              ? phonesAndTables
+              : image?.includes('http')
+              ? image
+              : `http://194.62.19.52:7000/${image}`
+          }
           alt={'category-src'}
         />
       </Link>
@@ -199,7 +208,13 @@ export const CategoryCard = ({
         itemProp="image"
         style={{ width: size === cardSize.wide ? '50%' : '100%' }}
         className={`${DEFAULT_CLASSNAME}_image`}
-        src={image?.includes('http') ? image : `http://194.62.19.52:7000/${image}`}
+        src={
+          title === 'Телефоны и планшеты'
+            ? phonesAndTables
+            : image?.includes('http')
+            ? image
+            : `http://194.62.19.52:7000/${image}`
+        }
         alt={'category-src'}
       />
     </div>

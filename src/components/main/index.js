@@ -29,7 +29,7 @@ export const Main = ({
   return (
     <div className={`${DEFAULT_CLASSNAME}`}>
       <Helmet>
-        <title>DreamStore.by - Ваш интернет-магазин электроники</title>
+        <title>DreamStore.by - Ваш магазин электроники</title>
         <meta
           name="description"
           content="В DreamStore.by вы найдете широкий ассортимент электроники: от телефонов и планшетов до аксессуаров для дома и автомобиля. Покупайте качественные товары по доступным ценам с доставкой по Минску"
@@ -66,7 +66,7 @@ export const Main = ({
           Сайт Компании
         </a>
         <div itemScope itemProp="description">
-          Интернет Магазин Электронной Техники
+          Магазин Электронной Техники
         </div>
         <img
           itemProp="image"

@@ -235,6 +235,10 @@
   .footer-menu {
     padding: 12px 20px;
 
+    &_item_hide {
+      visibility: hidden !important;
+    }
+
     &_item {
       display: flex;
       flex-direction: column;

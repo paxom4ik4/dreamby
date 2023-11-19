@@ -114,6 +114,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
       <div
         className={`${DEFAULT_CLASSNAME}_search ${!isSearchOpened && 'footer-menu-search-closed'}`}>
         <img
+          loading={'lazy'}
           className={`${swipeStared && 'search-close-zoomed'}`}
           {...handlers}
           onClick={() => setIsSearchOpened(false)}
@@ -127,7 +128,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
             onChange={(e) => setSearchText(e.currentTarget.value)}
             type={'text'}
           />
-          <img src={search_small} alt={'search-i'} />
+          <img loading={'lazy'} src={search_small} alt={'search-i'} />
         </div>
 
         <div className={`${DEFAULT_CLASSNAME}_search_shadow`} />
@@ -195,12 +196,12 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
             if (title === 'Связаться') {
               return (
                 <a
-                  href={'tel:+375291553020,297555562'}
+                  href={'tel:+375291685668'}
                   className={`${DEFAULT_CLASSNAME}_item ${
                     location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
                   }`}>
                   <div className={`${DEFAULT_CLASSNAME}_item_image`}>
-                    <img src={image} alt={title} />
+                    <img loading={'lazy'} src={image} alt={title} />
                   </div>
                   <span>{title}</span>
                 </a>
@@ -227,7 +228,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
                   location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
                 }`}>
                 <div className={`${DEFAULT_CLASSNAME}_item_image`}>
-                  <img src={image} alt={title} />
+                  <img loading={'lazy'} src={image} alt={title} />
                 </div>
 
                 <span>{title}</span>

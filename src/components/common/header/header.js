@@ -98,11 +98,13 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
         <div className={`${DEFAULT_CLASSNAME}_wrapper`}>
           <div className={`${DEFAULT_CLASSNAME}_wrapper_logo`} onClick={() => navigate('/')}>
             <img
+              loading={'lazy'}
               className={`${DEFAULT_CLASSNAME}_wrapper_logo_spin`}
               src={logoSpin}
               alt={'header-logo-spin'}
             />
             <img
+              loading={'lazy'}
               className={`${DEFAULT_CLASSNAME}_wrapper_logo_logo`}
               src={logo}
               alt={'header-logo'}
@@ -134,6 +136,7 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
               placeholder={'Поиск'}
             />
             <img
+              loading={'lazy'}
               onClick={() => setSearchOpened(!searchOpened)}
               src={searchIcon}
               alt={'search'}
@@ -141,20 +144,28 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
             />
 
             <img
+              loading={'lazy'}
               className={`tablet-hide`}
               onClick={() => navigate('/favorite')}
               src={favoriteIcon}
               alt={'favorite'}
             />
             {/*<img onClick={() => navigate('/cart')} src={cartIcon} alt={'cart'} />*/}
-            <img onClick={() => navigate('/profile')} src={profileIcon} alt={'profile'} />
             <img
+              loading={'lazy'}
+              onClick={() => navigate('/profile')}
+              src={profileIcon}
+              alt={'profile'}
+            />
+            <img
+              loading={'lazy'}
               className={`tablet-hide`}
               onClick={() => navigate('/compare')}
               src={compareIcon}
               alt={'compare'}
             />
             <img
+              loading={'lazy'}
               className={'tablet-show'}
               onClick={() => setIsMobileMenuOpened(true)}
               src={menu}
@@ -193,6 +204,7 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
                           handleNavToItem(event, itemLink, itemCategory, itemSubcategory)
                         }>
                         <img
+                          loading={'lazy'}
                           alt={'product-photo'}
                           src={
                             item?.img_path?.includes('http')

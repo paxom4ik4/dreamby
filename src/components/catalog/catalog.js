@@ -510,15 +510,6 @@ const Catalog = React.memo(
                 </div>
               </div>
               <div className={`${DEFAULT_CLASSNAME}_selectSubcategory__items`}>
-                <div className={`${DEFAULT_CLASSNAME}_selectSubcategory_category`}>
-                  <h1 style={{ fontSize: '20px', fontWeight: '400' }}>
-                    {categories.find((item) => item.id === selectedCategory)['categoryName']}
-                  </h1>
-                  <img
-                    src={categories.find((item) => item.id === selectedCategory)['img_path']}
-                    alt={'CategoryItem'}
-                  />
-                </div>
                 {!!subcategories.length &&
                   subcategories.map((item) => (
                     <div

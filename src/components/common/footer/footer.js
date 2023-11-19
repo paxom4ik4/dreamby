@@ -22,8 +22,18 @@ export const Footer = ({ footerRef }) => {
       <div className={`${DEFAULT_CLASSNAME}_wrapper`} ref={footerRef}>
         <div className={DEFAULT_CLASSNAME}>
           <div className={`${DEFAULT_CLASSNAME}_title`}>
-            <img className={`${DEFAULT_CLASSNAME}_title_logo`} src={logoSpin} alt={'logo-spin'} />
-            <img className={`${DEFAULT_CLASSNAME}_title_spin`} src={logo} alt={'logo'} />
+            <img
+              loading={'lazy'}
+              className={`${DEFAULT_CLASSNAME}_title_logo`}
+              src={logoSpin}
+              alt={'logo-spin'}
+            />
+            <img
+              loading={'lazy'}
+              className={`${DEFAULT_CLASSNAME}_title_spin`}
+              src={logo}
+              alt={'logo'}
+            />
           </div>
           <div className={`${DEFAULT_CLASSNAME}_content`}>
             <div className={`${DEFAULT_CLASSNAME}_contact-info`}>
@@ -121,20 +131,20 @@ export const Footer = ({ footerRef }) => {
                 href={'https://t.me/DreamStore_by'}
                 target={'_blank'}
                 className={`${DEFAULT_CLASSNAME}_links_item`}>
-                <img alt={'icon'} src={tg} />
+                <img loading={'lazy'} alt={'icon'} src={tg} />
               </a>
               <a
                 rel={'nofollow'}
                 href={'https://instagram.com/dreamstore_by'}
                 target={'_blank'}
                 className={`${DEFAULT_CLASSNAME}_links_item`}>
-                <img alt={'icon'} src={it} />
+                <img loading={'lazy'} alt={'icon'} src={it} />
               </a>
               <a
                 rel={'nofollow'}
                 href={'viber://chat?number=%2B375291553020'}
                 className={`${DEFAULT_CLASSNAME}_links_item`}>
-                <img style={{ marginBottom: '2px' }} alt={'icon'} src={vk} />
+                <img loading={'lazy'} style={{ marginBottom: '2px' }} alt={'icon'} src={vk} />
               </a>
             </div>
             <div className={`${DEFAULT_CLASSNAME}_text`}>

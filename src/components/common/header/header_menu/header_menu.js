@@ -1,7 +1,7 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import './header_menu.scss';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import favorite from './svg/favorite.svg';
 import compare from './svg/compare.svg';
@@ -12,13 +12,13 @@ import profile from '../cabinet.svg';
 const DEFAULT_CLASSNAME = 'header_menu';
 
 const menuItems = (isLoggedIn) => [
-  !isLoggedIn ?
-      {
+  !isLoggedIn
+    ? {
         title: 'Войти',
         link: '/login',
         icon: login,
-      } :
-      {
+      }
+    : {
         title: 'Выйти',
         link: '',
         icon: logout,
@@ -33,35 +33,51 @@ const menuItems = (isLoggedIn) => [
     link: '/compare',
     icon: compare,
   },
-  isLoggedIn ? {
-    title: "Профиль",
-    link: '/profile',
-    icon: profile,
-  } : null
+  isLoggedIn
+    ? {
+        title: 'Профиль',
+        link: '/profile',
+        icon: profile,
+      }
+    : null,
 ];
 
-export const HeaderMenu = ({setIsMenuOpen, isLoggedIn, setLoginData}) => {
+export const HeaderMenu = ({ setIsMenuOpen, isLoggedIn, setLoginData }) => {
   const navigate = useNavigate();
 
   const onLogout = (title) => {
-    if (title === "Выйти") {
+    if (title === 'Выйти') {
       setLoginData(null);
       sessionStorage.removeItem('loginData');
-      navigate("/login");
+      navigate('/login');
     }
-  }
+  };
 
   return (
-    <div onClick={e => (e.currentTarget === e.target) && setIsMenuOpen(false)} className={`${DEFAULT_CLASSNAME}_wrapper`}>
+    <div
+      onClick={(e) => e.currentTarget === e.target && setIsMenuOpen(false)}
+      className={`${DEFAULT_CLASSNAME}_wrapper`}>
       <div className={DEFAULT_CLASSNAME}>
-        {menuItems(isLoggedIn).filter(Boolean).map(item => <div className={`${DEFAULT_CLASSNAME}_item`} onClick={() => {
-          navigate(item.link);
-          setIsMenuOpen(false);
-          onLogout(item.title)
-        }}><span>{item.title}</span>
-          <img style={{height: item.icon === logout && '16px'}} src={item.icon} alt={'item-icon'}/>
-        </div>)}
+        {menuItems(isLoggedIn)
+          .filter(Boolean)
+          .map((item) => (
+            <div
+              className={`${DEFAULT_CLASSNAME}_item`}
+              onClick={() => {
+                navigate(item.link);
+                setIsMenuOpen(false);
+                onLogout(item.title);
+              }}>
+              <span>{item.title}</span>
+              <img
+                loading={'lazy'}
+                style={{ height: item.icon === logout && '16px' }}
+                src={item.icon}
+                alt={'item-icon'}
+              />
+            </div>
+          ))}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -510,8 +510,6 @@ h1 {
   }
 }
 
-
-
 @media (max-width: 1440px) {
   .catalog-additional-info {
     padding: 0 24px;
@@ -551,100 +549,28 @@ h1 {
         align-items: center;
       }
     }
-  }
-}
 
-@media (max-width: 1200px) {
-  .catalog_title {
-    padding: 0 20px;
-  }
-
-  .catalog {
-    &_selectSubcategory {
-
-      &_item {
-        display: flex;
-        justify-content: flex-end !important;
-        flex-direction: row-reverse !important;
-        align-items: center !important;
-
-        img {
-          align-self: center;
-        }
-
-        div {
-          margin-left: 25px;
-          font-weight: 500;
-          font-size: 20px;
-        }
-      }
-    }
-
-    &_selectSubcategory__items {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-}
-
-@media (max-width: 900px) {
-  .catalog {
-    &_title {
-      margin: 0 0 24px;
-    }
-
-    .service_items {
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  .catalog_content_filterWrapper {
-    width: 100%;
-    margin: 32px 16px 32px 36px;
-    align-self: center;
-    justify-self: center;
-    box-sizing: border-box;
-  }
-
-  .catalog_selectSubcategory_category {
-    width: 100%;
-  }
-
-  .catalog_selectSubcategory_item {
-    width: 100%;
-
-    img {
-      width: 40%;
-    }
-  }
-
-  .catalog_select_categories {
-    flex-direction: column;
-  }
-
-  .catalog_select_categories_item {
-    width: 80%;
-    margin: 20px auto;
-  }
-}
-
-@media (max-height: 768px) {
-  .catalog {
     &_select_categories {
-      width: 100%;
-      padding: 0;
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column;
+      width: 100% !important;
+      padding: 0 !important;
+      grid-template-columns: repeat(auto-fit, minmax(30%, 1fr)) !important;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .catalog_select_categories {
+      width: 100% !important;
+      padding: 0 !important;
+      margin-top: 40px !important;
+      display: flex !important;
+      flex-direction: column !important;
   }
 
   .catalog_selectSubcategory {
     padding: 0 20px;
   }
 }
-
 
 @media (max-width: 525px) {
   .catalog_content-main {
@@ -689,12 +615,6 @@ h1 {
     &:hover {
       opacity: 0.8;
     }
-  }
-
-  .catalog_select_categories {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
   }
 
   .catalog_content_filterWrapper {

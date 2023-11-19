@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <script async src="//app.call-tracking.by/scripts/calltracking.js?2d9d1d86-2f36-407e-8623-28d4ea14b699\"></script>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -51,6 +50,14 @@
   </script>
   <noscript><div><img src="https://mc.yandex.ru/watch/86999484" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
+
+  <script>
+    const scriptik = <script async src="//app.call-tracking.by/scripts/calltracking.js?2d9d1d86-2f36-407e-8623-28d4ea14b699" />;
+
+    if(window.innerWidth >= 768) {
+      document.write(`${scriptik}`)
+    }
+  </script>
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-585W5SSH"

@@ -86,6 +86,7 @@
   justify-content: center;
 
   &_slide {
+    object-fit: contain;
     font-size: 9px;
     width: calc(100% - 20px);
     height: 100%;
@@ -148,13 +149,13 @@
 @media (max-width: 550px) {
   .slider_slide {
     width: 100%;
-    min-height: 320px;
+    min-height: 220px !important;
   }
 }
 
 @media (max-width: 425px) {
   .slider_slide {
     width: 100%;
-    min-height: 240px;
+    min-height: 200px !important;
   }
 }

@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/scrollbar";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
 
 import './slider.scss';
 
-import SwiperCore, { Autoplay, Navigation, Scrollbar} from 'swiper';
-import { useNavigate } from "react-router-dom";
+import SwiperCore, { Autoplay, Navigation, Scrollbar } from 'swiper';
+import { useNavigate } from 'react-router-dom';
 
 SwiperCore.use([Scrollbar, Navigation, Autoplay]);
 
@@ -33,25 +33,30 @@ export const Slider = ({ slides, slidesPerView, aboutPage = false }) => {
       }}
       className="mySwiper"
       navigation={!aboutPage}
-      modules={[Autoplay]}
-    >
+      modules={[Autoplay]}>
       {slides.map((slide) => {
-        let linkUrl = "";
+        let linkUrl = '';
 
         if (!aboutPage) {
           const link = slide.link.split('/');
 
-          linkUrl = aboutPage ? "#" : slide.link;
+          linkUrl = aboutPage ? '#' : slide.link;
         }
 
         return (
           <div className={DEFAULT_CLASSNAME} key={slide.img_path.toString()}>
             <SwiperSlide>
-              <div onClick={() => navigate(linkUrl)} style={{backgroundImage: `url(${slide.img_path})`}} className={`${DEFAULT_CLASSNAME}_slide`} />
+              <img
+                loading={'lazy'}
+                alt={slide.img_path}
+                onClick={() => navigate(linkUrl)}
+                src={slide.img_path}
+                className={`${DEFAULT_CLASSNAME}_slide`}
+              />
             </SwiperSlide>
           </div>
-        )
+        );
       })}
     </Swiper>
-  )
-}
+  );
+};

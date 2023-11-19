@@ -302,17 +302,37 @@ const App = () => {
     <>
       {showInitialLoader && location.pathname === '/' && (
         <div className={'INITIAL_LOADER'}>
-          <img alt={'gradient-orange'} src={blueGradient} className={`INITIAL_LOADER_BLUE`} />
-          <img alt={'gradient-blue'} src={orangeGradient} className={`INITIAL_LOADER_ORANGE`} />
-          <img alt={'initial_logo'} src={preLoader} />
+          <img
+            loading={'lazy'}
+            alt={'gradient-orange'}
+            src={blueGradient}
+            className={`INITIAL_LOADER_BLUE`}
+          />
+          <img
+            loading={'lazy'}
+            alt={'gradient-blue'}
+            src={orangeGradient}
+            className={`INITIAL_LOADER_ORANGE`}
+          />
+          <img loading={'lazy'} alt={'initial_logo'} src={preLoader} />
         </div>
       )}
 
       {!showInitialLoader && showScreenLoader && (
         <div className={`${'INITIAL_LOADER'} ${'PAGE_LOADER'}`}>
-          <img src={screenLoader} alt={'pre-screen'} />
-          <img alt={'gradient-orange'} src={blueGradient} className={`INITIAL_LOADER_BLUE`} />
-          <img alt={'gradient-blue'} src={orangeGradient} className={`INITIAL_LOADER_ORANGE`} />
+          <img loading={'lazy'} src={screenLoader} alt={'pre-screen'} />
+          <img
+            loading={'lazy'}
+            alt={'gradient-orange'}
+            src={blueGradient}
+            className={`INITIAL_LOADER_BLUE`}
+          />
+          <img
+            loading={'lazy'}
+            alt={'gradient-blue'}
+            src={orangeGradient}
+            className={`INITIAL_LOADER_ORANGE`}
+          />
         </div>
       )}
 

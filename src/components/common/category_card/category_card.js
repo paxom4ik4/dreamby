@@ -118,7 +118,7 @@ export const CategoryCard = ({
         itemType="https://schema.org/Product"
         to={link}
         className={`${DEFAULT_CLASSNAME}`}
-        style={{ ...cardStyle, maxHeight: size === cardSize.high && '800px' }}
+        style={{ ...cardStyle, maxHeight: size === cardSize.high && '820px' }}
         onClick={clickHandler ? clickHandler : () => categoryCardHandler()}>
         <div className={`${DEFAULT_CLASSNAME}_content`} style={contentStyle}>
           <div className={`${DEFAULT_CLASSNAME}_title`} itemProp="name">

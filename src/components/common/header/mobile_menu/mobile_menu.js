@@ -48,8 +48,14 @@ export const MobileMenu = ({ isMobileMenuOpened, setIsMobileMenuOpened, compareI
     <div className={`${DEFAULT_CLASSNAME} ${isMobileMenuOpened && `${DEFAULT_CLASSNAME}_opened`}`}>
       <div className={`${DEFAULT_CLASSNAME}_header`}>
         <div className={`${DEFAULT_CLASSNAME}_header_logo`}>
-          <img className={`${DEFAULT_CLASSNAME}_header_logo_spin`} src={spin} alt={'spin-lg'} />
           <img
+            loading={'lazy'}
+            className={`${DEFAULT_CLASSNAME}_header_logo_spin`}
+            src={spin}
+            alt={'spin-lg'}
+          />
+          <img
+            loading={'lazy'}
             className={`${DEFAULT_CLASSNAME}_header_logo_text`}
             src={logo}
             alt={'mobile-menu-logo'}
@@ -71,7 +77,7 @@ export const MobileMenu = ({ isMobileMenuOpened, setIsMobileMenuOpened, compareI
         ))}
       </div>
       <button onClick={() => setIsMobileMenuOpened(false)}>
-        <img src={closeIcon} alt={'mobile-menu-close-icon'} />
+        <img loading={'lazy'} src={closeIcon} alt={'mobile-menu-close-icon'} />
       </button>
     </div>
   );

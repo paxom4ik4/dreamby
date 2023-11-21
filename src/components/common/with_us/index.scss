@@ -6,9 +6,10 @@
   position: fixed;
   left: 100px;
   bottom: 12px;
-  width: fit-content;
+  width: 260px;
+  min-width: 260px;
   height: fit-content;
-  padding: 12px 60px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,7 +56,6 @@
   .with-us {
     left: 12px;
   }
-
 }
 
 @media (max-width: 760px) {

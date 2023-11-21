@@ -70,7 +70,7 @@ export const ItemPage = ({
 
         setItemData(data);
         setSelectedDeviceName(data.product?.name);
-        setSelectedCategory(data?.product?.categoryId);
+        setSelectedCategory(data?.product?.categoryId ?? itemData?.product?.categoryId);
         setCurrentImage(data?.product?.color?.Image[0]?.img_path ?? data?.product?.img_path);
       });
   }, [navigate]);
@@ -138,6 +138,8 @@ export const ItemPage = ({
   useEffect(() => {
     if (allSubcategories.length) {
       const subCat = allSubcategories.find((item) => item.link_name === subcategory);
+
+      console.log(category);
 
       setSelectedCategory(category);
       setSelectedSubcategory(subCat['id']);

@@ -511,6 +511,10 @@ h1 {
 }
 
 @media (max-width: 1440px) {
+  .catalog_title {
+    margin-left: 20px;
+  }
+
   .catalog-additional-info {
     padding: 0 24px;
     text-align: justify;
@@ -558,7 +562,21 @@ h1 {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .catalog_selectSubcategory__items {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      width: 100% !important;
+    }
+  }
+}
+
+@media (max-width: 760px) {
   .catalog_select_categories {
       width: 100% !important;
       padding: 0 !important;
@@ -569,6 +587,12 @@ h1 {
 
   .catalog_selectSubcategory {
     padding: 0 20px;
+  }
+}
+
+@media (max-width: 690px) {
+  .catalog .service_items {
+    justify-content: center;
   }
 }
 

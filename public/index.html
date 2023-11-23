@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <script src="//code.jivo.ru/widget/HUzGdE38gy" async></script>
   <script async src="//app.call-tracking.by/scripts/calltracking.js?2d9d1d86-2f36-407e-8623-28d4ea14b699\"></script>
   <head>
     <meta charset="utf-8" />
@@ -54,14 +53,22 @@
   <!-- /Yandex.Metrika counter -->
 
   <script>
-    if (window.innerWidth > 768 && !window.location.pathname.includes('admin')) {
-      var scriptElement = document.createElement('script');
-      // Устанавливаем атрибуты src, type и async
-      scriptElement.src = 'https://api.callbacky.by/simple/code?domain=dreamstore.by&gtm=true&ver=f7da36cc';
-      scriptElement.type = 'text/javascript';
-      scriptElement.async = true;
-      // Добавляем элемент script в конец body
-      document.body.appendChild(scriptElement);
+    if (!window.location.pathname.includes('admin')) {
+
+      if (window.innerWidth > 768) {
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://api.callbacky.by/simple/code?domain=dreamstore.by&gtm=true&ver=f7da36cc';
+        scriptElement.type = 'text/javascript';
+        scriptElement.async = true;
+        document.body.appendChild(scriptElement);
+      }
+
+      var scriptJivoElement = document.createElement('script');
+      scriptJivoElement.src="//code.jivo.ru/widget/HUzGdE38gy";
+      scriptJivoElement.type = 'text/javascript';
+      scriptJivoElement.async=true;
+
+      document.body.appendChild(scriptJivoElement);
     }
   </script>
   <body>

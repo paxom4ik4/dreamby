@@ -139,8 +139,6 @@ export const ItemPage = ({
     if (allSubcategories.length) {
       const subCat = allSubcategories.find((item) => item.link_name === subcategory);
 
-      console.log(category);
-
       setSelectedCategory(category);
       setSelectedSubcategory(subCat['id']);
     }

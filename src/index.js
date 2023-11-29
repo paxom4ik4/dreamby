@@ -27,7 +27,7 @@ import { Profile } from './components/profile/profile';
 import { Info } from './components/info/info';
 import { WithUs } from './components/common/with_us/with_us';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import preLoader from './Logo_Text_Dark.gif';
 import screenLoader from './Logo_Screensaver.gif';
@@ -37,6 +37,8 @@ import { MobileMenu } from './components/common/header/mobile_menu/mobile_menu';
 import blueGradient from './GradientBlue.svg';
 import orangeGradient from './GradientOrange.svg';
 import { Helmet } from 'react-helmet';
+import { createPortal } from 'react-dom';
+import { NewCatalog } from './components/new-catalog/new-catalog';
 
 export const MAX_COMPARE_ITEMS = 4;
 
@@ -298,6 +300,8 @@ const App = () => {
 
   const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
 
+  const [isCatalogOpened, setIsCatalogOpened] = useState(false);
+
   return (
     <>
       {showInitialLoader && location.pathname === '/' && (
@@ -337,10 +341,22 @@ const App = () => {
       )}
 
       <QueryClientProvider client={queryClient}>
+        {isCatalogOpened &&
+          createPortal(
+            <NewCatalog
+              selectedCategory={selectedCategory}
+              selectedSubcategory={selectedSubcategory}
+              setIsCatalogOpened={setIsCatalogOpened}
+            />,
+            document.body,
+          )}
+        ;
         <WithUs
           isHidden={isFooterVisible || isMobileMenuOpened || location.pathname.includes('admin')}
         />
         <Header
+          isCatalogOpened={isCatalogOpened}
+          setIsCatalogOpened={setIsCatalogOpened}
           setIsMobileMenuOpened={setIsMobileMenuOpened}
           isMobileMenuOpened={isMobileMenuOpened}
           setSelectedCategory={setSelectedCategory}
@@ -356,7 +372,6 @@ const App = () => {
               {'Фильтр и сортировка'}
             </div>
           )}
-
         {window.location.pathname !== '/compare' && compareItems.length >= 2 && (
           <div className={`${DEFAULT_CLASSNAME}_compare`}>
             Товар в сравнении: {compareItems.length}{' '}

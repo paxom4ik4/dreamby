@@ -71,7 +71,7 @@ export const MobileMenu = ({ isMobileMenuOpened, setIsMobileMenuOpened, compareI
       </div>
       <div className={`${DEFAULT_CLASSNAME}_items`}>
         {MOBILE_MENU_ITEMS.map(({ title, link }) => (
-          <div onClick={() => navigate(link)}>
+          <div key={link} onClick={() => navigate(link)}>
             {title} {title === 'Сравнение' && compareItems > 0 && <span>({compareItems})</span>}
           </div>
         ))}

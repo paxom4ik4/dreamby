@@ -536,14 +536,6 @@ const Catalog = React.memo(
           {selectedCategory && selectedSubcategory && (
             <>
               <div className={`${DEFAULT_CLASSNAME}_title`}>
-                <img
-                  onClick={() => {
-                    navigate(window.location.pathname.split('/').slice(0, -1).join('/'));
-                    setSelectedSubSubCategory(null);
-                  }}
-                  src={filter}
-                  alt={'filter'}
-                />
                 <h1>{catalogTitle}</h1>
               </div>
               <div className={`${DEFAULT_CLASSNAME}_content`}>

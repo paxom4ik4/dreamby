@@ -69,9 +69,6 @@ export const ItemCard = React.memo(
     const openProductHandler = (event, open = false) => {
       event.stopPropagation();
 
-      console.log(event.target.className);
-      console.log(event.target.closest('div').className);
-
       setSelectedCategory(category);
 
       if (

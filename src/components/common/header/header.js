@@ -17,18 +17,18 @@ import { Loader } from '../loader/loader';
 const DEFAULT_CLASSNAME = 'header';
 
 const NAV_ITEMS = [
-  { title: 'Каталог', link: '/catalog' },
+  // { title: 'Каталог', link: '/catalog' },
   { title: 'Услуги', link: 'services' },
   { title: 'Оплата', link: 'billing' },
   { title: 'О нас', link: 'about' },
 ];
 
-export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMenuOpened }) => {
-  const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-  const cartItemsLength = cartItems ? cartItems.length : 0;
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+export const Header = ({
+  setSelectedCategory,
+  setIsCatalogOpened,
+  isCatalogOpened,
+  setIsMobileMenuOpened,
+}) => {
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState([]);
   const [searchOpened, setSearchOpened] = useState(false);
@@ -112,6 +112,11 @@ export const Header = ({ setSelectedCategory, isMobileMenuOpened, setIsMobileMen
           </div>
           <div className={`${DEFAULT_CLASSNAME}_wrapper_navigation`}>
             <nav className={`${'menu'} ${searchOpened && 'menu-hidden'}`}>
+              <span
+                onClick={() => setIsCatalogOpened(!isCatalogOpened)}
+                className={`${DEFAULT_CLASSNAME}_wrapper_navigation_item`}>
+                Каталог
+              </span>
               {NAV_ITEMS.map((item, id) => (
                 <NavLink
                   onClick={() => clickOnCatalog(item)}

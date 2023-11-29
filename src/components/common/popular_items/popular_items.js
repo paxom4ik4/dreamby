@@ -73,6 +73,7 @@ export const PopularItems = ({
 
           return (
             <ItemCard
+              key={item.id}
               product={item}
               productIdForCart={item?.id}
               clickLink={`${categoryName}/${subcategory}/${item.link}`}

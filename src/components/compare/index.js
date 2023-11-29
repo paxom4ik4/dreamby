@@ -11,8 +11,6 @@ const DEFAULT_CLASSNAME = 'compare';
 export const Compare = ({ deleteFromCompare, compareItems, setSelectedDeviceName }) => {
   const navigate = useNavigate();
 
-  console.log(compareItems);
-
   const [compareData, setCompareData] = useState(null);
 
   useEffect(() => {

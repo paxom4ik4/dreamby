@@ -196,6 +196,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
             if (title === 'Связаться') {
               return (
                 <a
+                  key={title}
                   href={'tel:+375291685668'}
                   className={`${DEFAULT_CLASSNAME}_item ${
                     location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
@@ -210,6 +211,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
 
             return (
               <div
+                key={title}
                 onClick={() => {
                   if (link.length) navigate(link);
 

@@ -350,7 +350,6 @@ const App = () => {
             />,
             document.body,
           )}
-        ;
         <WithUs
           isHidden={isFooterVisible || isMobileMenuOpened || location.pathname.includes('admin')}
         />
@@ -646,7 +645,11 @@ const App = () => {
           setIsMobileMenuOpened={setIsMobileMenuOpened}
           compareItems={compareItems.length}
         />
-        <FooterMenu setIsMobileMenuOpened={setIsMobileMenuOpened} />
+        <FooterMenu
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
+          isCatalogOpened={isCatalogOpened}
+          setIsCatalogOpened={setIsCatalogOpened}
+        />
       </QueryClientProvider>
     </>
   );

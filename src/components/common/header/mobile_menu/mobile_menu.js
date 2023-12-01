@@ -12,12 +12,12 @@ const DEFAULT_CLASSNAME = 'new-mobile-menu';
 
 const MOBILE_MENU_ITEMS = [
   {
-    title: 'Каталог',
-    link: '/catalog',
-  },
-  {
     title: 'Услуги',
     link: '/services',
+  },
+  {
+    title: 'Аккаунт',
+    link: '/profile',
   },
   {
     title: 'Избарнные',

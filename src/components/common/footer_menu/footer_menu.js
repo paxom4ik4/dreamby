@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react';
 import './footer_menu.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import main from './icons/main.svg';
 import search from './icons/search.svg';
-import menu from './icons/menu.svg';
-import account from './icons/account.svg';
-import cart from './icons/cart.svg';
+import home from './icons/home.svg';
+import catalog from './icons/catalog.svg';
 import closeSearch from './icons/close-search.svg';
 import search_small from './icons/search-small.svg';
 import spin from '../../../Logo_Screensaver.gif';
@@ -24,7 +22,7 @@ const FOOTER_MENU_ITEMS = [
   {
     title: 'Главная',
     link: '/',
-    image: spin,
+    image: home,
   },
   {
     title: 'Поиск',
@@ -34,12 +32,12 @@ const FOOTER_MENU_ITEMS = [
   {
     title: 'Меню',
     link: '',
-    image: menu,
+    image: spin,
   },
   {
-    title: 'Аккаунт',
-    link: '/profile',
-    image: account,
+    title: 'Каталог',
+    link: '',
+    image: catalog,
   },
   {
     title: 'Связаться',
@@ -48,7 +46,7 @@ const FOOTER_MENU_ITEMS = [
   },
 ];
 
-export const FooterMenu = ({ setIsMobileMenuOpened }) => {
+export const FooterMenu = ({ setIsMobileMenuOpened, setIsCatalogOpened, isCatalogOpened }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -223,7 +221,8 @@ export const FooterMenu = ({ setIsMobileMenuOpened }) => {
                     setIsSearchOpened(!isSearchOpened);
                   }
 
-                  if (title === 'Связаться') {
+                  if (title === 'Каталог') {
+                    !isCatalogOpened && setIsCatalogOpened(true);
                   }
                 }}
                 className={`${DEFAULT_CLASSNAME}_item ${

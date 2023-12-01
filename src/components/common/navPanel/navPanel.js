@@ -74,17 +74,17 @@ export const NavPanel = ({
                 itemScope
                 itemType="https://schema.org/ListItem"
                 style={{ display: 'flex', alignItems: 'center' }}
-                // onClick={() => {
-                //   if (idx === 0) navigate('/');
-                //
-                //   if (item === 'Каталог') {
-                //     setSelectedCategory(null);
-                //     setSelectedSubcategory(null);
-                //     setSelectedSubcategories([]);
-                //     setSelectedDeviceName(null);
-                //     navigate('/catalog');
-                //   }
-                // }}
+                onClick={() => {
+                  if (idx === 0) navigate('/');
+
+                  if (item === 'Каталог') {
+                    setSelectedCategory(null);
+                    setSelectedSubcategory(null);
+                    setSelectedSubcategories([]);
+                    setSelectedDeviceName(null);
+                    navigate('/catalog');
+                  }
+                }}
                 className={`${DEFAULT_CLASSNAME}_item`}>
                 <div style={{ display: 'none' }} itemProp="item">
                   <div itemProp="name">{item}</div>
@@ -106,15 +106,14 @@ export const NavPanel = ({
               itemScope
               itemType="https://schema.org/ListItem"
               style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              // onClick={() => {
-              //   setSelectedCategory(categoryInfo.id);
-              //   setSelectedDeviceName(null);
-              //   setSelectedSubcategory(null);
-              //   navigate(
-              //     `/catalog/${objReplacer[categoryInfo?.categoryName ?? 'Телефоны и планшеты']}`,
-              //   );
-              // }}
-            >
+              onClick={() => {
+                setSelectedCategory(categoryInfo.id);
+                setSelectedDeviceName(null);
+                setSelectedSubcategory(null);
+                navigate(
+                  `/catalog/${objReplacer[categoryInfo?.categoryName ?? 'Телефоны и планшеты']}`,
+                );
+              }}>
               <div
                 style={{ marginRight: '8px', marginLeft: '8px', paddingLeft: '6px' }}
                 className={`${DEFAULT_CLASSNAME}_item-circle`}

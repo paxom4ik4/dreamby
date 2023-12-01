@@ -180,7 +180,7 @@
         object-fit: contain;
       }
 
-      &:first-child img {
+      &:nth-child(3n) img {
         height: 34px;
         width: 34px;
       }
@@ -253,9 +253,9 @@
         object-fit: contain;
       }
 
-      &:first-child img {
-        height: 34px;
-        width: 34px;
+      &:nth-child(3n) img {
+        height: 36px;
+        width: 36px;
       }
     }
   }
@@ -283,9 +283,9 @@
         height: 34px;
       }
 
-      &:first-child img {
-        height: 24px;
-        width: 26px;
+      &:nth-child(3n) img {
+        height: 40px;
+        width: 34px;
       }
     }
   }

@@ -9,6 +9,7 @@ import favoriteIcon from './icons/favorite.svg';
 import profileIcon from './icons/profile.svg';
 import compareIcon from './icons/compare.svg';
 import menu from './icons/menu.svg';
+import catalog from './icons/catalog.svg';
 
 import logo from './logo-dream-new.svg';
 import logoSpin from '../../../Logo_Screensaver.gif';
@@ -148,6 +149,19 @@ export const Header = ({
               className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}
             />
 
+            <div
+              className={`${DEFAULT_CLASSNAME}_tablet_catalog`}
+              onClick={() => {
+                isCatalogOpened ? setIsCatalogOpened(false) : setIsCatalogOpened(true);
+              }}>
+              <img
+                className={`${DEFAULT_CLASSNAME}_tablet_catalog_image`}
+                src={catalog}
+                alt={'header-catalog'}
+              />
+              <div className={`${DEFAULT_CLASSNAME}_tablet_catalog_title`}>{'Каталог'}</div>
+            </div>
+
             <img
               loading={'lazy'}
               className={`tablet-hide`}
@@ -244,45 +258,3 @@ export const Header = ({
     )
   );
 };
-
-{
-  /*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_cart`} onClick={() => navigate('/cart')}>*/
-}
-{
-  /*  <img src={cartIcon} alt={'cart-icon'} />*/
-}
-{
-  /*  {cartItemsLength > 0 && <div className={`${DEFAULT_CLASSNAME}_cart-in`}>{cartItemsLength}</div>}*/
-}
-{
-  /*</div>*/
-}
-
-{
-  /*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search`}>*/
-}
-{
-  /*  <input onBlur={() => setTimeout(() => setSearchFocused(false), 100)} onFocus={() => setSearchFocused(true)} value={searchText} onInput={inputHandler} type={"text"} placeholder={"Поиск"}/>*/
-}
-{
-  /*  <img className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_search_icon`} src={search_icon}*/
-}
-{
-  /*       alt={'search-icon'}/>*/
-}
-{
-  /*</div>*/
-}
-
-{
-  /*<div className={`${DEFAULT_CLASSNAME}_wrapper_control-panel_profile`} onClick={() => setIsMenuOpen(true)}>*/
-}
-{
-  /*  <img src={cabinet} alt={'profile-icon'} />*/
-}
-{
-  /*  {isLoggedIn && <div className={`${DEFAULT_CLASSNAME}_logged-in`} />}*/
-}
-{
-  /*</div>*/
-}

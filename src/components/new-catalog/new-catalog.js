@@ -64,15 +64,32 @@ export const NewCatalog = ({ selectedCategory, selectedSubcategory, setIsCatalog
     <div className={DEFAULT_CLASSNAME} ref={newCatalogRef}>
       <div className={`${DEFAULT_CLASSNAME}_categories`}>
         {categories.map((category, index) => (
-          <NewCategoryCard
-            key={category.id}
-            onClick={() => setActiveCategory(category)}
-            active={category.id === activeCategory?.id}
-            index={index}
-            title={category.categoryName}
-            amount={category._count.products}
-            image={category.img_path}
-          />
+          <>
+            <NewCategoryCard
+              key={category.id}
+              onClick={() => setActiveCategory(category)}
+              active={category.id === activeCategory?.id}
+              index={index}
+              title={category.categoryName}
+              amount={category._count.products}
+              image={category.img_path}
+            />
+            {category === activeCategory && (
+              <div className={`${DEFAULT_CLASSNAME}_categories_subCategories`}>
+                {!!subcategories &&
+                  subcategories?.subcats.map((subcategory, index) => (
+                    <NewSubcategoryCard
+                      active={subcategory.id === activeSubcategory}
+                      onClick={() => openSubcategoryHandler(subcategory.link_name)}
+                      key={subcategory.id}
+                      title={subcategory.name}
+                      image={subcategory.img_path}
+                      index={index}
+                    />
+                  ))}
+              </div>
+            )}
+          </>
         ))}
       </div>
       <div className={`${DEFAULT_CLASSNAME}_sub-categories`}>

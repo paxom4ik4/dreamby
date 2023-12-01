@@ -41,3 +41,9 @@
     font-weight: 500;
   }
 }
+
+@media (max-width: 920px) {
+  .new-subcategory-card {
+    border: none;
+  }
+}

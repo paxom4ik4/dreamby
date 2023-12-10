@@ -172,6 +172,10 @@
     height: 380px;
     padding: 0 !important;
 
+    &_title {
+      padding-left: 20px;
+    }
+
     &_content {
       display: flex;
       flex-direction: row;

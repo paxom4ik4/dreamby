@@ -2,7 +2,7 @@ import React from 'react';
 
 import './new-category-card.scss';
 
-import expandIcon from './icons/expand.svg';
+import { ReactComponent as ExpandIcon } from './icons/expand.svg';
 
 const DEFAULT_CLASSNAME = 'new-category-card';
 
@@ -17,7 +17,7 @@ export const NewCategoryCard = ({ onClick, active = false, image, title, amount,
         <div className={`${DEFAULT_CLASSNAME}_text_amount`}>Товаров: {amount}</div>
       </div>
       <div className={`${DEFAULT_CLASSNAME}_expand`}>
-        <img src={expandIcon} alt={`${index}_expand`} />
+        <ExpandIcon />
       </div>
     </div>
   );

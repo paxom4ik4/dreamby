@@ -44,6 +44,31 @@
 
 @media (max-width: 920px) {
   .new-subcategory-card {
+    max-height: 50px;
+    height: 50px;
+
+    width: 310px;
+
+    &.active {
+      border: none;
+      transition: all 0.3s;
+      color: rgba(255, 105, 62, 1);
+    }
+
+    padding: 16px;
+    margin: 4px 0;
+
+    &_image {
+      min-height: 50px;
+      max-height: 50px;
+      min-width: 50px;
+      max-width: 50px;
+    }
+
+    &_title {
+      font-size: 12px;
+    }
+
     border: none;
   }
 }

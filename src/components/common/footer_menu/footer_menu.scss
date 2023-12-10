@@ -61,7 +61,7 @@
     &_searched-items {
       display: flex;
       flex-direction: column;
-      padding: 0 4px;
+      padding: 0 8px 0 4px;
       color: $black-primary;
       background-color: #ffffff;
       border-radius: 8px;
@@ -73,6 +73,10 @@
       animation: fadeIn 0.5s;
       width: 100%;
       overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
 
       &_item {
         object-fit: contain !important;

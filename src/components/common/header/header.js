@@ -18,7 +18,6 @@ import { Loader } from '../loader/loader';
 const DEFAULT_CLASSNAME = 'header';
 
 const NAV_ITEMS = [
-  // { title: 'Каталог', link: '/catalog' },
   { title: 'Услуги', link: 'services' },
   { title: 'Оплата', link: 'billing' },
   { title: 'О нас', link: 'about' },
@@ -115,7 +114,7 @@ export const Header = ({
             <nav className={`${'menu'} ${searchOpened && 'menu-hidden'}`}>
               <span
                 onClick={() => setIsCatalogOpened(!isCatalogOpened)}
-                className={`${DEFAULT_CLASSNAME}_wrapper_navigation_item`}>
+                className={`${DEFAULT_CLASSNAME}_wrapper_navigation_item catalog-item`}>
                 Каталог
               </span>
               {NAV_ITEMS.map((item, id) => (
@@ -159,7 +158,9 @@ export const Header = ({
                 src={catalog}
                 alt={'header-catalog'}
               />
-              <div className={`${DEFAULT_CLASSNAME}_tablet_catalog_title`}>{'Каталог'}</div>
+              <div className={`${DEFAULT_CLASSNAME}_tablet_catalog_title 'tablet-show'`}>
+                {'Каталог'}
+              </div>
             </div>
 
             <img

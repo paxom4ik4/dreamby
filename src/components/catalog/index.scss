@@ -512,7 +512,7 @@ h1 {
 
 @media (max-width: 1440px) {
   .catalog_title {
-    margin-left: 20px;
+    padding-left: 20px;
   }
 
   .catalog-additional-info {
@@ -588,6 +588,11 @@ h1 {
   .catalog_selectSubcategory {
     padding: 0 20px;
   }
+
+  .catalog_title {
+    padding-left: 20px;
+    margin: 0;
+  }
 }
 
 @media (max-width: 690px) {
@@ -599,6 +604,10 @@ h1 {
 @media (max-width: 525px) {
   .catalog_content-main {
     padding: 0;
+  }
+
+  .catalog {
+    margin: 0 !important;
   }
 
   .catalog_content-main_subsubcategories {

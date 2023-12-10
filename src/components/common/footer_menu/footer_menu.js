@@ -210,7 +210,7 @@ export const FooterMenu = ({ setIsMobileMenuOpened, setIsCatalogOpened, isCatalo
             return (
               <div
                 key={title}
-                onClick={() => {
+                onClick={(event) => {
                   if (link.length) navigate(link);
 
                   if (title === 'Меню') {
@@ -222,14 +222,22 @@ export const FooterMenu = ({ setIsMobileMenuOpened, setIsCatalogOpened, isCatalo
                   }
 
                   if (title === 'Каталог') {
-                    !isCatalogOpened && setIsCatalogOpened(true);
+                    setIsCatalogOpened(!isCatalogOpened);
                   }
                 }}
                 className={`${DEFAULT_CLASSNAME}_item ${
                   location.pathname === link && `${DEFAULT_CLASSNAME}_item_active`
-                }`}>
-                <div className={`${DEFAULT_CLASSNAME}_item_image`}>
-                  <img loading={'lazy'} src={image} alt={title} />
+                } ${title === 'Каталог' && 'catalog-class'}`}>
+                <div
+                  className={`${DEFAULT_CLASSNAME}_item_image ${
+                    title === 'Каталог' && 'catalog-class'
+                  }`}>
+                  <img
+                    className={title === 'Каталог' && 'catalog-class'}
+                    loading={'lazy'}
+                    src={image}
+                    alt={title}
+                  />
                 </div>
 
                 <span>{title}</span>

@@ -26,7 +26,7 @@
   &_tablet_catalog {
     padding: 5px 20px;
     background-color: rgba(255, 105, 62, 1);
-    display: flex;
+    display: none;
     align-items: center;
     gap: 4px;
     border-radius: 100px;
@@ -330,6 +330,10 @@
     max-width: 100% !important;
     width: 100%;
     padding: 0 20px;
+
+    &_tablet_catalog {
+      display: flex;
+    }
 
     .tablet-show {
       display: initial;
